@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Advertise | The County Compass</title>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <header class="site-header">
+
+    <div class="logo">
+      <img
+        src="images/site/county-compass-logo.png"
+        alt="The County Compass"
+        class="site-logo"
+      >
+
+      <div class="logo-text">
+        <span>The County Compass</span>
+      </div>
+    </div>
+
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="businesses.html">Businesses</a>
+      <a href="coupons.html">Coupons</a>
+      <a href="events.html">Events</a>
+      <a href="advertise.html">Advertise</a>
+    </nav>
+
+  </header>
+
+  <section class="page-banner advertise-banner">
+  </section>
+
+  <main class="page-section">
+
+    <h1>Advertise Your Business</h1>
+
+    <p class="page-intro">
+      Reach local customers across Jackson County with featured listings,
+      coupon promotions, homepage ads, and event sponsorships.
+    </p>
+
+    <section class="ad-options">
+
+      <article class="ad-card">
+        <h2>Featured Business</h2>
+
+        <p>
+          Get priority placement in the business directory and appear in the
+          Featured Businesses section on the homepage.
+        </p>
+
+        <p>
+          Best for local businesses that want more visibility.
+        </p>
+
+        <button
+          type="button"
+          onclick="selectAdOption('Featured Business')"
+        >
+          Request Featured Business
+        </button>
+      </article>
+
+      <article class="ad-card">
+        <h2>Coupon Promotion</h2>
+
+        <p>
+          Promote sales, discounts, seasonal offers, grand openings,
+          and special deals on the coupon page.
+        </p>
+
+        <p>
+          Best for restaurants, shops, services, and limited-time offers.
+        </p>
+
+        <button
+          type="button"
+          onclick="selectAdOption('Coupon Promotion')"
+        >
+          Request Coupon Promotion
+        </button>
+      </article>
+
+      <article class="ad-card">
+        <h2>Homepage Advertisement</h2>
+
+        <p>
+          Place your business advertisement near the top of the homepage
+          where visitors will see it first.
+        </p>
+
+        <p>
+          Best for high-visibility promotions and local brand awareness.
+        </p>
+
+        <button
+          type="button"
+          onclick="selectAdOption('Homepage Advertisement')"
+        >
+          Request Homepage Ad
+        </button>
+      </article>
+
+      <article class="ad-card">
+        <h2>Event Promotion</h2>
+
+        <p>
+          Promote concerts, church events, school events, festivals,
+          fundraisers, and community gatherings.
+        </p>
+
+        <p>
+          Best for upcoming events that need local attention.
+        </p>
+
+        <button
+          type="button"
+          onclick="selectAdOption('Event Promotion')"
+        >
+          Request Event Promotion
+        </button>
+      </article>
+
+    </section>
+
+    <section class="admin-preview-section">
+
+      <h2>
+        Get Started
+      </h2>
+
+      <p class="page-intro">
+        Fill out the request below and we will contact you about advertising
+        on The County Compass.
+      </p>
+
+      <form
+        name="advertising-request"
+        method="POST"
+        data-netlify="true"
+        class="admin-card"
+      >
+
+        <input
+          type="hidden"
+          name="form-name"
+          value="advertising-request"
+        >
+
+        <input
+          type="text"
+          id="selectedAdOption"
+          name="selectedAdOption"
+          placeholder="Selected Advertising Option"
+          readonly
+        >
+
+        <input
+          type="text"
+          name="businessName"
+          placeholder="Business Name"
+          required
+        >
+
+        <input
+          type="text"
+          name="contactName"
+          placeholder="Contact Name"
+          required
+        >
+
+        <input
+          type="tel"
+          name="phone"
+          placeholder="Phone Number"
+          required
+        >
+
+        <input
+          type="email"
+          name="email"
+          placeholder="Email Address"
+        >
+
+        <input
+          type="text"
+          name="website"
+          placeholder="Website or Facebook Link"
+        >
+
+        <textarea
+          name="message"
+          placeholder="Tell us what you want to advertise"
+          maxlength="250"
+          required
+        ></textarea>
+
+        <button type="submit">
+          Send Advertising Request
+        </button>
+
+      </form>
+
+    </section>
+
+  </main>
+
+  <script>
+    function selectAdOption(optionName) {
+      const selectedAdOption =
+        document.getElementById("selectedAdOption");
+
+      if (selectedAdOption) {
+        selectedAdOption.value = optionName;
+        selectedAdOption.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+      }
+    }
+  </script>
+
+</body>
+
+</html>

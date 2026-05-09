@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Admin | The County Compass</title>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <section id="adminLogin" class="page-section">
+
+    <h1>Admin Login</h1>
+
+    <p class="page-intro">
+      Enter the admin password to manage The County Compass.
+    </p>
+
+    <div class="admin-card">
+
+      <input
+        type="password"
+        id="adminPasswordInput"
+        placeholder="Enter admin password"
+      >
+
+      <button
+        type="button"
+        onclick="checkAdminPassword()"
+      >
+        Enter Admin
+      </button>
+
+    </div>
+
+  </section>
+
+  <div id="adminContent" style="display: none;">
+
+    <header class="site-header">
+
+      <div class="logo">
+
+        <img
+          src="images/site/county-compass-logo.png"
+          alt="The County Compass"
+          class="site-logo"
+        >
+
+        <div class="logo-text">
+          <span>The County Compass Admin</span>
+        </div>
+
+      </div>
+
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="businesses.html">Businesses</a>
+        <a href="coupons.html">Coupons</a>
+        <a href="events.html">Events</a>
+        <a href="advertise.html">Advertise</a>
+      </nav>
+
+    </header>
+
+    <main class="page-section">
+
+      <h1>Admin Dashboard</h1>
+
+      <section class="admin-card">
+
+        <h2>Backup / Restore Site Data</h2>
+
+        <p class="page-intro">
+          Use this before clearing cache, moving to Netlify, or changing domains.
+        </p>
+
+        <button
+          type="button"
+          onclick="exportCountyCompassBackup()"
+        >
+          Export Backup
+        </button>
+
+        <input
+          type="file"
+          id="backupImportFile"
+          accept=".json"
+          onchange="importCountyCompassBackup(event)"
+        >
+
+      </section>
+
+      <p class="page-intro">
+        Manage businesses, coupons, events, advertisements, and featured listings.
+      </p>
+
+      <section class="admin-grid">
+
+        <article class="admin-card">
+
+          <h2>Add Business</h2>
+
+          <input type="text" id="businessName" placeholder="Business Name">
+
+          <select id="businessCategory">
+            <option value="">Select Category</option>
+            <option value="Automotive">Automotive</option>
+            <option value="Food & Dining">Food & Dining</option>
+            <option value="Home Services">Home Services</option>
+            <option value="Health & Beauty">Health & Beauty</option>
+            <option value="IT & Computer Repair">IT & Computer Repair</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Real Estate">Real Estate</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Churches">Churches</option>
+            <option value="Fitness">Fitness</option>
+            <option value="Professional Services">Professional Services</option>
+            <option value="Other">Other</option>
+          </select>
+
+          <input type="text" id="businessAddress" placeholder="Business Address">
+          <input type="text" id="businessPhone" placeholder="Phone Number">
+          <input type="text" id="businessWebsite" placeholder="Website or Facebook Link">
+
+          <label class="image-upload-label">Business Image</label>
+
+          <input
+            type="file"
+            id="businessImageUpload"
+            accept="image/*"
+            onchange="handleImageUpload(event, 'businessImage', 'businessImagePreview', 'images/businesses/', 'business')"
+          >
+
+          <input
+            type="text"
+            id="businessImage"
+            placeholder="Type image path, example: images/businesses/example.jpg"
+          >
+
+          <img
+            id="businessImagePreview"
+            class="business-image-preview"
+            style="display: none;"
+          >
+
+          <select id="businessPaid">
+            <option value="No">Paid Listing: No</option>
+            <option value="Yes">Paid Listing: Yes</option>
+          </select>
+
+          <select id="businessFeatured">
+            <option value="No">Featured Business: No</option>
+            <option value="Yes">Featured Business: Yes</option>
+          </select>
+
+          <textarea
+            id="businessDescription"
+            placeholder="Business Description"
+            maxlength="170"
+          ></textarea>
+
+          <button
+            type="button"
+            id="businessSubmitButton"
+            onclick="addBusinessPreview()"
+          >
+            Add Business
+          </button>
+
+        </article>
+
+        <article class="admin-card">
+
+          <h2>Add Coupon</h2>
+
+          <input type="text" id="couponBusinessName" placeholder="Business Name">
+
+          <select id="couponCategory">
+            <option value="">Select Category</option>
+            <option value="Automotive">Automotive</option>
+            <option value="Food & Dining">Food & Dining</option>
+            <option value="Home Services">Home Services</option>
+            <option value="Health & Beauty">Health & Beauty</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Real Estate">Real Estate</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Churches">Churches</option>
+            <option value="Fitness">Fitness</option>
+            <option value="Professional Services">Professional Services</option>
+            <option value="Other">Other</option>
+          </select>
+
+          <input type="text" id="couponTitle" placeholder="Coupon Title">
+
+          <label class="image-upload-label">Coupon Image</label>
+
+          <input
+            type="file"
+            id="couponImageUpload"
+            accept="image/*"
+            onchange="handleImageUpload(event, 'couponImage', 'couponImagePreview', 'images/coupons/', 'coupon')"
+          >
+
+          <input
+            type="text"
+            id="couponImage"
+            placeholder="Type image path, example: images/coupons/example.jpg"
+          >
+
+          <img
+            id="couponImagePreview"
+            class="business-image-preview"
+            style="display: none;"
+          >
+
+          <textarea
+            id="couponDetails"
+            placeholder="Coupon Details"
+            maxlength="90"
+          ></textarea>
+
+          <button
+            type="button"
+            onclick="addCouponPreview()"
+          >
+            Add Coupon
+          </button>
+
+        </article>
+
+        <article class="admin-card">
+
+          <h2>Add Event</h2>
+
+          <input type="text" id="eventTitle" placeholder="Event Title">
+          <input type="text" id="eventLocation" placeholder="Event Location">
+
+          <select id="eventCategory">
+            <option value="">Select Event Category</option>
+            <option value="Concert">Concert</option>
+            <option value="Festival">Festival</option>
+            <option value="Restaurant Special">Restaurant Special</option>
+            <option value="Church Event">Church Event</option>
+            <option value="Community">Community</option>
+            <option value="Sports">Sports</option>
+            <option value="School">School</option>
+            <option value="Holiday">Holiday</option>
+            <option value="Farmers Market">Farmers Market</option>
+            <option value="Other">Other</option>
+          </select>
+
+          <input type="date" id="eventDate">
+          <input type="time" id="eventTime">
+
+          <label class="image-upload-label">Event Image</label>
+
+          <input
+            type="file"
+            id="eventImageUpload"
+            accept="image/*"
+            onchange="handleImageUpload(event, 'eventImage', 'eventImagePreview', 'images/events/', 'event')"
+          >
+
+          <input
+            type="text"
+            id="eventImage"
+            placeholder="Type image path, example: images/events/example.jpg"
+          >
+
+          <img
+            id="eventImagePreview"
+            class="business-image-preview"
+            style="display: none;"
+          >
+
+          <textarea
+            id="eventDescription"
+            placeholder="Event Description"
+            maxlength="150"
+          ></textarea>
+
+          <button
+            type="button"
+            onclick="addEventPreview()"
+          >
+            Add Event
+          </button>
+
+        </article>
+
+        <article class="admin-card">
+
+          <h2>Add Advertisement</h2>
+
+          <input type="text" id="adTitle" placeholder="Ad Title">
+
+          <select id="adLocation">
+            <option value="">Select Ad Location</option>
+            <option value="homepage">Homepage</option>
+            <option value="businesses">Businesses Page</option>
+            <option value="coupons">Coupons Page</option>
+            <option value="events">Events Page</option>
+          </select>
+
+          <select id="adShape">
+            <option value="">Select Ad Shape</option>
+            <option value="square">Square</option>
+            <option value="banner">Banner</option>
+            <option value="tall">Tall</option>
+          </select>
+
+          <label class="image-upload-label">Advertisement Image</label>
+
+          <input
+            type="file"
+            id="adImageUpload"
+            accept="image/*"
+            onchange="handleImageUpload(event, 'adImage', 'adImagePreview', 'images/ads/', 'ad')"
+          >
+
+          <input
+            type="text"
+            id="adImage"
+            placeholder="Type image path, example: images/ads/example.jpg"
+          >
+
+          <img
+            id="adImagePreview"
+            class="business-image-preview"
+            style="display: none;"
+          >
+
+          <input type="text" id="adLink" placeholder="Ad URL">
+
+          <select id="adActive">
+            <option value="Yes">Active: Yes</option>
+            <option value="No">Active: No</option>
+          </select>
+
+          <button
+            type="button"
+            onclick="addAdPreview()"
+          >
+            Add Advertisement
+          </button>
+
+        </article>
+
+      </section>
+
+      <section class="admin-preview-section">
+
+        <h2>Business Preview</h2>
+
+        <input
+          type="text"
+          id="adminBusinessSearch"
+          placeholder="Search businesses..."
+          onkeyup="filterBusinesses()"
+        >
+
+        <div id="businessPreviewArea" class="business-grid"></div>
+
+      </section>
+
+      <section class="admin-preview-section">
+
+        <h2>Coupon Preview</h2>
+
+        <div id="couponPreviewArea" class="coupon-grid"></div>
+
+      </section>
+
+      <section class="admin-preview-section">
+
+        <h2>Event Preview</h2>
+
+        <div id="eventPreviewArea" class="business-grid"></div>
+
+      </section>
+
+      <section class="admin-preview-section">
+
+        <h2>Advertisement Preview</h2>
+
+        <div id="adPreviewArea" class="ad-preview-grid"></div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script>
+
+    function checkAdminPassword() {
+      const passwordInput =
+        document.getElementById("adminPasswordInput").value;
+
+      const correctPassword =
+        "9300";
+
+      if (passwordInput === correctPassword) {
+        document.getElementById("adminLogin").style.display = "none";
+        document.getElementById("adminContent").style.display = "block";
+
+        sessionStorage.setItem(
+          "countyCompassAdminUnlocked",
+          "yes"
+        );
+      } else {
+        alert("Incorrect password.");
+      }
+    }
+
+    if (
+      sessionStorage.getItem("countyCompassAdminUnlocked") === "yes"
+    ) {
+      document.getElementById("adminLogin").style.display = "none";
+      document.getElementById("adminContent").style.display = "block";
+    }
+
+    function makeSafeFileName(fileName, imageType) {
+      const extension =
+        fileName.split(".").pop().toLowerCase();
+
+      const baseName =
+        fileName
+          .replace(/\.[^/.]+$/, "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+
+      return imageType + "-" + baseName + "-1254x1254.jpg";
+    }
+
+    function handleImageUpload(event, pathInputId, previewId, folderPath, imageType) {
+      const file =
+        event.target.files[0];
+
+      if (!file) {
+        return;
+      }
+
+      const correctedFileName =
+        makeSafeFileName(file.name, imageType);
+
+      const savedPath =
+        folderPath + correctedFileName;
+
+      const image =
+        new Image();
+
+      const reader =
+        new FileReader();
+
+      reader.onload = function(loadEvent) {
+        image.onload = function() {
+          const canvas =
+            document.createElement("canvas");
+
+          const size =
+            1254;
+
+          canvas.width = size;
+          canvas.height = size;
+
+          const context =
+            canvas.getContext("2d");
+
+          context.fillStyle = "#111111";
+          context.fillRect(0, 0, size, size);
+
+          const scale =
+            Math.min(
+              size / image.width,
+              size / image.height
+            );
+
+          const drawWidth =
+            image.width * scale;
+
+          const drawHeight =
+            image.height * scale;
+
+          const x =
+            (size - drawWidth) / 2;
+
+          const y =
+            (size - drawHeight) / 2;
+
+          context.drawImage(
+            image,
+            x,
+            y,
+            drawWidth,
+            drawHeight
+          );
+
+          const correctedDataUrl =
+            canvas.toDataURL("image/jpeg", 0.92);
+
+          document.getElementById(pathInputId).value =
+            savedPath;
+
+          const preview =
+            document.getElementById(previewId);
+
+          preview.src =
+            correctedDataUrl;
+
+          preview.style.display =
+            "block";
+
+          const downloadLink =
+            document.createElement("a");
+
+          downloadLink.href =
+            correctedDataUrl;
+
+          downloadLink.download =
+            correctedFileName;
+
+          downloadLink.click();
+
+          alert(
+            "Corrected 1254 x 1254 image downloaded. Save it in: " +
+            folderPath +
+            "\n\nThe image path has been filled in automatically."
+          );
+        };
+
+        image.src =
+          loadEvent.target.result;
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    function exportCountyCompassBackup() {
+      const backupData = {
+        countyCompassBusinesses:
+          JSON.parse(localStorage.getItem("countyCompassBusinesses")) || [],
+
+        countyCompassCoupons:
+          JSON.parse(localStorage.getItem("countyCompassCoupons")) || [],
+
+        countyCompassEvents:
+          JSON.parse(localStorage.getItem("countyCompassEvents")) || [],
+
+        countyCompassAds:
+          JSON.parse(localStorage.getItem("countyCompassAds")) || []
+      };
+
+      const backupBlob =
+        new Blob(
+          [JSON.stringify(backupData, null, 2)],
+          { type: "application/json" }
+        );
+
+      const backupUrl =
+        URL.createObjectURL(backupBlob);
+
+      const downloadLink =
+        document.createElement("a");
+
+      downloadLink.href = backupUrl;
+      downloadLink.download = "county-compass-backup.json";
+      downloadLink.click();
+
+      URL.revokeObjectURL(backupUrl);
+    }
+
+    function importCountyCompassBackup(event) {
+
+  const confirmImport =
+    confirm(
+      "Importing a backup will REPLACE all current businesses, coupons, events, and ads.\n\nContinue?"
+    );
+
+  if (!confirmImport) {
+
+    event.target.value = "";
+
+    return;
+  }
+
+  const file =
+    event.target.files[0];
+
+  if (!file) {
+    return;
+  }
+
+  const reader =
+    new FileReader();
+
+  reader.onload = function(e) {
+
+    const backupData =
+      JSON.parse(e.target.result);
+
+    localStorage.setItem(
+      "countyCompassBusinesses",
+      JSON.stringify(
+        backupData.countyCompassBusinesses || []
+      )
+    );
+
+    localStorage.setItem(
+      "countyCompassCoupons",
+      JSON.stringify(
+        backupData.countyCompassCoupons || []
+      )
+    );
+
+    localStorage.setItem(
+      "countyCompassEvents",
+      JSON.stringify(
+        backupData.countyCompassEvents || []
+      )
+    );
+
+    localStorage.setItem(
+      "countyCompassAds",
+      JSON.stringify(
+        backupData.countyCompassAds || []
+      )
+    );
+
+    alert(
+      "Backup imported successfully.\n\nRefreshing admin page now."
+    );
+
+    window.location.reload();
+  };
+
+  reader.readAsText(file);
+}
+
+  </script>
+
+  <script>
+    function updateManualImagePreview(pathInputId, previewId) {
+      const pathInput =
+        document.getElementById(pathInputId);
+
+      const preview =
+        document.getElementById(previewId);
+
+      if (!pathInput || !preview) {
+        return;
+      }
+
+      const imagePath =
+        pathInput.value.trim();
+
+      if (!imagePath) {
+        preview.src = "";
+        preview.style.display = "none";
+        return;
+      }
+
+      preview.src = imagePath;
+      preview.style.display = "block";
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const manualImageFields = [
+        ["businessImage", "businessImagePreview"],
+        ["couponImage", "couponImagePreview"],
+        ["eventImage", "eventImagePreview"],
+        ["adImage", "adImagePreview"]
+      ];
+
+      manualImageFields.forEach(function(fieldSet) {
+        const input =
+          document.getElementById(fieldSet[0]);
+
+        if (!input) {
+          return;
+        }
+
+        input.addEventListener("input", function() {
+          updateManualImagePreview(fieldSet[0], fieldSet[1]);
+        });
+      });
+    });
+  </script>
+
+  <script src="js/admin.js"></script>
+
+</body>
+
+</html>

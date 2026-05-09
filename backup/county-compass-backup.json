@@ -1,0 +1,49 @@
+{
+  "countyCompassBusinesses": [
+    {
+      "id": 1778341632792,
+      "name": "Bailey's Computer Repair",
+      "category": "Home Services",
+      "address": "Marianna, Fl. 32446",
+      "phone": "(850) 703-9920",
+      "website": "",
+      "image": "images/businesses/bcr.jpg",
+      "paid": "Yes",
+      "featured": "Yes",
+      "description": "Bailey’s Computer Repair Services specializes in expert repair & maintenance of desktops & laptops. Fast, reliable fixes for hardware, software, viruses, & upgrades."
+    }
+  ],
+  "countyCompassCoupons": [
+    {
+      "id": 1778341728914,
+      "businessName": "Bailey's Computer Repair",
+      "category": "Home Services",
+      "title": "20% of windows installation",
+      "image": "",
+      "details": "Discount if for a clean installation of Windows with to include all applicable updats."
+    }
+  ],
+  "countyCompassEvents": [
+    {
+      "id": 1778341812696,
+      "title": "Test Event",
+      "location": "1234 marianna lane, marianna, fl. 32446",
+      "category": "Concert",
+      "date": "2026-05-15",
+      "time": "22:49",
+      "image": "",
+      "description": "Dont miss the fun.  Come hang out with the locals and meet the community."
+    }
+  ],
+  "countyCompassAds": [
+    {
+      "id": 1778341882049,
+      "title": "The Posse Shoppe - 3d printing",
+      "location": "businesses",
+      "shape": "square",
+      "image": "images/ads/tps.png",
+      "link": "https://theposseshoppe.com/",
+      "active": "Yes"
+    }
+  ]
+}
