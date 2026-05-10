@@ -3,7 +3,7 @@ const { getStore } = require("@netlify/blobs");
 const STORE_NAME = "county-compass-data";
 const DATA_KEY = "businesses";
 
-exports.handler = async function(event) {
+exports.default = async function handler(request) {
   const headers = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
@@ -11,68 +11,68 @@ exports.handler = async function(event) {
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS"
   };
 
-  if (event.httpMethod === "OPTIONS") {
-    return {
-      statusCode: 200,
-      headers,
-      body: ""
-    };
+  if (request.method === "OPTIONS") {
+    return new Response("", {
+      status: 200,
+      headers
+    });
   }
 
   const store = getStore(STORE_NAME);
 
-  if (event.httpMethod === "GET") {
+  if (request.method === "GET") {
     const savedData = await store.get(DATA_KEY, { type: "json" });
 
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify(savedData || [])
-    };
+    return new Response(JSON.stringify(savedData || []), {
+      status: 200,
+      headers
+    });
   }
 
-  if (event.httpMethod === "POST") {
+  if (request.method === "POST") {
     let incomingData = [];
 
     try {
-      incomingData = JSON.parse(event.body || "[]");
+      incomingData = await request.json();
     } catch (error) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({
-          error: "Invalid JSON data."
-        })
-      };
+      return new Response(
+        JSON.stringify({ error: "Invalid JSON data." }),
+        {
+          status: 400,
+          headers
+        }
+      );
     }
 
     if (!Array.isArray(incomingData)) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({
-          error: "Business data must be an array."
-        })
-      };
+      return new Response(
+        JSON.stringify({ error: "Business data must be an array." }),
+        {
+          status: 400,
+          headers
+        }
+      );
     }
 
     await store.setJSON(DATA_KEY, incomingData);
 
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify({
+    return new Response(
+      JSON.stringify({
         success: true,
         count: incomingData.length
-      })
-    };
+      }),
+      {
+        status: 200,
+        headers
+      }
+    );
   }
 
-  return {
-    statusCode: 405,
-    headers,
-    body: JSON.stringify({
-      error: "Method not allowed."
-    })
-  };
+  return new Response(
+    JSON.stringify({ error: "Method not allowed." }),
+    {
+      status: 405,
+      headers
+    }
+  );
 };
