@@ -1,48 +1,70 @@
 {
   "countyCompassBusinesses": [
     {
-      "id": 1778341632792,
-      "name": "Bailey's Computer Repair",
+      "id": 1778371875768,
+      "name": "Firehouse Lock & Key",
       "category": "Home Services",
-      "address": "Marianna, Fl. 32446",
-      "phone": "(850) 703-9920",
-      "website": "",
-      "image": "images/businesses/bcr.jpg",
+      "address": "4664 US-90, Marianna, FL 32446",
+      "phone": "(850) 526-5397",
+      "website": "https://www.facebook.com/p/Firehouse-Lock-Key-100054881659806/",
+      "image": "images\\businesses\\fh.png",
       "paid": "Yes",
       "featured": "Yes",
-      "description": "Bailey’s Computer Repair Services specializes in expert repair & maintenance of desktops & laptops. Fast, reliable fixes for hardware, software, viruses, & upgrades."
+      "description": "For 24 Hour Emergency Service, Please Call 8505265397"
+    },
+    {
+      "id": 1778371392498,
+      "name": "Marianna Tire Company",
+      "category": "Automotive",
+      "address": "2456 FL-71, Marianna, FL 32448",
+      "phone": "(850) 526-2614",
+      "website": "https://mariannatirecompany.com/",
+      "image": "images\\businesses\\mtc.png",
+      "paid": "Yes",
+      "featured": "Yes",
+      "description": "Your Trusted Auto Repair & Tire Shop in Marianna, FL.  Locally owned, professional service, and conveniently located just 1 mile from I-10."
+    },
+    {
+      "id": 1778371009046,
+      "name": "Bailey's Computer Repair",
+      "category": "IT & Computer Repair",
+      "address": "5138 Shawnee Trail",
+      "phone": "8507039920",
+      "website": "",
+      "image": "images\\businesses\\bcr.jpg",
+      "paid": "Yes",
+      "featured": "Yes",
+      "description": "Professional desktop and laptop repair. We specialize in hardware and software installs, updates, screen replacements, and data backup. Reliable service you can trust."
     }
   ],
   "countyCompassCoupons": [
     {
-      "id": 1778341728914,
+      "id": 1778373544333,
       "businessName": "Bailey's Computer Repair",
-      "category": "Home Services",
-      "title": "20% of windows installation",
-      "image": "",
-      "details": "Discount if for a clean installation of Windows with to include all applicable updats."
+      "category": "IT & Computer Repair",
+      "title": "20% off of Windows Installation",
+      "image": "images\\coupons\\bcrcoupon.png",
+      "details": "20% discount on any windows installation with all updates."
     }
   ],
-  "countyCompassEvents": [
-    {
-      "id": 1778341812696,
-      "title": "Test Event",
-      "location": "1234 marianna lane, marianna, fl. 32446",
-      "category": "Concert",
-      "date": "2026-05-15",
-      "time": "22:49",
-      "image": "",
-      "description": "Dont miss the fun.  Come hang out with the locals and meet the community."
-    }
-  ],
+  "countyCompassEvents": [],
   "countyCompassAds": [
     {
-      "id": 1778341882049,
-      "title": "The Posse Shoppe - 3d printing",
-      "location": "businesses",
+      "id": 1778374728937,
+      "title": "Grand Ridge Spring Fling and Car Show",
+      "location": "homepage",
       "shape": "square",
-      "image": "images/ads/tps.png",
-      "link": "https://theposseshoppe.com/",
+      "image": "images\\events\\carshow.png",
+      "link": "https://visitjacksoncountyfla.com/events/grand-ridge-spring-fling-and-car-show/",
+      "active": "Yes"
+    },
+    {
+      "id": 1778372359186,
+      "title": "Bistro Palms | Marianna",
+      "location": "homepage",
+      "shape": "square",
+      "image": "images\\ads\\bp.png",
+      "link": "https://bistropalmsflorida.com/",
       "active": "Yes"
     }
   ]
