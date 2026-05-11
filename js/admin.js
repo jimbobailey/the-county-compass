@@ -761,7 +761,7 @@ function clearEventForm() {
 
 /* ADS */
 
-function addAdPreview() {
+async function addAdPreview() {
   const title = getValue("adTitle");
   const location = getValue("adLocation");
   const shape = getValue("adShape");
