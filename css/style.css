@@ -724,3 +724,33 @@ body {
     );
     border-radius:999px;
 }
+/* Refined Local Coupons heading */
+
+.section-title{
+    position:relative;
+    text-align:center;
+    font-size:3rem;
+    font-weight:800;
+    letter-spacing:1px;
+    margin-top:10px;
+    margin-bottom:40px;
+    color:#ff9800;
+}
+
+.section-title::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:-14px;
+    width:140px;
+    height:3px;
+    border-radius:999px;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        #00d9ff,
+        #ff9800,
+        transparent
+    );
+}
