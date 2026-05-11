@@ -659,3 +659,40 @@ body {
     height:auto;
     display:block;
 }
+/* Smaller featured ads */
+
+#couponsAds .business-card,
+#couponsAds .ad-card,
+#couponsAds .coupon-card{
+    transform:scale(0.82);
+    transform-origin:top center;
+    margin-bottom:-25px;
+}
+
+#couponsAds{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:35px;
+    padding-bottom:20px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+}/* Smaller featured ads */
+
+#couponsAds .business-card,
+#couponsAds .ad-card,
+#couponsAds .coupon-card{
+    transform:scale(0.82);
+    transform-origin:top center;
+    margin-bottom:-25px;
+}
+
+#couponsAds{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:35px;
+    padding-bottom:20px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+}
