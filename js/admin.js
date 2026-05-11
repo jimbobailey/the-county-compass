@@ -128,8 +128,33 @@ function saveCoupons() {
   localStorage.setItem("countyCompassCoupons", JSON.stringify(coupons));
 }
 
-function saveEvents() {
-  localStorage.setItem("countyCompassEvents", JSON.stringify(events));
+async function saveEvents() {
+
+  localStorage.setItem(
+    "countyCompassEvents",
+    JSON.stringify(events)
+  );
+
+  try {
+
+    await fetch(
+      "/.netlify/functions/events",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(events)
+      }
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Event sync failed:",
+      error
+    );
+  }
 }
 
 function saveAds() {
