@@ -809,7 +809,7 @@ async function addAdPreview() {
     alert("Advertisement added.");
   }
 
-  saveAds();
+  await saveAds();
   renderAdPreviews();
   clearAdForm();
 }
