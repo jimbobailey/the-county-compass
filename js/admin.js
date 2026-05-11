@@ -157,8 +157,33 @@ async function saveEvents() {
   }
 }
 
-function saveAds() {
-  localStorage.setItem("countyCompassAds", JSON.stringify(ads));
+async function saveAds() {
+
+  localStorage.setItem(
+    "countyCompassAds",
+    JSON.stringify(ads)
+  );
+
+  try {
+
+    await fetch(
+      "/.netlify/functions/ads",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(ads)
+      }
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Ad sync failed:",
+      error
+    );
+  }
 }
 
 function getCategoryImage(category) {
