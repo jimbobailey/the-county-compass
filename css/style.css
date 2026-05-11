@@ -645,3 +645,17 @@ body {
 .load-more-wrap button:hover {
   background: #ffaa33;
 }
+.featured-heading-wrap{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:10px 0 20px;
+}
+
+.featured-heading-img{
+    width:320px;
+    max-width:80%;
+    height:auto;
+    display:block;
+}
