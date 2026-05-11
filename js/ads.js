@@ -1,7 +1,47 @@
-const countyCompassAds =
-  JSON.parse(localStorage.getItem("countyCompassAds")) || [];
+let countyCompassAds = [];
+
+async function loadAdsFromServer() {
+
+  try {
+
+    const response =
+      await fetch("/.netlify/functions/ads");
+
+    const data =
+      await response.json();
+
+    if (Array.isArray(data)) {
+
+      countyCompassAds = data;
+
+      localStorage.setItem(
+        "countyCompassAds",
+        JSON.stringify(data)
+      );
+
+    } else {
+
+      countyCompassAds =
+        JSON.parse(
+          localStorage.getItem("countyCompassAds")
+        ) || [];
+    }
+
+  } catch (error) {
+
+    console.error(error);
+
+    countyCompassAds =
+      JSON.parse(
+        localStorage.getItem("countyCompassAds")
+      ) || [];
+  }
+
+  renderAllAds();
+}
 
 function makeAdUrl(link) {
+
   if (!link || link.trim() === "") {
     return "#";
   }
@@ -17,6 +57,7 @@ function makeAdUrl(link) {
 }
 
 function renderAdContainer(containerId, locationName) {
+
   const container =
     document.getElementById(containerId);
 
@@ -26,6 +67,7 @@ function renderAdContainer(containerId, locationName) {
 
   const adsToShow =
     countyCompassAds.filter(function(ad) {
+
       return (
         ad.location === locationName &&
         ad.active === "Yes"
@@ -39,6 +81,7 @@ function renderAdContainer(containerId, locationName) {
   }
 
   adsToShow.forEach(function(ad) {
+
     const shape =
       ad.shape
         ? ad.shape.toLowerCase()
@@ -59,15 +102,42 @@ function renderAdContainer(containerId, locationName) {
     const adImage =
       document.createElement("img");
 
-    adImage.src = ad.image;
-    adImage.alt = ad.title || "Advertisement";
-    adImage.className = "site-ad-image";
+    adImage.src =
+      ad.image.replace(/\\/g, "/");
+
+    adImage.alt =
+      ad.title || "Advertisement";
+
+    adImage.className =
+      "site-ad-image";
 
     adAnchor.appendChild(adImage);
+
     container.appendChild(adAnchor);
   });
 }
 
-renderAdContainer("businessesAds", "businesses");
-renderAdContainer("couponsAds", "coupons");
-renderAdContainer("eventsAds", "events");
+function renderAllAds() {
+
+  renderAdContainer(
+    "homepageAds",
+    "homepage"
+  );
+
+  renderAdContainer(
+    "businessesAds",
+    "businesses"
+  );
+
+  renderAdContainer(
+    "couponsAds",
+    "coupons"
+  );
+
+  renderAdContainer(
+    "eventsAds",
+    "events"
+  );
+}
+
+loadAdsFromServer();

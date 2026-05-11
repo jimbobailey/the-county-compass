@@ -4,6 +4,7 @@ const STORE_NAME = "county-compass-data";
 const DATA_KEY = "ads";
 
 exports.default = async function handler(request) {
+
   const headers = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
@@ -12,31 +13,47 @@ exports.default = async function handler(request) {
   };
 
   if (request.method === "OPTIONS") {
+
     return new Response("", {
       status: 200,
       headers
     });
   }
 
-  const store = getStore(STORE_NAME);
+  const store =
+    getStore(STORE_NAME);
 
   if (request.method === "GET") {
-    const savedData = await store.get(DATA_KEY, { type: "json" });
 
-    return new Response(JSON.stringify(savedData || []), {
-      status: 200,
-      headers
-    });
+    const savedData =
+      await store.get(DATA_KEY, {
+        type: "json"
+      });
+
+    return new Response(
+      JSON.stringify(savedData || []),
+      {
+        status: 200,
+        headers
+      }
+    );
   }
 
   if (request.method === "POST") {
+
     let incomingData = [];
 
     try {
-      incomingData = await request.json();
+
+      incomingData =
+        await request.json();
+
     } catch (error) {
+
       return new Response(
-        JSON.stringify({ error: "Invalid JSON data." }),
+        JSON.stringify({
+          error: "Invalid JSON data."
+        }),
         {
           status: 400,
           headers
@@ -45,8 +62,11 @@ exports.default = async function handler(request) {
     }
 
     if (!Array.isArray(incomingData)) {
+
       return new Response(
-        JSON.stringify({ error: "Ad data must be an array." }),
+        JSON.stringify({
+          error: "Ad data must be an array."
+        }),
         {
           status: 400,
           headers
@@ -54,7 +74,10 @@ exports.default = async function handler(request) {
       );
     }
 
-    await store.setJSON(DATA_KEY, incomingData);
+    await store.setJSON(
+      DATA_KEY,
+      incomingData
+    );
 
     return new Response(
       JSON.stringify({
@@ -69,7 +92,9 @@ exports.default = async function handler(request) {
   }
 
   return new Response(
-    JSON.stringify({ error: "Method not allowed." }),
+    JSON.stringify({
+      error: "Method not allowed."
+    }),
     {
       status: 405,
       headers
