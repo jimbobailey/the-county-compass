@@ -1,15 +1,55 @@
-const savedEvents =
-  JSON.parse(localStorage.getItem("countyCompassEvents")) || [];
+let savedEvents = [];
 
 const eventList =
   document.getElementById("eventList");
 
 let visibleEventCount = 12;
 
-/* SORT EVENTS BY EVENT DATE + TIME */
+async function loadEventsFromServer() {
 
-const sortedUpcomingEvents =
-  savedEvents
+  try {
+
+    const response =
+      await fetch("/.netlify/functions/events");
+
+    const data =
+      await response.json();
+
+    if (Array.isArray(data)) {
+
+      savedEvents = data;
+
+      localStorage.setItem(
+        "countyCompassEvents",
+        JSON.stringify(data)
+      );
+
+    } else {
+
+      savedEvents =
+        JSON.parse(
+          localStorage.getItem("countyCompassEvents")
+        ) || [];
+    }
+
+  } catch (error) {
+
+    console.error(error);
+
+    savedEvents =
+      JSON.parse(
+        localStorage.getItem("countyCompassEvents")
+      ) || [];
+  }
+
+  renderEvents(
+    getSortedUpcomingEvents()
+  );
+}
+
+function getSortedUpcomingEvents() {
+
+  return savedEvents
     .filter(function(event) {
 
       if (!event.date) {
@@ -41,8 +81,7 @@ const sortedUpcomingEvents =
 
       return aDate - bDate;
     });
-
-renderEvents(sortedUpcomingEvents);
+}
 
 function getEventFallbackImage() {
 
@@ -149,5 +188,9 @@ function loadMoreEvents() {
 
   visibleEventCount += 12;
 
-  renderEvents(sortedUpcomingEvents);
+  renderEvents(
+    getSortedUpcomingEvents()
+  );
 }
+
+loadEventsFromServer();
