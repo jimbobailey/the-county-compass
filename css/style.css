@@ -79,7 +79,7 @@ body {
   overflow: hidden;
   border-bottom: 2px solid #ff8c00;
   background-size: cover;
-  background-position: top center;
+  background-position: center 35%;
   background-repeat: no-repeat;
 }
 
