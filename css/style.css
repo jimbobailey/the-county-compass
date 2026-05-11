@@ -699,3 +699,28 @@ body {
     height:auto;
     border-radius:14px;
 }
+/* Stronger separation between featured ads and coupons */
+
+#couponsAds{
+    border-bottom:2px solid rgba(0, 200, 255, 0.35);
+    padding-bottom:35px;
+    margin-bottom:45px;
+    position:relative;
+}
+
+#couponsAds::after{
+    content:"";
+    position:absolute;
+    bottom:-2px;
+    left:50%;
+    transform:translateX(-50%);
+    width:180px;
+    height:3px;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        #00d9ff,
+        transparent
+    );
+    border-radius:999px;
+}
