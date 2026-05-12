@@ -75,21 +75,20 @@ body {
   background-color: #111;
   aspect-ratio: 1920 / 700;
 }
+
 .page-banner {
   width: 100%;
-  height: 530px;
-  overflow: hidden;
   border-bottom: 2px solid #ff8c00;
   background: #111;
+  line-height: 0;
 }
 
 .page-banner-img {
   width: 100%;
-  height: 100%;
+  height: auto;
   display: block;
-  object-fit: cover;
-  object-position: center;
 }
+
 .businesses-banner {
   background-image:
     linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.25)),
@@ -415,161 +414,18 @@ body {
   font-size: 18px;
 }
 
-.admin-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 24px;
-}
-
-.admin-card {
-  background: #1e1e1e;
-  border: 2px solid #333;
-  border-radius: 14px;
-  padding: 24px;
-}
-
-.admin-card h2 {
-  color: #ff8c00;
-  margin-top: 0;
-}
-
-.admin-card input,
-.admin-card textarea,
-.admin-card select {
-  width: 100%;
-  margin-bottom: 14px;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  background: #2b2b2b;
-  color: #fff;
-  font-size: 15px;
-}
-
-.admin-card textarea {
-  min-height: 110px;
-  resize: none;
-}
-
-.admin-card button {
-  background: #ff8c00;
-  color: #000;
-  border: none;
-  padding: 12px 18px;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.edit-button {
-  background: #444 !important;
-  color: #fff !important;
-}
-
-.delete-button {
-  background: #b00020 !important;
-  color: #fff !important;
-}
-
-.admin-preview-section {
-  margin-top: 40px;
-}
-
-.admin-preview-section h2 {
-  color: #ff8c00;
-}
-
-.image-upload-label {
-  display: block;
-  margin-top: 12px;
-  margin-bottom: 8px;
-  color: #ff8c00;
-  font-weight: bold;
-}
-
-
-
-/* ADMIN LAYOUT FIX */
-#adminLogin {
-  max-width: 760px;
-  margin: 0 auto;
-}
-
-#adminContent .page-section {
-  max-width: 1500px;
-  margin: 0 auto;
-}
-
-.admin-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 24px;
-  align-items: start;
-}
-
-.admin-card {
-  background: #1e1e1e;
-  border: 2px solid #333;
-  border-radius: 14px;
-  padding: 24px;
-}
-
-.admin-card input,
-.admin-card textarea,
-.admin-card select,
-#adminBusinessSearch {
-  width: 100%;
-  display: block;
-  margin-bottom: 14px;
-  padding: 12px;
-  border: 1px solid #444;
-  border-radius: 8px;
-  background: #2b2b2b;
-  color: #fff;
-  font-size: 15px;
-}
-
-.admin-card textarea {
-  min-height: 110px;
-  resize: vertical;
-}
-
-.admin-card button,
-#adminLogin button {
-  display: inline-block;
-  background: #ff8c00;
-  color: #000;
-  border: none;
-  padding: 12px 18px;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.admin-preview-section {
-  margin-top: 42px;
-}
-
-.admin-preview-section > h2 {
-  color: #ff8c00;
-}
-
-.image-upload-label {
-  display: block;
-  margin: 12px 0 8px;
-  color: #ff8c00;
-  font-weight: bold;
-}
-
 @media (max-width: 1100px) {
+
   .business-grid,
   .coupon-grid,
   .ad-preview-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
 }
 
 @media (max-width: 768px) {
+
   .site-header {
     flex-direction: column;
     align-items: flex-start;
@@ -577,18 +433,15 @@ body {
 
   .main-nav {
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
   }
 
   .main-nav a {
-    flex: 1;
+    flex: 1 1 calc(50% - 12px);
     text-align: center;
   }
-
-  .-section {
-    height: 360px;
-  }
-
-  
 
   .section-title,
   .page-section h1 {
@@ -604,6 +457,30 @@ body {
     height: 52px;
   }
 
+  .hero-section {
+    height: auto;
+    aspect-ratio: 1920 / 700;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #111;
+  }
+
+  .page-banner {
+    width: 100%;
+    height: auto;
+    border-bottom: 2px solid #ff8c00;
+    background: #111;
+    line-height: 0;
+  }
+
+  .page-banner-img,
+  .page-banner img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
   .business-grid,
   .coupon-grid,
   .ad-preview-grid {
@@ -615,29 +492,7 @@ body {
   #couponsAds,
   #eventsAds {
     flex-direction: column;
-    align-items: center;.page-banner {
-  width: 100%;
-  border-bottom: 2px solid #ff8c00;
-  background: #111;
-  line-height: 0;
-}
-
-.page-banner-img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
+    align-items: center;
   }
-}
-.page-banner {
-  width: 100%;
-  border-bottom: 2px solid #ff8c00;
-  background: #111;
-  line-height: 0;
-}
 
-.page-banner-img {
-  width: 100%;
-  height: auto;
-  display: block;
 }
