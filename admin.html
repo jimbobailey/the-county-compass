@@ -430,72 +430,75 @@
       document.getElementById("adminContent").style.display = "block";
     }
 
-    <script>
-  function makeSafeFileName(fileName, imageType) {
-    const extension =
-      fileName.split(".").pop().toLowerCase();
+    function makeSafeFileName(fileName, imageType) {
+      const extension =
+        fileName
+          .split(".")
+          .pop()
+          .toLowerCase();
 
-    const baseName =
-      fileName
-        .replace(/\.[^/.]+$/, "")
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "");
+      const baseName =
+        fileName
+          .replace(/\.[^/.]+$/, "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
 
-    return imageType + "-" + baseName + "." + extension;
-  }
-
-  function handleImageUpload(event, pathInputId, previewId, folderPath, imageType) {
-    const file =
-      event.target.files[0];
-
-    if (!file) {
-      return;
+      return imageType + "-" + baseName + "." + extension;
     }
 
-    const correctedFileName =
-      makeSafeFileName(file.name, imageType);
+    function handleImageUpload(event, pathInputId, previewId, folderPath, imageType) {
+      const file =
+        event.target.files[0];
 
-    const savedPath =
-      folderPath + correctedFileName;
+      if (!file) {
+        return;
+      }
 
-    const reader =
-      new FileReader();
+      const correctedFileName =
+        makeSafeFileName(file.name, imageType);
 
-    reader.onload = function(loadEvent) {
-      document.getElementById(pathInputId).value =
-        savedPath;
+      const savedPath =
+        folderPath + correctedFileName;
 
-      const preview =
-        document.getElementById(previewId);
+      const reader =
+        new FileReader();
 
-      preview.src =
-        loadEvent.target.result;
+      reader.onload = function(loadEvent) {
+        const pathInput =
+          document.getElementById(pathInputId);
 
-      preview.style.display =
-        "block";
+        if (pathInput) {
+          pathInput.value = savedPath;
+        }
 
-      const downloadLink =
-        document.createElement("a");
+        const preview =
+          document.getElementById(previewId);
 
-      downloadLink.href =
-        loadEvent.target.result;
+        if (preview) {
+          preview.src = loadEvent.target.result;
+          preview.style.display = "block";
+        }
 
-      downloadLink.download =
-        correctedFileName;
+        const downloadLink =
+          document.createElement("a");
 
-      downloadLink.click();
+        downloadLink.href = loadEvent.target.result;
+        downloadLink.download = correctedFileName;
 
-      alert(
-        "Image downloaded.\n\nSave it in: " +
-        folderPath +
-        "\n\nThe image path has been filled in automatically."
-      );
-    };
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
 
-    reader.readAsDataURL(file);
-  }
-</script>
+        alert(
+          "Image downloaded. Save it in: " +
+          folderPath +
+          "\n\nThe image path has been filled in automatically."
+        );
+      };
+
+      reader.readAsDataURL(file);
+    }
 
     function exportCountyCompassBackup() {
       const backupData = {
