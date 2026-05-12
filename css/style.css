@@ -92,35 +92,6 @@ body {
   object-fit: cover;
 }
 
-.businesses-banner {
-  background-image:
-    linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.25)),
-    url("../images/site/businesses-banner.png");
-}
-
-.coupons-banner {
-  background-image:
-    linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.25)),
-    url("../images/site/coupons-banner.png");
-}
-
-.events-banner {
-  background-image:
-    linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.25)),
-    url("../images/site/events.png");
-}
-
-.advertise-banner {
-  background-image:
-    linear-gradient(rgba(0,0,0,0.18), rgba(0,0,0,0.28)),
-    url("../images/site/advertise-banner.png");
-}
-
-.page-section,
-.home-section {
-  padding: 34px 24px 60px;
-}
-
 .section-title,
 .page-section h1 {
   position: relative;
