@@ -31,8 +31,8 @@ body {
 }
 
 .site-logo {
-  width: 62px;
-  height: 62px;
+  width: 52px;
+  height: 52px;
   object-fit: contain;
   display: block;
 }
@@ -64,32 +64,32 @@ body {
 }
 
 .hero-section {
-  height: 700px;
+  width: 100%;
+  height: 560px;
+  border-bottom: 2px solid #ff8c00;
   background:
     linear-gradient(rgba(0,0,0,0.12), rgba(0,0,0,0.22)),
     url("../images/site/county-compass-hero.png");
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  border-bottom: 2px solid #ff8c00;
-  display: flex;
-  align-items: flex-end;
+  background-color: #111;
 }
 
 .page-banner {
   width: 100%;
-  height: 530px;
-  overflow: hidden;
+  height: 560px;
   border-bottom: 2px solid #ff8c00;
-  background-size: cover;
-  background-position: center center;
+  background-size: contain;
+  background-position: center;
   background-repeat: no-repeat;
+  background-color: #111;
 }
 
 .businesses-banner {
   background-image:
     linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.25)),
-    url("../images/site/businesses-banner.jpg");
+    url("../images/site/businesses-banner.png");
 }
 
 .coupons-banner {
@@ -98,16 +98,16 @@ body {
     url("../images/site/coupons-banner.png");
 }
 
-.advertise-banner {
-  background-image:
-    linear-gradient(rgba(0,0,0,0.18), rgba(0,0,0,0.28)),
-    url("../images/site/advertise-banner.png");
-}
-
 .events-banner {
   background-image:
     linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.25)),
     url("../images/site/events.png");
+}
+
+.advertise-banner {
+  background-image:
+    linear-gradient(rgba(0,0,0,0.18), rgba(0,0,0,0.28)),
+    url("../images/site/advertise-banner.png");
 }
 
 .page-section,
@@ -405,6 +405,84 @@ body {
   background: #ffaa33;
 }
 
+.empty-message {
+  text-align: center;
+  color: #ccc;
+  font-size: 18px;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.admin-card {
+  background: #1e1e1e;
+  border: 2px solid #333;
+  border-radius: 14px;
+  padding: 24px;
+}
+
+.admin-card h2 {
+  color: #ff8c00;
+  margin-top: 0;
+}
+
+.admin-card input,
+.admin-card textarea,
+.admin-card select {
+  width: 100%;
+  margin-bottom: 14px;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #2b2b2b;
+  color: #fff;
+  font-size: 15px;
+}
+
+.admin-card textarea {
+  min-height: 110px;
+  resize: none;
+}
+
+.admin-card button {
+  background: #ff8c00;
+  color: #000;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.edit-button {
+  background: #444 !important;
+  color: #fff !important;
+}
+
+.delete-button {
+  background: #b00020 !important;
+  color: #fff !important;
+}
+
+.admin-preview-section {
+  margin-top: 40px;
+}
+
+.admin-preview-section h2 {
+  color: #ff8c00;
+}
+
+.image-upload-label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 8px;
+  color: #ff8c00;
+  font-weight: bold;
+}
+
 @media (max-width: 1100px) {
   .business-grid,
   .coupon-grid,
@@ -414,7 +492,6 @@ body {
 }
 
 @media (max-width: 768px) {
-
   .site-header {
     flex-direction: column;
     align-items: flex-start;
@@ -429,6 +506,11 @@ body {
     text-align: center;
   }
 
+  .hero-section,
+  .page-banner {
+    height: 360px;
+  }
+
   .section-title,
   .page-section h1 {
     font-size: 32px;
@@ -438,12 +520,10 @@ body {
     font-size: 24px;
   }
 
-.site-logo {
+  .site-logo {
     width: 52px;
     height: 52px;
-    object-fit: contain;
-    display: block;
-}
+  }
 
   .business-grid,
   .coupon-grid,
