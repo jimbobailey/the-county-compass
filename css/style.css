@@ -75,15 +75,12 @@ body {
 
 .page-banner {
   width: 100%;
-  background: #111;
-  border-bottom: 2px solid #ff8c00;
+  height: 530px;
   overflow: hidden;
-}
-
-.page-banner-img {
-  width: 100%;
-  height: auto;
-  display: block;
+  border-bottom: 2px solid #ff8c00;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .businesses-banner {
