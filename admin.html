@@ -430,122 +430,72 @@
       document.getElementById("adminContent").style.display = "block";
     }
 
-    function makeSafeFileName(fileName, imageType) {
-      const extension =
-        fileName.split(".").pop().toLowerCase();
+    <script>
+  function makeSafeFileName(fileName, imageType) {
+    const extension =
+      fileName.split(".").pop().toLowerCase();
 
-      const baseName =
-        fileName
-          .replace(/\.[^/.]+$/, "")
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-+|-+$/g, "");
+    const baseName =
+      fileName
+        .replace(/\.[^/.]+$/, "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
 
-      return imageType + "-" + baseName + "-1254x1254.jpg";
+    return imageType + "-" + baseName + "." + extension;
+  }
+
+  function handleImageUpload(event, pathInputId, previewId, folderPath, imageType) {
+    const file =
+      event.target.files[0];
+
+    if (!file) {
+      return;
     }
 
-    function handleImageUpload(event, pathInputId, previewId, folderPath, imageType) {
-      const file =
-        event.target.files[0];
+    const correctedFileName =
+      makeSafeFileName(file.name, imageType);
 
-      if (!file) {
-        return;
-      }
+    const savedPath =
+      folderPath + correctedFileName;
 
-      const correctedFileName =
-        makeSafeFileName(file.name, imageType);
+    const reader =
+      new FileReader();
 
-      const savedPath =
-        folderPath + correctedFileName;
+    reader.onload = function(loadEvent) {
+      document.getElementById(pathInputId).value =
+        savedPath;
 
-      const image =
-        new Image();
+      const preview =
+        document.getElementById(previewId);
 
-      const reader =
-        new FileReader();
+      preview.src =
+        loadEvent.target.result;
 
-      reader.onload = function(loadEvent) {
-        image.onload = function() {
-          const canvas =
-            document.createElement("canvas");
+      preview.style.display =
+        "block";
 
-          const size =
-            1254;
+      const downloadLink =
+        document.createElement("a");
 
-          canvas.width = size;
-          canvas.height = size;
+      downloadLink.href =
+        loadEvent.target.result;
 
-          const context =
-            canvas.getContext("2d");
+      downloadLink.download =
+        correctedFileName;
 
-          context.fillStyle = "#111111";
-          context.fillRect(0, 0, size, size);
+      downloadLink.click();
 
-          const scale =
-            Math.min(
-              size / image.width,
-              size / image.height
-            );
+      alert(
+        "Image downloaded.\n\nSave it in: " +
+        folderPath +
+        "\n\nThe image path has been filled in automatically."
+      );
+    };
 
-          const drawWidth =
-            image.width * scale;
-
-          const drawHeight =
-            image.height * scale;
-
-          const x =
-            (size - drawWidth) / 2;
-
-          const y =
-            (size - drawHeight) / 2;
-
-          context.drawImage(
-            image,
-            x,
-            y,
-            drawWidth,
-            drawHeight
-          );
-
-          const correctedDataUrl =
-            canvas.toDataURL("image/jpeg", 0.92);
-
-          document.getElementById(pathInputId).value =
-            savedPath;
-
-          const preview =
-            document.getElementById(previewId);
-
-          preview.src =
-            correctedDataUrl;
-
-          preview.style.display =
-            "block";
-
-          const downloadLink =
-            document.createElement("a");
-
-          downloadLink.href =
-            correctedDataUrl;
-
-          downloadLink.download =
-            correctedFileName;
-
-          downloadLink.click();
-
-          alert(
-            "Corrected 1254 x 1254 image downloaded. Save it in: " +
-            folderPath +
-            "\n\nThe image path has been filled in automatically."
-          );
-        };
-
-        image.src =
-          loadEvent.target.result;
-      };
-
-      reader.readAsDataURL(file);
-    }
+    reader.readAsDataURL(file);
+  }
+</script>
 
     function exportCountyCompassBackup() {
       const backupData = {
