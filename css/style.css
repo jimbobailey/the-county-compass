@@ -1,456 +1,317 @@
-* {
-  box-sizing: border-box;
+*{
+  box-sizing:border-box;
 }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #111;
-  color: #f5f5f5;
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#0f0f0f;
+  color:#ffffff;
 }
 
-.site-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-  background: #111;
-  border-bottom: 3px solid #ff8c00;
-  padding: 14px 24px;
+img{
+  max-width:100%;
+  display:block;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  color: #ff8c00;
-  font-size: 30px;
-  font-weight: bold;
-  letter-spacing: 1px;
+.site-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 28px;
+  background:#000;
+  border-bottom:2px solid #ff8c00;
 }
 
-.site-logo {
-  width: 62px;
-  height: 62px;
-  object-fit: contain;
-  display: block;
+.logo{
+  display:flex;
+  align-items:center;
+  gap:14px;
 }
 
-.logo-text span {
-  color: #ff8c00;
-  font-size: 30px;
-  font-weight: bold;
+.site-logo{
+  width:46px;
+  height:46px;
+  object-fit:contain;
 }
 
-.main-nav {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
+.logo-text span{
+  color:#ff8c00;
+  font-size:26px;
+  font-weight:700;
 }
 
-.main-nav a {
-  color: #f5f5f5;
-  text-decoration: none;
-  background: #2a2a2a;
-  padding: 12px 18px;
-  border-radius: 10px;
-  font-weight: bold;
+.main-nav{
+  display:flex;
+  gap:12px;
 }
 
-.main-nav a:hover {
-  background: #ff8c00;
-  color: #000;
+.main-nav a{
+  text-decoration:none;
+  color:#fff;
+  background:#222;
+  padding:12px 18px;
+  border-radius:10px;
+  font-weight:700;
 }
 
-.hero-section {
-  height: 700px;
-  background:
-    linear-gradient(rgba(0,0,0,0.12), rgba(0,0,0,0.22)),
-    url("../images/site/county-compass-hero.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+.main-nav a:hover{
+  background:#ff8c00;
+  color:#000;
 }
 
-.page-banner {
-  width: 100%;
-  height: 530px;
-  overflow: hidden;
-  border-bottom: 2px solid #ff8c00;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+.hero-section{
+  width:100%;
+  height:700px;
+  background-image:url("../images/site/county-compass-hero.jpg");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  border-bottom:2px solid #ff8c00;
 }
 
-.businesses-banner {
-  background-image:
-    linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.25)),
-    url("../images/site/businesses-banner.jpg");
+.page-banner{
+  width:100%;
+  height:530px;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  border-bottom:2px solid #ff8c00;
 }
 
-.coupons-banner {
-  background-image:
-    linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.25)),
-    url("../images/site/coupons-banner.jpg");
+.businesses-banner{
+  background-image:url("../images/site/businesses-banner.jpg");
 }
 
-.advertise-banner {
-  background-image:
-    linear-gradient(rgba(0,0,0,0.18), rgba(0,0,0,0.28)),
-    url("../images/site/advertise-banner.jpg");
+.coupons-banner{
+  background-image:url("../images/site/coupons-banner.jpg");
 }
 
-.events-banner {
-  background-image:
-    linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.25)),
-    url("../images/site/events.jpg");
+.events-banner{
+  background-image:url("../images/site/events.jpg");
 }
 
-.page-section,
-.home-section {
-  padding: 34px 24px 60px;
+.advertise-banner{
+  background-image:url("../images/site/advertise-banner.jpg");
 }
 
-.section-title,
-.page-section h1 {
-  position: relative;
-  color: #ff8c00;
-  font-size: 42px;
-  margin-bottom: 40px;
-  text-align: center;
+.page-section{
+  padding:40px 24px 60px;
 }
 
-.section-title::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: -14px;
-  width: 140px;
-  height: 3px;
-  border-radius: 999px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    #00d9ff,
-    #ff9800,
-    transparent
-  );
+.section-title{
+  text-align:center;
+  color:#ff8c00;
+  font-size:52px;
+  margin:0 0 40px;
+  font-weight:800;
 }
 
-.page-intro {
-  font-size: 18px;
-  color: #ddd;
-  margin-bottom: 30px;
+.page-intro{
+  text-align:center;
+  color:#ddd;
+  font-size:18px;
+  margin-bottom:35px;
+}
+
+.search-box{
+  display:flex;
+  gap:16px;
+  margin-bottom:30px;
+  flex-wrap:wrap;
+}
+
+.search-box input,
+.search-box select{
+  flex:1;
+  min-width:240px;
+  background:#1f1f1f;
+  border:1px solid #444;
+  color:#fff;
+  padding:14px;
+  border-radius:10px;
+  font-size:16px;
+}
+
+.business-grid,
+.coupon-grid,
+.ad-preview-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:28px;
+}
+
+.business-card,
+.coupon-card,
+.ad-preview-card{
+  background:#181818;
+  border:1px solid #333;
+  border-radius:18px;
+  overflow:hidden;
+  padding:18px;
+}
+
+.business-card-image,
+.ad-preview-image{
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  border-radius:14px;
+  margin-bottom:16px;
+}
+
+.business-card h2,
+.coupon-card h2{
+  color:#ff8c00;
+  margin-top:0;
+}
+
+.business-description{
+  color:#ddd;
+  line-height:1.5;
+}
+
+.business-card a,
+.coupon-card a,
+.business-card button,
+.coupon-card button,
+.ad-preview-card button,
+.load-more-wrap button{
+  display:inline-block;
+  margin-top:12px;
+  padding:12px 16px;
+  border:none;
+  border-radius:10px;
+  background:#ff8c00;
+  color:#000;
+  font-weight:700;
+  text-decoration:none;
+  cursor:pointer;
+}
+
+.business-card a:hover,
+.coupon-card a:hover,
+.business-card button:hover,
+.coupon-card button:hover,
+.ad-preview-card button:hover,
+.load-more-wrap button:hover{
+  background:#ffad33;
 }
 
 #homepageAds,
 #businessesAds,
 #couponsAds,
-#eventsAds {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 14px;
-  margin: 30px 0 45px;
-  padding-bottom: 35px;
-  border-bottom: 2px solid rgba(0, 200, 255, 0.35);
-  position: relative;
+#eventsAds{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:18px;
+  margin:20px 0 50px;
 }
 
-#homepageAds::after,
-#businessesAds::after,
-#couponsAds::after,
-#eventsAds::after {
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 180px;
-  height: 3px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    #00d9ff,
-    transparent
-  );
-  border-radius: 999px;
+.site-ad{
+  width:220px;
+  border-radius:16px;
+  overflow:hidden;
+  border:1px solid #333;
 }
 
-.site-ad {
-  display: block;
-  width: 220px;
-  max-width: 220px;
-  overflow: hidden;
-  border-radius: 18px;
-  border: 2px solid #3a3a3a;
-  background: #111;
-  text-decoration: none;
-  box-shadow: 0 8px 22px rgba(0,0,0,0.45);
+.site-ad-image{
+  width:100%;
+  height:auto;
+  object-fit:cover;
 }
 
-.site-ad-image {
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  object-position: center;
-  background: #111;
-  border-radius: 14px;
+.featured-heading-wrap{
+  display:flex;
+  justify-content:center;
+  margin:30px 0;
 }
 
-.ad-preview-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 28px;
-  align-items: start;
-  justify-items: center;
+.featured-heading-img{
+  width:620px;
+  max-width:90%;
 }
 
-.ad-preview-card {
-  width: 100%;
-  max-width: 340px;
-  background: #1e1e1e;
-  border: 2px solid #333;
-  border-radius: 16px;
-  padding: 16px;
+.load-more-wrap{
+  display:flex;
+  justify-content:center;
+  margin-top:24px;
 }
 
-.ad-preview-card a {
-  display: block;
-  width: 100%;
-  overflow: hidden;
-  border-radius: 14px;
-  border: 2px solid #3a3a3a;
-  background: #111;
+.empty-message{
+  text-align:center;
+  color:#bbb;
+  font-size:20px;
 }
 
-.ad-preview-image {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
+form{
+  width:100%;
 }
 
-.ad-preview-card.ad-banner {
-  grid-column: 1 / -1;
-  max-width: 1100px;
+input,
+textarea,
+select{
+  background:#1f1f1f;
+  color:#fff;
+  border:1px solid #444;
+  border-radius:8px;
+  padding:12px;
 }
 
-.ad-preview-card.ad-banner a {
-  aspect-ratio: 16 / 5;
+textarea{
+  min-height:120px;
+  resize:vertical;
 }
 
-.ad-preview-card.ad-square a {
-  aspect-ratio: 1 / 1;
+.admin-form-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;
+  margin-bottom:18px;
 }
 
-.ad-preview-card.ad-tall {
-  max-width: 320px;
-}
+@media(max-width:768px){
 
-.ad-preview-card.ad-tall a {
-  aspect-ratio: 3 / 4;
-}
-
-.business-grid,
-.coupon-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px;
-  align-items: stretch;
-}
-
-.business-card,
-.coupon-card {
-  width: 100%;
-  max-width: 340px;
-  justify-self: center;
-  background: #1e1e1e;
-  border: 2px solid #333;
-  border-radius: 14px;
-  padding: 16px;
-  overflow: hidden;
-}
-
-.coupon-card {
-  border: 2px dashed #ff8c00;
-}
-
-.business-card:hover,
-.coupon-card:hover {
-  border-color: #ff8c00;
-}
-
-.business-card-image,
-.business-image-preview {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  height: auto;
-  object-fit: cover;
-  object-position: center;
-  background: #111111;
-  border-radius: 14px;
-  border: 2px solid #333;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.35);
-  margin: 0 auto 16px auto;
-}
-
-.business-card h2,
-.coupon-card h2 {
-  color: #ff8c00;
-  margin: 0 0 10px;
-  font-size: 22px;
-}
-
-.business-card p,
-.coupon-card p {
-  color: #ddd;
-  margin: 0 0 8px;
-  line-height: 1.45;
-}
-
-.business-description {
-  line-height: 1.45;
-  overflow: visible;
-  display: block;
-  margin-bottom: 14px;
-  word-break: break-word;
-  overflow-wrap: break-word;
-}
-
-.business-card a,
-.business-card button,
-.coupon-card a,
-.coupon-card button {
-  display: inline-block;
-  text-decoration: none;
-  background: #ff8c00;
-  color: #000;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-weight: bold;
-  margin-top: 8px;
-  margin-right: 8px;
-  border: none;
-  cursor: pointer;
-}
-
-.business-card a:hover,
-.business-card button:hover,
-.coupon-card a:hover,
-.coupon-card button:hover {
-  background: #ffaa33;
-}
-
-.search-box {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin-bottom: 34px;
-}
-
-.search-box input,
-.search-box select {
-  width: 100%;
-  max-width: 500px;
-  padding: 14px;
-  font-size: 16px;
-  border: none;
-  border-radius: 10px;
-  background: #2b2b2b;
-  color: #fff;
-}
-
-.featured-heading-wrap {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 10px 0 20px;
-}
-
-.featured-heading-img {
-  width: 640px;
-  max-width: 80%;
-  height: auto;
-  display: block;
-}
-
-.load-more-wrap {
-  grid-column: 1 / -1;
-  text-align: center;
-  margin-top: 18px;
-}
-
-.load-more-wrap button {
-  background: #ff8c00;
-  color: #000;
-  border: none;
-  padding: 14px 22px;
-  border-radius: 10px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.load-more-wrap button:hover {
-  background: #ffaa33;
-}
-
-@media (max-width: 1100px) {
-  .business-grid,
-  .coupon-grid,
-  .ad-preview-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 768px) {
-
-  .site-header {
-    flex-direction: column;
-    align-items: flex-start;
+  .site-header{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:18px;
   }
 
-  .main-nav {
-    width: 100%;
+  .main-nav{
+    flex-wrap:wrap;
+    width:100%;
   }
 
-  .main-nav a {
-    flex: 1;
-    text-align: center;
+  .main-nav a{
+    flex:1;
+    text-align:center;
   }
 
-  .section-title,
-  .page-section h1 {
-    font-size: 32px;
+  .hero-section{
+    height:420px;
   }
 
-  .logo-text span {
-    font-size: 24px;
+  .page-banner{
+    height:320px;
   }
 
-  .site-logo {
-    width: 52px;
-    height: 52px;
+  .section-title{
+    font-size:36px;
   }
 
   .business-grid,
   .coupon-grid,
-  .ad-preview-grid {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
+  .ad-preview-grid{
+    grid-template-columns:1fr;
   }
 
   #homepageAds,
   #businessesAds,
   #couponsAds,
-  #eventsAds {
-    flex-direction: column;
-    align-items: center;
+  #eventsAds{
+    flex-direction:column;
+    align-items:center;
   }
 }
