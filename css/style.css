@@ -470,6 +470,7 @@ body {
 
 .admin-preview-section h2 {
   color: #ff8c00;
+  margin-top: 0;
 }
 
 .image-upload-label {
@@ -535,15 +536,4 @@ body {
     flex-direction: column;
     align-items: center;
   }
-}
-.page-banner {
-  width: 100%;
-  border-bottom: 2px solid #ff8c00;
-  background: #111;
-}
-
-.page-banner-img {
-  width: 100%;
-  height: auto;
-  display: block;
 }
