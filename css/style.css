@@ -96,19 +96,19 @@ body {
 .coupons-banner {
   background-image:
     linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.25)),
-    url("../images/site/coupons-banner.jpg");
+    url("../images/site/coupons-banner.png");
 }
 
 .advertise-banner {
   background-image:
     linear-gradient(rgba(0,0,0,0.18), rgba(0,0,0,0.28)),
-    url("../images/site/advertise-banner.jpg");
+    url("../images/site/advertise-banner.png");
 }
 
 .events-banner {
   background-image:
     linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.25)),
-    url("../images/site/events.jpg");
+    url("../images/site/events.png");
 }
 
 .page-section,
