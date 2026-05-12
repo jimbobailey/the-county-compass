@@ -42,27 +42,11 @@
     </div>
 
     <nav class="main-nav">
-
-      <a href="index.html">
-        Home
-      </a>
-
-      <a href="businesses.html">
-        Businesses
-      </a>
-
-      <a href="coupons.html">
-        Coupons
-      </a>
-
-      <a href="events.html">
-        Events
-      </a>
-
-      <a href="advertise.html">
-        Advertise
-      </a>
-
+      <a href="index.html">Home</a>
+      <a href="businesses.html">Businesses</a>
+      <a href="coupons.html">Coupons</a>
+      <a href="events.html">Events</a>
+      <a href="advertise.html">Advertise</a>
     </nav>
 
   </header>
@@ -72,6 +56,12 @@
 
   <main class="page-section">
 
+    <h2 class="section-title">
+      Local Sponsors
+    </h2>
+
+    <div id="eventsAds"></div>
+
     <div class="featured-heading-wrap">
       <img
         src="images/site/featured.png"
@@ -80,22 +70,18 @@
       >
     </div>
 
-    <div id="eventsAds"></div>
+    <div
+      id="featuredBusinesses"
+      class="business-grid"
+    >
+    </div>
 
     <h2 class="section-title">
       Community Events
     </h2>
 
-    <p class="page-intro">
-      Discover local festivals, concerts,
-      church gatherings, school events,
-      sports, community activities,
-      and more happening throughout
-      Jackson County.
-    </p>
-
     <div
-      id="eventList"
+      id="eventsList"
       class="business-grid"
     >
     </div>
@@ -103,6 +89,7 @@
   </main>
 
   <script src="js/ads.js"></script>
+  <script src="js/site.js"></script>
   <script src="js/events.js"></script>
 
 </body>
