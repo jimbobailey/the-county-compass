@@ -586,9 +586,7 @@ body {
     height: 360px;
   }
 
-  .page-banner:empty {
-    height: 360px;
-  }
+  
 
   .section-title,
   .page-section h1 {
@@ -613,15 +611,27 @@ body {
   #homepageAds,
   #businessesAds,
   #couponsAds,
-  #eventsAds {hero
+  #eventsAds {
     flex-direction: column;
-    align-items: center;
+    align-items: center;.page-banner {
+  width: 100%;
+  border-bottom: 2px solid #ff8c00;
+  background: #111;
+  line-height: 0;
+}
+
+.page-banner-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
   }
 }
 .page-banner {
   width: 100%;
   border-bottom: 2px solid #ff8c00;
   background: #111;
+  line-height: 0;
 }
 
 .page-banner-img {
