@@ -90,8 +90,6 @@ body {
   background-image:
     linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.25)),
     url("../images/site/businesses-banner.jpg");
-
-  background-position: center 35%;
 }
 
 .coupons-banner {
