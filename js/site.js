@@ -1,10 +1,7 @@
 console.log("The County Compass Loaded");
 
-const savedBusinesses =
-  JSON.parse(localStorage.getItem("countyCompassBusinesses")) || [];
-
-const savedAds =
-  JSON.parse(localStorage.getItem("countyCompassAds")) || [];
+let savedBusinesses = [];
+let savedAds = [];
 
 const featuredContainer =
   document.getElementById("featuredBusinesses");
@@ -26,10 +23,97 @@ const categoryImages = {
   "Other": "images/categories/professional-services.jpg"
 };
 
-renderHomepageAds();
-renderFeaturedBusinesses();
+loadHomepageData();
+
+async function loadHomepageData() {
+
+  await Promise.all([
+    loadBusinessesFromServer(),
+    loadAdsFromServer()
+  ]);
+
+  renderHomepageAds();
+  renderFeaturedBusinesses();
+}
+
+async function loadBusinessesFromServer() {
+
+  try {
+
+    const response =
+      await fetch("/.netlify/functions/businesses");
+
+    const data =
+      await response.json();
+
+    if (Array.isArray(data)) {
+
+      savedBusinesses = data;
+
+      localStorage.setItem(
+        "countyCompassBusinesses",
+        JSON.stringify(data)
+      );
+
+    } else {
+
+      savedBusinesses =
+        JSON.parse(
+          localStorage.getItem("countyCompassBusinesses")
+        ) || [];
+    }
+
+  } catch (error) {
+
+    console.error(error);
+
+    savedBusinesses =
+      JSON.parse(
+        localStorage.getItem("countyCompassBusinesses")
+      ) || [];
+  }
+}
+
+async function loadAdsFromServer() {
+
+  try {
+
+    const response =
+      await fetch("/.netlify/functions/ads");
+
+    const data =
+      await response.json();
+
+    if (Array.isArray(data)) {
+
+      savedAds = data;
+
+      localStorage.setItem(
+        "countyCompassAds",
+        JSON.stringify(data)
+      );
+
+    } else {
+
+      savedAds =
+        JSON.parse(
+          localStorage.getItem("countyCompassAds")
+        ) || [];
+    }
+
+  } catch (error) {
+
+    console.error(error);
+
+    savedAds =
+      JSON.parse(
+        localStorage.getItem("countyCompassAds")
+      ) || [];
+  }
+}
 
 function getCategoryImage(category) {
+
   return (
     categoryImages[category] ||
     "images/categories/professional-services.jpg"
@@ -37,14 +121,21 @@ function getCategoryImage(category) {
 }
 
 function getBusinessImage(business) {
-  if (business.image && business.image.trim() !== "") {
+
+  if (
+    business.image &&
+    business.image.trim() !== ""
+  ) {
     return business.image;
   }
 
-  return getCategoryImage(business.category);
+  return getCategoryImage(
+    business.category
+  );
 }
 
 function getGoodUrl(link) {
+
   if (!link || link.trim() === "") {
     return "#";
   }
@@ -60,12 +151,14 @@ function getGoodUrl(link) {
 }
 
 function renderHomepageAds() {
+
   if (!homepageAdsContainer) {
     return;
   }
 
   const homepageAds =
     savedAds.filter(function(ad) {
+
       return (
         ad.location === "homepage" &&
         ad.active === "Yes"
@@ -75,6 +168,7 @@ function renderHomepageAds() {
   homepageAdsContainer.innerHTML = "";
 
   homepageAds.forEach(function(ad) {
+
     const shapeClass =
       ad.shape
         ? "ad-" + ad.shape.toLowerCase()
@@ -101,21 +195,25 @@ function renderHomepageAds() {
 }
 
 function renderFeaturedBusinesses() {
+
   if (!featuredContainer) {
     return;
   }
 
   const featuredBusinesses =
     savedBusinesses.filter(function(business) {
+
       return business.featured === "Yes";
     });
 
   if (featuredBusinesses.length === 0) {
+
     featuredContainer.innerHTML = `
       <p class="empty-message">
         No featured businesses available yet.
       </p>
     `;
+
     return;
   }
 
@@ -124,9 +222,12 @@ function renderFeaturedBusinesses() {
   featuredBusinesses
     .slice(0, 6)
     .forEach(function(business) {
+
       const mapsLink =
         "https://www.google.com/maps/search/?api=1&query=" +
-        encodeURIComponent(business.address);
+        encodeURIComponent(
+          business.address
+        );
 
       const websiteButton =
         business.website
@@ -141,10 +242,13 @@ function renderFeaturedBusinesses() {
           : "";
 
       const fallbackImage =
-        getCategoryImage(business.category);
+        getCategoryImage(
+          business.category
+        );
 
       featuredContainer.innerHTML += `
         <article class="business-card">
+
           <img
             src="${getBusinessImage(business)}"
             alt="${business.category}"
@@ -173,6 +277,7 @@ function renderFeaturedBusinesses() {
           </a>
 
           ${websiteButton}
+
         </article>
       `;
     });
