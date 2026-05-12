@@ -75,12 +75,21 @@ body {
 
 .page-banner {
   width: 100%;
+  max-width: 1920px;
   height: 530px;
+  margin: 0 auto;
   overflow: hidden;
+  border-top: 2px solid #ff8c00;
   border-bottom: 2px solid #ff8c00;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: #000;
+}
+
+.page-banner img,
+.page-banner-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
 }
 
 .businesses-banner {
