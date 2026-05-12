@@ -64,13 +64,16 @@ body {
 }
 
 .hero-section {
-  height: 700px;
+  height: auto;
+  min-height: 0;
   background:
     linear-gradient(rgba(0,0,0,0.12), rgba(0,0,0,0.22)),
     url("../images/site/county-compass-hero.png");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+  background-color: #111;
+  aspect-ratio: 1920 / 700;
 }
 
 .page-banner {
