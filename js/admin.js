@@ -1119,7 +1119,7 @@ function renderHiringPreviews() {
     const imagePath =
       post.image && post.image.trim() !== ""
         ? post.image
-        : "images/site/hiring.png";
+        : "images/site/hiring.jpg";
 
     area.innerHTML += `
 
