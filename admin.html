@@ -114,9 +114,14 @@
 
           <select id="businessCategory">
             <option value="">Select Category</option>
-            <option value="Automotive">Automotive</option>
+            <option value="Automotive Repair">Automotive Repair</option>
+            <option value="Automotive Services">Automotive Services</option>
             <option value="Food & Dining">Food & Dining</option>
-            <option value="Home Services">Home Services</option>
+            <option value="Handyman Services">Handyman Services</option>
+            <option value="Home Improvement">Home Improvement</option>
+            <option value="Landscaping">Landscaping</option>
+            <option value="Land Clearing & Tractor Services">Land Clearing & Tractor Services</option>
+            <option value="Gravel, Rock & Fill Dirt">Gravel, Rock & Fill Dirt</option>
             <option value="Health & Beauty">Health & Beauty</option>
             <option value="IT & Computer Repair">IT & Computer Repair</option>
             <option value="Shopping">Shopping</option>
@@ -187,9 +192,14 @@
 
           <select id="couponCategory">
             <option value="">Select Category</option>
-            <option value="Automotive">Automotive</option>
+            <option value="Automotive Repair">Automotive Repair</option>
+            <option value="Automotive Services">Automotive Services</option>
             <option value="Food & Dining">Food & Dining</option>
-            <option value="Home Services">Home Services</option>
+            <option value="Handyman Services">Handyman Services</option>
+            <option value="Home Improvement">Home Improvement</option>
+            <option value="Landscaping">Landscaping</option>
+            <option value="Land Clearing & Tractor Services">Land Clearing & Tractor Services</option>
+            <option value="Gravel, Rock & Fill Dirt">Gravel, Rock & Fill Dirt</option>
             <option value="Health & Beauty">Health & Beauty</option>
             <option value="IT & Computer Repair">IT & Computer Repair</option>
             <option value="Shopping">Shopping</option>
@@ -537,70 +547,70 @@
 
     function importCountyCompassBackup(event) {
 
-  const confirmImport =
-    confirm(
-      "Importing a backup will REPLACE all current businesses, coupons, events, and ads.\n\nContinue?"
-    );
+      const confirmImport =
+        confirm(
+          "Importing a backup will REPLACE all current businesses, coupons, events, and ads.\n\nContinue?"
+        );
 
-  if (!confirmImport) {
+      if (!confirmImport) {
 
-    event.target.value = "";
+        event.target.value = "";
 
-    return;
-  }
+        return;
+      }
 
-  const file =
-    event.target.files[0];
+      const file =
+        event.target.files[0];
 
-  if (!file) {
-    return;
-  }
+      if (!file) {
+        return;
+      }
 
-  const reader =
-    new FileReader();
+      const reader =
+        new FileReader();
 
-  reader.onload = function(e) {
+      reader.onload = function(e) {
 
-    const backupData =
-      JSON.parse(e.target.result);
+        const backupData =
+          JSON.parse(e.target.result);
 
-    localStorage.setItem(
-      "countyCompassBusinesses",
-      JSON.stringify(
-        backupData.countyCompassBusinesses || []
-      )
-    );
+        localStorage.setItem(
+          "countyCompassBusinesses",
+          JSON.stringify(
+            backupData.countyCompassBusinesses || []
+          )
+        );
 
-    localStorage.setItem(
-      "countyCompassCoupons",
-      JSON.stringify(
-        backupData.countyCompassCoupons || []
-      )
-    );
+        localStorage.setItem(
+          "countyCompassCoupons",
+          JSON.stringify(
+            backupData.countyCompassCoupons || []
+          )
+        );
 
-    localStorage.setItem(
-      "countyCompassEvents",
-      JSON.stringify(
-        backupData.countyCompassEvents || []
-      )
-    );
+        localStorage.setItem(
+          "countyCompassEvents",
+          JSON.stringify(
+            backupData.countyCompassEvents || []
+          )
+        );
 
-    localStorage.setItem(
-      "countyCompassAds",
-      JSON.stringify(
-        backupData.countyCompassAds || []
-      )
-    );
+        localStorage.setItem(
+          "countyCompassAds",
+          JSON.stringify(
+            backupData.countyCompassAds || []
+          )
+        );
 
-    alert(
-      "Backup imported successfully.\n\nRefreshing admin page now."
-    );
+        alert(
+          "Backup imported successfully.\n\nRefreshing admin page now."
+        );
 
-    window.location.reload();
-  };
+        window.location.reload();
+      };
 
-  reader.readAsText(file);
-}
+      reader.readAsText(file);
+    }
 
   </script>
 
