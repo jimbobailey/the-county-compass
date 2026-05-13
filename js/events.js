@@ -1,7 +1,7 @@
 let savedEvents = [];
 
 const eventList =
-  document.getElementById("eventList");
+  document.getElementById("eventsList");
 
 let visibleEventCount = 12;
 
