@@ -30,7 +30,7 @@ function renderHiringPosts() {
     const image =
       post.image && post.image.trim() !== ""
         ? post.image
-        : "images/site/hiring.jpg";
+        : "images/categories/hiring.jpg";
 
     const websiteButton =
       post.website && post.website.trim() !== ""
