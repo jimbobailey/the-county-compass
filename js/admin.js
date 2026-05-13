@@ -15,12 +15,18 @@ let editingEventId = null;
 let ads =
   JSON.parse(localStorage.getItem("countyCompassAds")) || [];
 
+  let hiringPosts =
+  JSON.parse(localStorage.getItem("countyCompassHiring")) || [];
+
+let editingHiringId = null;
+
 let editingAdId = null;
 
 loadBusinessesFromServer();
 
 renderCouponPreviews();
 renderEventPreviews();
+renderHiringPreviews();
 renderAdPreviews();
 
 async function loadBusinessesFromServer() {
@@ -987,4 +993,321 @@ function filterBusinesses() {
 
   businesses =
     originalBusinesses;
+}
+
+/* HIRING */
+
+function addHiringPreview() {
+
+  const business =
+    getValue("hiringBusiness");
+
+  const title =
+    getValue("hiringTitle");
+
+  const jobType =
+    getValue("hiringType");
+
+  const pay =
+    getValue("hiringPay");
+
+  const phone =
+    getValue("hiringPhone");
+
+  const website =
+    makeGoodUrl(
+      getValue("hiringWebsite")
+    );
+
+  const image =
+    getValue("hiringImage");
+
+  const description =
+    getValue("hiringDescription");
+
+  if (
+    !business ||
+    !title ||
+    !jobType ||
+    !phone ||
+    !description
+  ) {
+
+    alert(
+      "Please complete all hiring fields."
+    );
+
+    return;
+  }
+
+  if (editingHiringId) {
+
+    hiringPosts =
+      hiringPosts.map(function(post) {
+
+        if (post.id === editingHiringId) {
+
+          return {
+            id: editingHiringId,
+            business,
+            title,
+            jobType,
+            pay,
+            phone,
+            website,
+            image,
+            description
+          };
+        }
+
+        return post;
+      });
+
+    editingHiringId = null;
+
+    alert("Hiring post updated.");
+
+  } else {
+
+    hiringPosts.unshift({
+
+      id: generateId(),
+
+      business,
+      title,
+      jobType,
+      pay,
+      phone,
+      website,
+      image,
+      description
+    });
+
+    alert("Hiring post added.");
+  }
+
+  saveHiringPosts();
+
+  renderHiringPreviews();
+
+  clearHiringForm();
+}
+
+function saveHiringPosts() {
+
+  localStorage.setItem(
+    "countyCompassHiring",
+    JSON.stringify(hiringPosts)
+  );
+}
+
+function renderHiringPreviews() {
+
+  const area =
+    document.getElementById(
+      "hiringPreviewArea"
+    );
+
+  if (!area) {
+    return;
+  }
+
+  area.innerHTML = "";
+
+  hiringPosts.forEach(function(post) {
+
+    const imagePath =
+      post.image && post.image.trim() !== ""
+        ? post.image
+        : "images/site/hiring.png";
+
+    area.innerHTML += `
+
+      <article class="business-card">
+
+        <img
+          src="${imagePath}"
+          alt="${post.title}"
+          class="business-card-image"
+        >
+
+        <h2>
+          ${post.title}
+        </h2>
+
+        <p>
+          <strong>Business:</strong>
+          ${post.business}
+        </p>
+
+        <p>
+          <strong>Type:</strong>
+          ${post.jobType}
+        </p>
+
+        <p>
+          <strong>Pay:</strong>
+          ${post.pay}
+        </p>
+
+        <p>
+          <strong>Phone:</strong>
+          ${post.phone}
+        </p>
+
+        <p class="business-description">
+          ${post.description}
+        </p>
+
+        <button
+          type="button"
+          class="edit-button"
+          onclick="editHiringPost(${post.id})"
+        >
+          Edit
+        </button>
+
+        <button
+          type="button"
+          class="delete-button"
+          onclick="deleteHiringPost(${post.id})"
+        >
+          Delete
+        </button>
+
+      </article>
+    `;
+  });
+}
+
+function editHiringPost(id) {
+
+  const post =
+    hiringPosts.find(function(item) {
+      return item.id === id;
+    });
+
+  if (!post) {
+    return;
+  }
+
+  editingHiringId = id;
+
+  setValue(
+    "hiringBusiness",
+    post.business
+  );
+
+  setValue(
+    "hiringTitle",
+    post.title
+  );
+
+  setValue(
+    "hiringType",
+    post.jobType
+  );
+
+  setValue(
+    "hiringPay",
+    post.pay
+  );
+
+  setValue(
+    "hiringPhone",
+    post.phone
+  );
+
+  setValue(
+    "hiringWebsite",
+    post.website
+  );
+
+  setValue(
+    "hiringImage",
+    post.image
+  );
+
+  setValue(
+    "hiringDescription",
+    post.description
+  );
+
+  setPreviewImage(
+    "hiringImagePreview",
+    post.image
+  );
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+function deleteHiringPost(id) {
+
+  const confirmDelete =
+    confirm(
+      "Delete this hiring post?"
+    );
+
+  if (!confirmDelete) {
+    return;
+  }
+
+  hiringPosts =
+    hiringPosts.filter(function(post) {
+      return post.id !== id;
+    });
+
+  saveHiringPosts();
+
+  renderHiringPreviews();
+}
+
+function clearHiringForm() {
+
+  setValue(
+    "hiringBusiness",
+    ""
+  );
+
+  setValue(
+    "hiringTitle",
+    ""
+  );
+
+  setValue(
+    "hiringType",
+    ""
+  );
+
+  setValue(
+    "hiringPay",
+    ""
+  );
+
+  setValue(
+    "hiringPhone",
+    ""
+  );
+
+  setValue(
+    "hiringWebsite",
+    ""
+  );
+
+  setValue(
+    "hiringImage",
+    ""
+  );
+
+  setValue(
+    "hiringDescription",
+    ""
+  );
+
+  resetPreviewImage(
+    "hiringImagePreview"
+  );
 }
