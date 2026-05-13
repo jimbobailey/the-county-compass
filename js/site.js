@@ -203,7 +203,25 @@ function renderFeaturedBusinesses() {
   const featuredBusinesses =
     savedBusinesses.filter(function(business) {
 
-      return business.featured === "Yes";
+      const currentPage =
+  window.location.pathname
+    .split("/")
+    .pop()
+    .replace(".html", "") || "index";
+
+  return (
+  business.featured === "Yes" &&
+  (
+    business.featuredLocation === "all" ||
+
+    business.featuredLocation === currentPage ||
+
+    (
+      currentPage === "index" &&
+      business.featuredLocation === "homepage"
+    )
+  )
+  );
     });
 
   if (featuredBusinesses.length === 0) {

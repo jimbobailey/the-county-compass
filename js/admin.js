@@ -291,6 +291,7 @@ async function addBusinessPreview() {
             image,
             paid,
             featured,
+            featuredLocation,
             description
           };
         }
@@ -408,6 +409,10 @@ function editBusiness(id) {
   setValue("businessImage", business.image);
   setValue("businessPaid", business.paid);
   setValue("businessFeatured", business.featured);
+  setValue(
+  "businessFeaturedLocation",
+  business.featuredLocation || "homepage"
+);
   setValue("businessDescription", business.description);
 
   setPreviewImage("businessImagePreview", business.image);
@@ -450,6 +455,10 @@ function clearBusinessForm() {
   setValue("businessImage", "");
   setValue("businessPaid", "No");
   setValue("businessFeatured", "No");
+  setValue(
+  "businessFeaturedLocation",
+  "homepage"
+);
   setValue("businessDescription", "");
 
   resetPreviewImage("businessImagePreview");
