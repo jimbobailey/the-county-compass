@@ -219,6 +219,8 @@ function getCategoryImage(category) {
 
   "Landscaping":
     "images/categories/home-services.jpg",
+    "Locksmithing":
+  "images/categories/professional-services.jpg",
 
   "Professional Services":
     "images/categories/professional-services.jpg",
