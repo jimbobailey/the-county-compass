@@ -322,6 +322,101 @@
           </button>
 
         </article>
+        <article class="admin-card">
+
+  <h2>Add Hiring Post</h2>
+
+  <input
+    type="text"
+    id="hiringBusiness"
+    placeholder="Business Name"
+  >
+
+  <input
+    type="text"
+    id="hiringTitle"
+    placeholder="Job Title"
+  >
+
+  <select id="hiringType">
+
+    <option value="">
+      Select Job Type
+    </option>
+
+    <option value="Full Time">
+      Full Time
+    </option>
+
+    <option value="Part Time">
+      Part Time
+    </option>
+
+    <option value="Temporary">
+      Temporary
+    </option>
+
+    <option value="Contract">
+      Contract
+    </option>
+
+  </select>
+
+  <input
+    type="text"
+    id="hiringPay"
+    placeholder="Pay / Salary"
+  >
+
+  <input
+    type="text"
+    id="hiringPhone"
+    placeholder="Contact Phone"
+  >
+
+  <input
+    type="text"
+    id="hiringWebsite"
+    placeholder="Apply Link or Website"
+  >
+
+  <label class="image-upload-label">
+    Hiring Image
+  </label>
+
+  <input
+    type="file"
+    id="hiringImageUpload"
+    accept="image/*"
+    onchange="handleImageUpload(event, 'hiringImage', 'hiringImagePreview', 'images/hiring/', 'hiring')"
+  >
+
+  <input
+    type="text"
+    id="hiringImage"
+    placeholder="Type image path, example: images/hiring/example.jpg"
+  >
+
+  <img
+    id="hiringImagePreview"
+    class="business-image-preview"
+    style="display: none;"
+  >
+
+  <textarea
+    id="hiringDescription"
+    placeholder="Job Description"
+    maxlength="170"
+  ></textarea>
+
+  <button
+    type="button"
+    onclick="addHiringPreview()"
+  >
+    Add Hiring Post
+  </button>
+
+</article>
 
         <article class="admin-card">
 
@@ -335,7 +430,7 @@
             <option value="businesses">Businesses Page</option>
             <option value="coupons">Coupons Page</option>
             <option value="events">Events Page</option>
-            <a href="hiring.html">Hiring</a>
+            <option value="hiring">Hiring Page</option>
           </select>
 
           <select id="adShape">
