@@ -7,24 +7,29 @@ const businessSearchInput = document.getElementById("businessSearchInput");
 let visibleBusinessCount = 12;
 
 const categoryImages = {
-  "Automotive": "images/categories/automotive.jpg",
-  "Food & Dining": "images/categories/food-dining.jpg",
-  "Home Services": "images/categories/home-services.jpg",
-  "Health & Beauty": "images/categories/health-beauty.jpg",
-  "IT & Computer Repair": "images/categories/professional-services.jpg",
-  "Shopping": "images/categories/shopping.jpg",
-  "Real Estate": "images/categories/real-estate.jpg",
-  "Entertainment": "images/categories/entertainment.jpg",
+  "Automotive Repair": "images/categories/automotive.jpg",
+  "Automotive Services": "images/categories/automotive.jpg",
   "Churches": "images/categories/churches.jpg",
+  "Custom Crafts & Fabrication": "images/categories/shopping.jpg",
+  "Entertainment": "images/categories/entertainment.jpg",
   "Fitness": "images/categories/fitness.jpg",
+  "Food & Dining": "images/categories/food-dining.jpg",
+  "Gravel, Rock & Fill Dirt": "images/categories/home-services.jpg",
+  "Handyman Services": "images/categories/home-services.jpg",
+  "Health & Beauty": "images/categories/health-beauty.jpg",
+  "Home Improvement": "images/categories/home-services.jpg",
+  "IT & Computer Repair": "images/categories/professional-services.jpg",
+  "Land Clearing & Tractor Services": "images/categories/home-services.jpg",
+  "Landscaping": "images/categories/home-services.jpg",
+  "Locksmithing": "images/categories/professional-services.jpg",
   "Professional Services": "images/categories/professional-services.jpg",
+  "Real Estate": "images/categories/real-estate.jpg",
+  "Shopping": "images/categories/shopping.jpg",
   "Other": "images/categories/professional-services.jpg"
 };
 
 async function loadBusinessesFromServer() {
-
   try {
-
     const response =
       await fetch("/.netlify/functions/businesses");
 
@@ -32,24 +37,19 @@ async function loadBusinessesFromServer() {
       await response.json();
 
     if (Array.isArray(data)) {
-
       savedBusinesses = data;
 
       localStorage.setItem(
         "countyCompassBusinesses",
         JSON.stringify(data)
       );
-
     } else {
-
       savedBusinesses =
         JSON.parse(
           localStorage.getItem("countyCompassBusinesses")
         ) || [];
     }
-
   } catch (error) {
-
     console.error(error);
 
     savedBusinesses =
@@ -66,7 +66,6 @@ async function loadBusinessesFromServer() {
 }
 
 function makeGoodUrl(link) {
-
   if (!link || link.trim() === "") {
     return "";
   }
@@ -82,7 +81,6 @@ function makeGoodUrl(link) {
 }
 
 function applyCategoryFromUrl() {
-
   const urlParams =
     new URLSearchParams(window.location.search);
 
@@ -99,7 +97,6 @@ function applyCategoryFromUrl() {
 }
 
 function getCategoryImage(category) {
-
   return (
     categoryImages[category] ||
     "images/categories/professional-services.jpg"
@@ -107,7 +104,6 @@ function getCategoryImage(category) {
 }
 
 function getBusinessImage(business) {
-
   if (
     business.image &&
     business.image.trim() !== ""
@@ -121,27 +117,38 @@ function getBusinessImage(business) {
 }
 
 function getFilteredBusinesses() {
-
   const searchInput =
     businessSearchInput
-      ? businessSearchInput.value.toLowerCase()
+      ? businessSearchInput.value.toLowerCase().trim()
       : "";
 
   const selectedCategory =
     categoryFilter
       ? categoryFilter.value
-      : "";
+      : "all";
 
   return savedBusinesses.filter(
     function(business) {
+      const name =
+        business.name ? business.name.toLowerCase() : "";
+
+      const category =
+        business.category ? business.category.toLowerCase() : "";
+
+      const address =
+        business.address ? business.address.toLowerCase() : "";
+
+      const description =
+        business.description ? business.description.toLowerCase() : "";
 
       const matchesSearch =
-        business.name.toLowerCase().includes(searchInput) ||
-        business.category.toLowerCase().includes(searchInput) ||
-        business.address.toLowerCase().includes(searchInput) ||
-        business.description.toLowerCase().includes(searchInput);
+        name.includes(searchInput) ||
+        category.includes(searchInput) ||
+        address.includes(searchInput) ||
+        description.includes(searchInput);
 
       const matchesCategory =
+        selectedCategory === "all" ||
         selectedCategory === "" ||
         business.category === selectedCategory;
 
@@ -154,7 +161,6 @@ function getFilteredBusinesses() {
 }
 
 function renderBusinesses(businessesToShow) {
-
   if (!businessList) {
     return;
   }
@@ -162,7 +168,6 @@ function renderBusinesses(businessesToShow) {
   businessList.innerHTML = "";
 
   if (businessesToShow.length === 0) {
-
     businessList.innerHTML = `
       <p class="empty-message">
         No businesses found.
@@ -175,7 +180,6 @@ function renderBusinesses(businessesToShow) {
   businessesToShow
     .slice(0, visibleBusinessCount)
     .forEach(function(business) {
-
       const mapsLink =
         "https://www.google.com/maps/search/?api=1&query=" +
         encodeURIComponent(
@@ -255,7 +259,6 @@ function renderBusinesses(businessesToShow) {
     businessesToShow.length >
     visibleBusinessCount
   ) {
-
     businessList.innerHTML += `
       <div class="load-more-wrap">
 
@@ -272,7 +275,6 @@ function renderBusinesses(businessesToShow) {
 }
 
 function filterBusinesses() {
-
   visibleBusinessCount = 12;
 
   renderBusinesses(
@@ -281,7 +283,6 @@ function filterBusinesses() {
 }
 
 function loadMoreBusinesses() {
-
   visibleBusinessCount += 12;
 
   renderBusinesses(
