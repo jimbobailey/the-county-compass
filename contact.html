@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Contact Us | The County Compass</title>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <header class="site-header">
+
+    <div class="logo">
+      <img
+        src="images/site/county-compass-logo.png"
+        alt="The County Compass"
+        class="site-logo"
+      >
+
+      <div class="logo-text">
+        <span>The County Compass</span>
+      </div>
+    </div>
+
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="businesses.html">Businesses</a>
+      <a href="coupons.html">Coupons</a>
+      <a href="events.html">Events</a>
+      <a href="advertise.html">Advertise</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+  </header>
+
+  <main class="page-section">
+
+    <h1>Contact Us</h1>
+
+    <p class="page-intro">
+      Have a question, correction, suggestion, event idea, or business listing
+      concern? Send us a message and we will review it.
+    </p>
+
+    <p class="page-intro">
+      This form is for general contact and community feedback. Submitting this
+      form does not automatically publish anything on the website.
+    </p>
+
+    <section class="admin-preview-section">
+
+      <h2>Send a Message</h2>
+
+      <form
+        name="contact-request"
+        method="POST"
+        data-netlify="true"
+        class="admin-card"
+      >
+
+        <input
+          type="hidden"
+          name="form-name"
+          value="contact-request"
+        >
+
+        <input
+          type="text"
+          name="name"
+          placeholder="Your Name"
+          required
+        >
+
+        <input
+          type="email"
+          name="email"
+          placeholder="Email Address"
+          required
+        >
+
+        <input
+          type="tel"
+          name="phone"
+          placeholder="Phone Number Optional"
+        >
+
+        <select
+          name="subject"
+          required
+        >
+          <option value="">
+            Select a reason for contacting us
+          </option>
+
+          <option value="General Question">
+            General Question
+          </option>
+
+          <option value="Business Listing Question">
+            Business Listing Question
+          </option>
+
+          <option value="Report Incorrect Information">
+            Report Incorrect Information
+          </option>
+
+          <option value="Advertising Question">
+            Advertising Question
+          </option>
+
+          <option value="Event Question">
+            Event Question
+          </option>
+
+          <option value="Suggestion or Feedback">
+            Suggestion or Feedback
+          </option>
+        </select>
+
+        <textarea
+          name="message"
+          placeholder="Type your message here"
+          maxlength="500"
+          required
+        ></textarea>
+
+        <button type="submit">
+          Send Message
+        </button>
+
+      </form>
+
+    </section>
+
+  </main>
+
+</body>
+
+</html>
