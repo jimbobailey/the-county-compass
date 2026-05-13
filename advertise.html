@@ -41,41 +41,61 @@
   </header>
 
   <section class="page-banner">
-  <img
-    src="images/site/advertise-banner.png"
-    alt="Advertise Banner"
-    class="page-banner-img"
-  >
-</section>
+    <img
+      src="images/site/advertise-banner.png"
+      alt="Advertise Banner"
+      class="page-banner-img"
+    >
+  </section>
 
   <main class="page-section">
 
-    <h1>Advertise Your Business</h1>
+    <h1>Advertise With The County Compass</h1>
 
     <p class="page-intro">
-      Reach local customers across Jackson County with featured listings,
-      coupon promotions, homepage ads, and event sponsorships.
+      The County Compass helps local businesses, events, coupons, and sponsored ads
+      get seen by people in the community.
     </p>
 
     <section class="ad-options">
 
       <article class="ad-card">
-        <h2>Featured Business</h2>
+        <h2>Business Listing</h2>
 
         <p>
-          Get priority placement in the business directory and appear in the
-          Featured Businesses section on the homepage.
+          Add your business to the local business directory so people can find
+          your name, category, contact information, location, and details.
         </p>
 
         <p>
-          Best for local businesses that want more visibility.
+          Best for businesses that want to be listed on the Businesses page.
         </p>
 
         <button
           type="button"
-          onclick="selectAdOption('Featured Business')"
+          onclick="selectAdOption('Business Listing')"
         >
-          Request Featured Business
+          Request Business Listing
+        </button>
+      </article>
+
+      <article class="ad-card">
+        <h2>Featured Placement</h2>
+
+        <p>
+          Upgrade your business listing to be featured near the top of selected
+          pages for extra visibility.
+        </p>
+
+        <p>
+          Best for businesses that want more attention across the site.
+        </p>
+
+        <button
+          type="button"
+          onclick="selectAdOption('Featured Placement')"
+        >
+          Request Featured Placement
         </button>
       </article>
 
@@ -83,12 +103,12 @@
         <h2>Coupon Promotion</h2>
 
         <p>
-          Promote sales, discounts, seasonal offers, grand openings,
-          and special deals on the coupon page.
+          Share a sale, discount, special offer, or limited-time deal on the
+          Coupons page.
         </p>
 
         <p>
-          Best for restaurants, shops, services, and limited-time offers.
+          Best for restaurants, shops, services, and local deals.
         </p>
 
         <button
@@ -100,31 +120,11 @@
       </article>
 
       <article class="ad-card">
-        <h2>Homepage Advertisement</h2>
-
-        <p>
-          Place your business advertisement near the top of the homepage
-          where visitors will see it first.
-        </p>
-
-        <p>
-          Best for high-visibility promotions and local brand awareness.
-        </p>
-
-        <button
-          type="button"
-          onclick="selectAdOption('Homepage Advertisement')"
-        >
-          Request Homepage Ad
-        </button>
-      </article>
-
-      <article class="ad-card">
         <h2>Event Promotion</h2>
 
         <p>
-          Promote concerts, church events, school events, festivals,
-          fundraisers, and community gatherings.
+          Promote a local event such as a fundraiser, church event, school event,
+          concert, festival, sale, or community gathering.
         </p>
 
         <p>
@@ -139,6 +139,26 @@
         </button>
       </article>
 
+      <article class="ad-card">
+        <h2>Sponsored Ad</h2>
+
+        <p>
+          Place a sponsored ad that can appear across site pages in sponsored
+          advertising areas.
+        </p>
+
+        <p>
+          Best for businesses that want their ad image shown around the site.
+        </p>
+
+        <button
+          type="button"
+          onclick="selectAdOption('Sponsored Ad')"
+        >
+          Request Sponsored Ad
+        </button>
+      </article>
+
     </section>
 
     <section class="admin-preview-section">
@@ -148,8 +168,8 @@
       </h2>
 
       <p class="page-intro">
-        Fill out the request below and we will contact you about advertising
-        on The County Compass.
+        Choose an option above, then fill out the request below. We will contact
+        you about your listing, coupon, event, featured placement, or sponsored ad.
       </p>
 
       <form
@@ -208,7 +228,7 @@
 
         <textarea
           name="message"
-          placeholder="Tell us what you want to advertise"
+          placeholder="Tell us what you want to advertise, list, promote, or submit"
           maxlength="250"
           required
         ></textarea>
