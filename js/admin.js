@@ -255,6 +255,7 @@ async function addBusinessPreview() {
   const image = getValue("businessImage");
   const paid = getValue("businessPaid");
   const featured = getValue("businessFeatured");
+  const featuredLocation = getValue("businessFeaturedLocation");
   const description = getValue("businessDescription");
 
   if (!name || !category || !address || !phone || !description) {
