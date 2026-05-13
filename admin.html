@@ -645,7 +645,10 @@
           JSON.parse(localStorage.getItem("countyCompassEvents")) || [],
 
         countyCompassAds:
-          JSON.parse(localStorage.getItem("countyCompassAds")) || []
+          JSON.parse(localStorage.getItem("countyCompassAds")) || [],
+
+        countyCompassHiring:
+        JSON.parse(localStorage.getItem("countyCompassHiring")) || []
       };
 
       const backupBlob =
@@ -723,6 +726,12 @@
             backupData.countyCompassAds || []
           )
         );
+        localStorage.setItem(
+  "countyCompassHiring",
+  JSON.stringify(
+    backupData.countyCompassHiring || []
+  )
+);
 
         alert(
           "Backup imported successfully.\n\nRefreshing admin page now."
