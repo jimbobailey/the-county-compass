@@ -168,12 +168,23 @@ function renderHomepageAds() {
     return;
   }
 
+  const currentPage =
+    window.location.pathname
+      .split("/")
+      .pop()
+      .replace(".html", "") || "index";
+
+  const pageName =
+    currentPage === "index"
+      ? "homepage"
+      : currentPage;
+
   const homepageAds =
     getActiveAds(savedAds)
       .filter(function(ad) {
 
         return (
-          ad.location === "homepage"
+          ad.location === pageName
         );
       });
 
@@ -215,47 +226,28 @@ function renderFeaturedBusinesses() {
     return;
   }
 
+  const currentPage =
+    window.location.pathname
+      .split("/")
+      .pop()
+      .replace(".html", "") || "index";
+
+  const pageName =
+    currentPage === "index"
+      ? "homepage"
+      : currentPage;
+
   const activeBusinesses =
     getActiveBusinesses(savedBusinesses);
 
   const featuredBusinesses =
     activeBusinesses.filter(function(business) {
 
-      const currentPage =
-        window.location.pathname
-          .split("/")
-          .pop()
-          .replace(".html", "") || "index";
-
       return (
         business.featured === "Yes" &&
         (
           business.featuredLocation === "all" ||
-
-          (
-            currentPage === "index" &&
-            business.featuredLocation === "homepage"
-          ) ||
-
-          (
-            currentPage === "businesses" &&
-            business.featuredLocation === "businesses"
-          ) ||
-
-          (
-            currentPage === "coupons" &&
-            business.featuredLocation === "coupons"
-          ) ||
-
-          (
-            currentPage === "events" &&
-            business.featuredLocation === "events"
-          ) ||
-
-          (
-            currentPage === "hiring" &&
-            business.featuredLocation === "hiring"
-          )
+          business.featuredLocation === pageName
         )
       );
     });
