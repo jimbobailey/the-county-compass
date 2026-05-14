@@ -1,8 +1,13 @@
 let savedBusinesses = [];
 
-const businessList = document.getElementById("businessList");
-const categoryFilter = document.getElementById("categoryFilter");
-const businessSearchInput = document.getElementById("businessSearchInput");
+const businessList =
+  document.getElementById("businessList");
+
+const categoryFilter =
+  document.getElementById("categoryFilter");
+
+const businessSearchInput =
+  document.getElementById("businessSearchInput");
 
 let visibleBusinessCount = 12;
 
@@ -28,35 +33,12 @@ const categoryImages = {
   "Other": "images/categories/professional-services.jpg"
 };
 
-async function loadBusinessesFromServer() {
-  try {
-    const response =
-      await fetch("/.netlify/functions/businesses");
+function loadBusinessesFromServer() {
 
-    const data =
-      await response.json();
-
-    if (Array.isArray(data)) {
-      savedBusinesses = data;
-
-      localStorage.setItem(
-        "countyCompassBusinesses",
-        JSON.stringify(data)
-      );
-    } else {
-      savedBusinesses =
-        JSON.parse(
-          localStorage.getItem("countyCompassBusinesses")
-        ) || [];
-    }
-  } catch (error) {
-    console.error(error);
-
-    savedBusinesses =
-      JSON.parse(
-        localStorage.getItem("countyCompassBusinesses")
-      ) || [];
-  }
+  savedBusinesses =
+    JSON.parse(
+      localStorage.getItem("countyCompassBusinesses")
+    ) || [];
 
   applyCategoryFromUrl();
 
@@ -65,7 +47,36 @@ async function loadBusinessesFromServer() {
   );
 }
 
+function getActiveBusinesses(businesses) {
+
+  const today =
+    new Date();
+
+  today.setHours(0,0,0,0);
+
+  return businesses.filter(function(business) {
+
+    if (
+      business.paid !== "Yes"
+    ) {
+      return true;
+    }
+
+    if (!business.expiration) {
+      return true;
+    }
+
+    const expirationDate =
+      new Date(
+        business.expiration + "T00:00:00"
+      );
+
+    return expirationDate >= today;
+  });
+}
+
 function makeGoodUrl(link) {
+
   if (!link || link.trim() === "") {
     return "";
   }
@@ -81,6 +92,7 @@ function makeGoodUrl(link) {
 }
 
 function formatPhoneNumber(value) {
+
   const cleaned =
     String(value || "").replace(/\D/g, "");
 
@@ -89,20 +101,21 @@ function formatPhoneNumber(value) {
   }
 
   if (cleaned.length <= 6) {
-    return "(" + cleaned.slice(0, 3) + ") " + cleaned.slice(3);
+    return "(" + cleaned.slice(0,3) + ") " + cleaned.slice(3);
   }
 
   return (
     "(" +
-    cleaned.slice(0, 3) +
+    cleaned.slice(0,3) +
     ") " +
-    cleaned.slice(3, 6) +
+    cleaned.slice(3,6) +
     "-" +
-    cleaned.slice(6, 10)
+    cleaned.slice(6,10)
   );
 }
 
 function applyCategoryFromUrl() {
+
   const urlParams =
     new URLSearchParams(window.location.search);
 
@@ -119,6 +132,7 @@ function applyCategoryFromUrl() {
 }
 
 function getCategoryImage(category) {
+
   return (
     categoryImages[category] ||
     "images/categories/professional-services.jpg"
@@ -126,6 +140,7 @@ function getCategoryImage(category) {
 }
 
 function getBusinessImage(business) {
+
   if (
     business.image &&
     business.image.trim() !== ""
@@ -139,6 +154,10 @@ function getBusinessImage(business) {
 }
 
 function getFilteredBusinesses() {
+
+  const activeBusinesses =
+    getActiveBusinesses(savedBusinesses);
+
   const searchInput =
     businessSearchInput
       ? businessSearchInput.value.toLowerCase().trim()
@@ -149,22 +168,33 @@ function getFilteredBusinesses() {
       ? categoryFilter.value
       : "all";
 
-  return savedBusinesses.filter(
+  return activeBusinesses.filter(
     function(business) {
+
       const name =
-        business.name ? business.name.toLowerCase() : "";
+        business.name
+          ? business.name.toLowerCase()
+          : "";
 
       const category =
-        business.category ? business.category.toLowerCase() : "";
+        business.category
+          ? business.category.toLowerCase()
+          : "";
 
       const address =
-        business.address ? business.address.toLowerCase() : "";
+        business.address
+          ? business.address.toLowerCase()
+          : "";
 
       const phone =
-        business.phone ? business.phone.toLowerCase() : "";
+        business.phone
+          ? business.phone.toLowerCase()
+          : "";
 
       const description =
-        business.description ? business.description.toLowerCase() : "";
+        business.description
+          ? business.description.toLowerCase()
+          : "";
 
       const matchesSearch =
         name.includes(searchInput) ||
@@ -187,6 +217,7 @@ function getFilteredBusinesses() {
 }
 
 function renderBusinesses(businessesToShow) {
+
   if (!businessList) {
     return;
   }
@@ -194,6 +225,7 @@ function renderBusinesses(businessesToShow) {
   businessList.innerHTML = "";
 
   if (businessesToShow.length === 0) {
+
     businessList.innerHTML = `
       <p class="empty-message">
         No businesses found.
@@ -206,6 +238,7 @@ function renderBusinesses(businessesToShow) {
   businessesToShow
     .slice(0, visibleBusinessCount)
     .forEach(function(business) {
+
       const mapsLink =
         "https://www.google.com/maps/search/?api=1&query=" +
         encodeURIComponent(
@@ -228,6 +261,7 @@ function renderBusinesses(businessesToShow) {
         );
 
       businessList.innerHTML += `
+
         <article class="business-card compact-business-card">
 
           <img
@@ -285,6 +319,7 @@ function renderBusinesses(businessesToShow) {
           </div>
 
         </article>
+
       `;
     });
 
@@ -292,6 +327,7 @@ function renderBusinesses(businessesToShow) {
     businessesToShow.length >
     visibleBusinessCount
   ) {
+
     businessList.innerHTML += `
       <div class="load-more-wrap">
 
@@ -308,6 +344,7 @@ function renderBusinesses(businessesToShow) {
 }
 
 function filterBusinesses() {
+
   visibleBusinessCount = 12;
 
   renderBusinesses(
@@ -316,6 +353,7 @@ function filterBusinesses() {
 }
 
 function loadMoreBusinesses() {
+
   visibleBusinessCount += 12;
 
   renderBusinesses(

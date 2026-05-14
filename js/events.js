@@ -1,91 +1,59 @@
-let savedEvents = [];
+const savedEvents =
+  JSON.parse(
+    localStorage.getItem("countyCompassEvents")
+  ) || [];
 
-const eventList =
-  document.getElementById("eventsList");
+const eventGrid =
+  document.getElementById("eventGrid");
 
 let visibleEventCount = 12;
 
-async function loadEventsFromServer() {
+renderEvents(
+  getActiveEvents()
+);
 
-  try {
+function getActiveEvents() {
 
-    const response =
-      await fetch("/.netlify/functions/events");
+  const today =
+    new Date();
 
-    const data =
-      await response.json();
+  today.setHours(0,0,0,0);
 
-    if (Array.isArray(data)) {
+  return savedEvents.filter(function(event) {
 
-      savedEvents = data;
-
-      localStorage.setItem(
-        "countyCompassEvents",
-        JSON.stringify(data)
-      );
-
-    } else {
-
-      savedEvents =
-        JSON.parse(
-          localStorage.getItem("countyCompassEvents")
-        ) || [];
+    if (!event.date) {
+      return true;
     }
 
-  } catch (error) {
+    const eventDate =
+      new Date(
+        event.date + "T00:00:00"
+      );
 
-    console.error(error);
+    return eventDate >= today;
+  });
+}
 
-    savedEvents =
-      JSON.parse(
-        localStorage.getItem("countyCompassEvents")
-      ) || [];
+function formatEventDate(dateValue) {
+
+  if (!dateValue) {
+    return "";
   }
 
-  renderEvents(
-    getSortedUpcomingEvents()
+  const parts =
+    dateValue.split("-");
+
+  if (parts.length !== 3) {
+    return dateValue;
+  }
+
+  return (
+    parts[1] +
+    "/" +
+    parts[2] +
+    "/" +
+    parts[0]
   );
-}
-
-function getSortedUpcomingEvents() {
-
-  return savedEvents
-    .filter(function(event) {
-
-      if (!event.date) {
-        return false;
-      }
-
-      const today =
-        new Date();
-
-      today.setHours(0, 0, 0, 0);
-
-      const eventDate =
-        new Date(event.date + "T00:00:00");
-
-      return eventDate >= today;
-    })
-
-    .sort(function(a, b) {
-
-      const aDate =
-        new Date(
-          a.date + "T" + (a.time || "00:00")
-        );
-
-      const bDate =
-        new Date(
-          b.date + "T" + (b.time || "00:00")
-        );
-
-      return aDate - bDate;
-    });
-}
-
-function getEventFallbackImage() {
-
-  return "images/categories/events.jpg";
 }
 
 function getEventImage(event) {
@@ -97,20 +65,20 @@ function getEventImage(event) {
     return event.image;
   }
 
-  return getEventFallbackImage();
+  return "images/categories/events.jpg";
 }
 
 function renderEvents(eventsToShow) {
 
-  if (!eventList) {
+  if (!eventGrid) {
     return;
   }
 
-  eventList.innerHTML = "";
+  eventGrid.innerHTML = "";
 
   if (eventsToShow.length === 0) {
 
-    eventList.innerHTML = `
+    eventGrid.innerHTML = `
       <p class="empty-message">
         No upcoming events found.
       </p>
@@ -120,56 +88,63 @@ function renderEvents(eventsToShow) {
   }
 
   eventsToShow
+    .sort(function(a, b) {
+
+      return (
+        new Date(a.date) -
+        new Date(b.date)
+      );
+    })
     .slice(0, visibleEventCount)
     .forEach(function(event) {
 
-      const fallbackImage =
-        getEventFallbackImage();
+      eventGrid.innerHTML += `
 
-      eventList.innerHTML += `
-        <article class="business-card">
+        <article class="business-card compact-business-card">
 
           <img
             src="${getEventImage(event)}"
             alt="${event.title}"
-            class="business-card-image"
+            class="business-card-image compact-business-image"
             loading="lazy"
-            onerror="this.onerror=null; this.src='${fallbackImage}';"
+            onerror="this.onerror=null; this.src='images/categories/events.jpg';"
           >
 
-          <h2>${event.title}</h2>
+          <h2>
+            ${event.title}
+          </h2>
 
-          <p>
-            <strong>Category:</strong>
+          <p class="business-category">
             ${event.category}
           </p>
 
-          <p>
-            <strong>Location:</strong>
+          <p class="business-address">
             ${event.location}
           </p>
 
-          <p>
-            <strong>Date:</strong>
-            ${event.date}
+          <p class="business-phone">
+            ${formatEventDate(event.date)}
           </p>
 
-          <p>
-            <strong>Time:</strong>
-            ${event.time}
+          <p class="business-phone">
+            ${event.time || ""}
           </p>
 
-          <p class="business-description">
+          <p class="business-description compact-description">
             ${event.description}
           </p>
 
         </article>
+
       `;
     });
 
-  if (eventsToShow.length > visibleEventCount) {
+  if (
+    eventsToShow.length >
+    visibleEventCount
+  ) {
 
-    eventList.innerHTML += `
+    eventGrid.innerHTML += `
       <div class="load-more-wrap">
 
         <button
@@ -189,8 +164,6 @@ function loadMoreEvents() {
   visibleEventCount += 12;
 
   renderEvents(
-    getSortedUpcomingEvents()
+    getActiveEvents()
   );
 }
-
-loadEventsFromServer();

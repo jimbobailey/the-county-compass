@@ -102,7 +102,7 @@
       </section>
 
       <p class="page-intro">
-        Manage businesses, coupons, events, advertisements, and featured listings.
+        Manage businesses, coupons, events, hiring posts, advertisements, and featured listings.
       </p>
 
       <section class="admin-grid">
@@ -166,33 +166,27 @@
             <option value="Yes">Paid Listing: Yes</option>
           </select>
 
+          <label class="image-upload-label">
+            Business Paid-Through Date
+          </label>
+
+          <input
+            type="date"
+            id="businessExpiration"
+          >
+
           <select id="businessFeatured">
             <option value="No">Featured Business: No</option>
             <option value="Yes">Featured Business: Yes</option>
           </select>
+
           <select id="businessFeaturedLocation">
-
-  <option value="homepage">
-    Featured Location: Homepage
-  </option>
-
-  <option value="coupons">
-    Featured Location: Coupons Page
-  </option>
-
-  <option value="events">
-    Featured Location: Events Page
-  </option>
-
-  <option value="hiring">
-    Featured Location: Hiring Page
-  </option>
-
-  <option value="all">
-    Featured Location: All Pages
-  </option>
-
-</select>
+            <option value="homepage">Featured Location: Homepage</option>
+            <option value="coupons">Featured Location: Coupons Page</option>
+            <option value="events">Featured Location: Events Page</option>
+            <option value="hiring">Featured Location: Hiring Page</option>
+            <option value="all">Featured Location: All Pages</option>
+          </select>
 
           <textarea
             id="businessDescription"
@@ -260,6 +254,15 @@
             id="couponImagePreview"
             class="business-image-preview"
             style="display: none;"
+          >
+
+          <label class="image-upload-label">
+            Coupon Expiration Date
+          </label>
+
+          <input
+            type="date"
+            id="couponExpiration"
           >
 
           <textarea
@@ -345,101 +348,95 @@
           </button>
 
         </article>
+
         <article class="admin-card">
 
-  <h2>Add Hiring Post</h2>
+          <h2>Add Hiring Post</h2>
 
-  <input
-    type="text"
-    id="hiringBusiness"
-    placeholder="Business Name"
-  >
+          <input
+            type="text"
+            id="hiringBusiness"
+            placeholder="Business Name"
+          >
 
-  <input
-    type="text"
-    id="hiringTitle"
-    placeholder="Job Title"
-  >
+          <input
+            type="text"
+            id="hiringTitle"
+            placeholder="Job Title"
+          >
 
-  <select id="hiringType">
+          <select id="hiringType">
+            <option value="">Select Job Type</option>
+            <option value="Full Time">Full Time</option>
+            <option value="Part Time">Part Time</option>
+            <option value="Temporary">Temporary</option>
+            <option value="Contract">Contract</option>
+          </select>
 
-    <option value="">
-      Select Job Type
-    </option>
+          <input
+            type="text"
+            id="hiringPay"
+            placeholder="Pay / Salary"
+          >
 
-    <option value="Full Time">
-      Full Time
-    </option>
+          <input
+            type="text"
+            id="hiringPhone"
+            placeholder="Contact Phone"
+          >
 
-    <option value="Part Time">
-      Part Time
-    </option>
+          <input
+            type="text"
+            id="hiringWebsite"
+            placeholder="Apply Link or Website"
+          >
 
-    <option value="Temporary">
-      Temporary
-    </option>
+          <label class="image-upload-label">
+            Hiring Image
+          </label>
 
-    <option value="Contract">
-      Contract
-    </option>
+          <input
+            type="file"
+            id="hiringImageUpload"
+            accept="image/*"
+            onchange="handleImageUpload(event, 'hiringImage', 'hiringImagePreview', 'images/hiring/', 'hiring')"
+          >
 
-  </select>
+          <input
+            type="text"
+            id="hiringImage"
+            placeholder="Type image path, example: images/hiring/example.jpg"
+          >
 
-  <input
-    type="text"
-    id="hiringPay"
-    placeholder="Pay / Salary"
-  >
+          <img
+            id="hiringImagePreview"
+            class="business-image-preview"
+            style="display: none;"
+          >
 
-  <input
-    type="text"
-    id="hiringPhone"
-    placeholder="Contact Phone"
-  >
+          <label class="image-upload-label">
+            Hiring Expiration Date
+          </label>
 
-  <input
-    type="text"
-    id="hiringWebsite"
-    placeholder="Apply Link or Website"
-  >
+          <input
+            type="date"
+            id="hiringExpiration"
+          >
 
-  <label class="image-upload-label">
-    Hiring Image
-  </label>
+          <textarea
+            id="hiringDescription"
+            placeholder="Job Description"
+            maxlength="170"
+          ></textarea>
 
-  <input
-    type="file"
-    id="hiringImageUpload"
-    accept="image/*"
-    onchange="handleImageUpload(event, 'hiringImage', 'hiringImagePreview', 'images/hiring/', 'hiring')"
-  >
+          <button
+            type="button"
+            onclick="addHiringPreview()"
+          >
+            Add Hiring Post
+          </button>
 
-  <input
-    type="text"
-    id="hiringImage"
-    placeholder="Type image path, example: images/hiring/example.jpg"
-  >
-
-  <img
-    id="hiringImagePreview"
-    class="business-image-preview"
-    style="display: none;"
-  >
-
-  <textarea
-    id="hiringDescription"
-    placeholder="Job Description"
-    maxlength="170"
-  ></textarea>
-
-  <button
-    type="button"
-    onclick="addHiringPreview()"
-  >
-    Add Hiring Post
-  </button>
-
-</article>
+        </article>
 
         <article class="admin-card">
 
@@ -491,6 +488,15 @@
             <option value="No">Active: No</option>
           </select>
 
+          <label class="image-upload-label">
+            Advertisement Expiration Date
+          </label>
+
+          <input
+            type="date"
+            id="adExpiration"
+          >
+
           <button
             type="button"
             onclick="addAdPreview()"
@@ -535,17 +541,17 @@
 
       <section class="admin-preview-section">
 
-        <section class="admin-preview-section">
+        <h2>Hiring Preview</h2>
 
-  <h2>Hiring Preview</h2>
+        <div
+          id="hiringPreviewArea"
+          class="business-grid"
+        >
+        </div>
 
-  <div
-    id="hiringPreviewArea"
-    class="business-grid"
-  >
-  </div>
+      </section>
 
-</section>
+      <section class="admin-preview-section">
 
         <h2>Advertisement Preview</h2>
 
@@ -667,11 +673,11 @@
         countyCompassEvents:
           JSON.parse(localStorage.getItem("countyCompassEvents")) || [],
 
-        countyCompassAds:
-          JSON.parse(localStorage.getItem("countyCompassAds")) || [],
-
         countyCompassHiring:
-        JSON.parse(localStorage.getItem("countyCompassHiring")) || []
+          JSON.parse(localStorage.getItem("countyCompassHiring")) || [],
+
+        countyCompassAds:
+          JSON.parse(localStorage.getItem("countyCompassAds")) || []
       };
 
       const backupBlob =
@@ -694,16 +700,13 @@
     }
 
     function importCountyCompassBackup(event) {
-
       const confirmImport =
         confirm(
-          "Importing a backup will REPLACE all current businesses, coupons, events, and ads.\n\nContinue?"
+          "Importing a backup will REPLACE all current businesses, coupons, events, hiring posts, and ads.\n\nContinue?"
         );
 
       if (!confirmImport) {
-
         event.target.value = "";
-
         return;
       }
 
@@ -718,7 +721,6 @@
         new FileReader();
 
       reader.onload = function(e) {
-
         const backupData =
           JSON.parse(e.target.result);
 
@@ -744,17 +746,18 @@
         );
 
         localStorage.setItem(
+          "countyCompassHiring",
+          JSON.stringify(
+            backupData.countyCompassHiring || []
+          )
+        );
+
+        localStorage.setItem(
           "countyCompassAds",
           JSON.stringify(
             backupData.countyCompassAds || []
           )
         );
-        localStorage.setItem(
-  "countyCompassHiring",
-  JSON.stringify(
-    backupData.countyCompassHiring || []
-  )
-);
 
         alert(
           "Backup imported successfully.\n\nRefreshing admin page now."
@@ -798,6 +801,7 @@
         ["businessImage", "businessImagePreview"],
         ["couponImage", "couponImagePreview"],
         ["eventImage", "eventImagePreview"],
+        ["hiringImage", "hiringImagePreview"],
         ["adImage", "adImagePreview"]
       ];
 

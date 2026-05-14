@@ -1,93 +1,139 @@
-let countyCompassAds = [];
+const countyCompassAds =
+  JSON.parse(
+    localStorage.getItem("countyCompassAds")
+  ) || [];
 
-const sponsorRotationKey = "countyCompassSponsorRotation";
-const sponsorRotationDateKey = "countyCompassSponsorRotationDate";
-const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
+function shuffleArray(array) {
 
-async function loadAdsFromServer() {
-  try {
-    const response =
-      await fetch("/.netlify/functions/ads");
+  const newArray =
+    [...array];
 
-    const data =
-      await response.json();
+  for (
+    let i = newArray.length - 1;
+    i > 0;
+    i--
+  ) {
 
-    if (Array.isArray(data)) {
-      countyCompassAds = data;
-
-      localStorage.setItem(
-        "countyCompassAds",
-        JSON.stringify(data)
+    const j =
+      Math.floor(
+        Math.random() * (i + 1)
       );
-    } else {
-      countyCompassAds =
-        JSON.parse(localStorage.getItem("countyCompassAds")) || [];
-    }
-  } catch (error) {
-    console.error(error);
 
-    countyCompassAds =
-      JSON.parse(localStorage.getItem("countyCompassAds")) || [];
+    [
+      newArray[i],
+      newArray[j]
+    ] = [
+      newArray[j],
+      newArray[i]
+    ];
   }
 
-  countyCompassAds =
-    getRotatedSponsorAds(countyCompassAds);
-
-  renderAllAds();
+  return newArray;
 }
 
-function getRotatedSponsorAds(ads) {
-  const lastRotation =
-    localStorage.getItem(sponsorRotationDateKey);
+function getRotatedAds(locationName) {
 
-  const savedRotation =
-    JSON.parse(localStorage.getItem(sponsorRotationKey)) || null;
+  const rotationKey =
+    "countyCompassRotation_" +
+    locationName;
+
+  const rotationDateKey =
+    rotationKey + "_date";
 
   const now =
-    Date.now();
+    new Date();
 
-  if (
-    savedRotation &&
-    lastRotation &&
-    now - Number(lastRotation) < sevenDaysMs
-  ) {
-    return savedRotation;
+  const today =
+    now.toISOString().split("T")[0];
+
+  const lastRotationDate =
+    localStorage.getItem(rotationDateKey);
+
+  const todayDate =
+    new Date(today + "T00:00:00");
+
+  const storedDate =
+    lastRotationDate
+      ? new Date(lastRotationDate + "T00:00:00")
+      : null;
+
+  let daysDifference = 999;
+
+  if (storedDate) {
+
+    daysDifference =
+      Math.floor(
+        (
+          todayDate - storedDate
+        ) /
+        (1000 * 60 * 60 * 24)
+      );
   }
 
-  const shuffledAds =
-    [...ads].sort(function() {
-      return Math.random() - 0.5;
+  const todayFilter =
+    new Date();
+
+  todayFilter.setHours(0,0,0,0);
+
+  const activeAds =
+    countyCompassAds.filter(function(ad) {
+
+      if (
+        ad.location !== locationName ||
+        ad.active !== "Yes"
+      ) {
+        return false;
+      }
+
+      if (!ad.expiration) {
+        return true;
+      }
+
+      const expirationDate =
+        new Date(
+          ad.expiration + "T00:00:00"
+        );
+
+      return expirationDate >= todayFilter;
     });
 
-  localStorage.setItem(
-    sponsorRotationKey,
-    JSON.stringify(shuffledAds)
-  );
-
-  localStorage.setItem(
-    sponsorRotationDateKey,
-    String(now)
-  );
-
-  return shuffledAds;
-}
-
-function makeAdUrl(link) {
-  if (!link || link.trim() === "") {
-    return "#";
-  }
-
   if (
-    link.startsWith("http://") ||
-    link.startsWith("https://")
+    !lastRotationDate ||
+    daysDifference >= 7
   ) {
-    return link;
+
+    const shuffledAds =
+      shuffleArray(activeAds);
+
+    localStorage.setItem(
+      rotationKey,
+      JSON.stringify(shuffledAds)
+    );
+
+    localStorage.setItem(
+      rotationDateKey,
+      today
+    );
+
+    return shuffledAds;
   }
 
-  return "https://" + link;
+  const savedOrder =
+    JSON.parse(
+      localStorage.getItem(rotationKey)
+    ) || [];
+
+  return savedOrder.filter(function(savedAd) {
+
+    return activeAds.some(function(activeAd) {
+
+      return activeAd.id === savedAd.id;
+    });
+  });
 }
 
-function renderAdContainer(containerId, locationName) {
+function renderAds(locationName, containerId) {
+
   const container =
     document.getElementById(containerId);
 
@@ -96,61 +142,64 @@ function renderAdContainer(containerId, locationName) {
   }
 
   const adsToShow =
-    countyCompassAds.filter(function(ad) {
-      return (
-        ad.location === locationName &&
-        ad.active === "Yes"
-      );
-    });
-
-  container.innerHTML = "";
+    getRotatedAds(locationName);
 
   if (adsToShow.length === 0) {
+
+    container.innerHTML = "";
+
     return;
   }
 
+  container.innerHTML = "";
+
   adsToShow.forEach(function(ad) {
-    const shape =
+
+    const shapeClass =
       ad.shape
         ? ad.shape.toLowerCase()
         : "square";
 
-    const adLink =
-      makeAdUrl(ad.link);
+    const linkStart =
+      ad.link &&
+      ad.link.trim() !== ""
+        ? `
+          <a
+            href="${ad.link}"
+            target="_blank"
+            class="site-ad site-ad-${shapeClass}"
+          >
+        `
+        : `
+          <div
+            class="site-ad site-ad-${shapeClass}"
+          >
+        `;
 
-    const adAnchor =
-      document.createElement("a");
+    const linkEnd =
+      ad.link &&
+      ad.link.trim() !== ""
+        ? "</a>"
+        : "</div>";
 
-    adAnchor.href = adLink;
-    adAnchor.target = "_blank";
-    adAnchor.rel = "noopener noreferrer";
-    adAnchor.title = ad.title || "Advertisement";
-    adAnchor.className = "site-ad ad-" + shape;
+    container.innerHTML += `
 
-    const adImage =
-      document.createElement("img");
+      ${linkStart}
 
-    adImage.src =
-      ad.image.replace(/\\/g, "/");
+        <img
+          src="${ad.image}"
+          alt="${ad.title}"
+          class="site-ad-image"
+        >
 
-    adImage.alt =
-      ad.title || "Advertisement";
+      ${linkEnd}
 
-    adImage.className =
-      "site-ad-image";
-
-    adAnchor.appendChild(adImage);
-
-    container.appendChild(adAnchor);
+    `;
   });
 }
 
-function renderAllAds() {
-  renderAdContainer("homepageAds", "homepage");
-  renderAdContainer("businessesAds", "businesses");
-  renderAdContainer("couponsAds", "coupons");
-  renderAdContainer("eventsAds", "events");
-  renderAdContainer("hiringAds", "hiring");
-}
-
-loadAdsFromServer();
+renderAds("homepage", "homepageAds");
+renderAds("businesses", "businessesAds");
+renderAds("coupons", "couponsAds");
+renderAds("events", "eventsAds");
+renderAds("hiring", "hiringAds");

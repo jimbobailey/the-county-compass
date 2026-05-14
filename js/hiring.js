@@ -6,87 +6,49 @@ let hiringPosts =
 const hiringList =
   document.getElementById("hiringList");
 
-function renderHiringPosts() {
+function getActiveHiringPosts() {
 
-  if (!hiringList) {
-    return;
-  }
+  const today =
+    new Date();
 
-  hiringList.innerHTML = "";
+  today.setHours(0,0,0,0);
 
-  if (hiringPosts.length === 0) {
+  return hiringPosts.filter(function(post) {
 
-    hiringList.innerHTML = `
-      <p class="empty-message">
-        No hiring posts available yet.
-      </p>
-    `;
+    if (!post.expiration) {
+      return true;
+    }
 
-    return;
-  }
+    const expirationDate =
+      new Date(
+        post.expiration + "T00:00:00"
+      );
 
-  hiringPosts.forEach(function(post) {
-
-    const image =
-      post.image && post.image.trim() !== ""
-        ? post.image
-        : "images/categories/hiring.jpg";
-
-    const websiteButton =
-      post.website && post.website.trim() !== ""
-        ? `
-          <a
-            href="${makeGoodUrl(post.website)}"
-            target="_blank"
-          >
-            Apply Now
-          </a>
-        `
-        : "";
-
-    hiringList.innerHTML += `
-
-      <article class="business-card">
-
-        <img
-          src="${image}"
-          alt="${post.business}"
-          class="business-card-image"
-        >
-
-        <h2>
-          ${post.title}
-        </h2>
-
-        <p>
-          <strong>Business:</strong>
-          ${post.business}
-        </p>
-
-        <p>
-          <strong>Job Type:</strong>
-          ${post.jobType}
-        </p>
-
-        <p>
-          <strong>Pay:</strong>
-          ${post.pay}
-        </p>
-
-        <p>
-          <strong>Phone:</strong>
-          ${post.phone}
-        </p>
-
-        <p class="business-description">
-          ${post.description}
-        </p>
-
-        ${websiteButton}
-
-      </article>
-    `;
+    return expirationDate >= today;
   });
+}
+
+function formatPhoneNumber(value) {
+
+  const cleaned =
+    String(value || "").replace(/\D/g, "");
+
+  if (cleaned.length <= 3) {
+    return cleaned;
+  }
+
+  if (cleaned.length <= 6) {
+    return "(" + cleaned.slice(0,3) + ") " + cleaned.slice(3);
+  }
+
+  return (
+    "(" +
+    cleaned.slice(0,3) +
+    ") " +
+    cleaned.slice(3,6) +
+    "-" +
+    cleaned.slice(6,10)
+  );
 }
 
 function makeGoodUrl(link) {
@@ -103,6 +65,131 @@ function makeGoodUrl(link) {
   }
 
   return "https://" + link;
+}
+
+function formatExpirationDate(dateValue) {
+
+  if (!dateValue) {
+    return "";
+  }
+
+  const parts =
+    dateValue.split("-");
+
+  if (parts.length !== 3) {
+    return dateValue;
+  }
+
+  return (
+    parts[1] +
+    "/" +
+    parts[2] +
+    "/" +
+    parts[0]
+  );
+}
+
+function renderHiringPosts() {
+
+  const activePosts =
+    getActiveHiringPosts();
+
+  if (!hiringList) {
+    return;
+  }
+
+  hiringList.innerHTML = "";
+
+  if (activePosts.length === 0) {
+
+    hiringList.innerHTML = `
+      <p class="empty-message">
+        No hiring opportunities available right now.
+      </p>
+    `;
+
+    return;
+  }
+
+  activePosts.forEach(function(post) {
+
+    const imagePath =
+      post.image &&
+      post.image.trim() !== ""
+        ? post.image
+        : "images/categories/hiring.jpg";
+
+    const expirationLine =
+      post.expiration
+        ? `
+          <p class="hiring-expiration">
+            Expires ${formatExpirationDate(post.expiration)}
+          </p>
+        `
+        : "";
+
+    const websiteButton =
+      post.website &&
+      post.website.trim() !== ""
+        ? `
+          <a
+            href="${makeGoodUrl(post.website)}"
+            target="_blank"
+            class="compact-button"
+          >
+            Apply
+          </a>
+        `
+        : "";
+
+    hiringList.innerHTML += `
+
+      <article class="business-card compact-business-card">
+
+        <img
+          src="${imagePath}"
+          alt="${post.title}"
+          class="business-card-image compact-business-image"
+          loading="lazy"
+          onerror="this.onerror=null; this.src='images/categories/hiring.jpg';"
+        >
+
+        <h2>
+          ${post.title}
+        </h2>
+
+        <p class="business-category">
+          ${post.business}
+        </p>
+
+        <p class="business-address">
+          ${post.jobType}
+        </p>
+
+        <p class="business-phone">
+          ${post.pay || ""}
+        </p>
+
+        <p class="business-phone">
+          ${formatPhoneNumber(post.phone)}
+        </p>
+
+        ${expirationLine}
+
+        <p class="business-description compact-description">
+          ${post.description}
+        </p>
+
+        <div class="business-button-row">
+
+          ${websiteButton}
+
+        </div>
+
+      </article>
+
+    `;
+  });
 }
 
 renderHiringPosts();

@@ -1,7 +1,14 @@
 console.log("The County Compass Loaded");
 
-let savedBusinesses = [];
-let savedAds = [];
+let savedBusinesses =
+  JSON.parse(
+    localStorage.getItem("countyCompassBusinesses")
+  ) || [];
+
+let savedAds =
+  JSON.parse(
+    localStorage.getItem("countyCompassAds")
+  ) || [];
 
 const featuredContainer =
   document.getElementById("featuredBusinesses");
@@ -47,91 +54,20 @@ const categoryImages = {
 
 loadHomepageData();
 
-async function loadHomepageData() {
+function loadHomepageData() {
 
-  await Promise.all([
-    loadBusinessesFromServer(),
-    loadAdsFromServer()
-  ]);
+  savedBusinesses =
+    JSON.parse(
+      localStorage.getItem("countyCompassBusinesses")
+    ) || [];
+
+  savedAds =
+    JSON.parse(
+      localStorage.getItem("countyCompassAds")
+    ) || [];
 
   renderHomepageAds();
   renderFeaturedBusinesses();
-}
-
-async function loadBusinessesFromServer() {
-
-  try {
-
-    const response =
-      await fetch("/.netlify/functions/businesses");
-
-    const data =
-      await response.json();
-
-    if (Array.isArray(data)) {
-
-      savedBusinesses = data;
-
-      localStorage.setItem(
-        "countyCompassBusinesses",
-        JSON.stringify(data)
-      );
-
-    } else {
-
-      savedBusinesses =
-        JSON.parse(
-          localStorage.getItem("countyCompassBusinesses")
-        ) || [];
-    }
-
-  } catch (error) {
-
-    console.error(error);
-
-    savedBusinesses =
-      JSON.parse(
-        localStorage.getItem("countyCompassBusinesses")
-      ) || [];
-  }
-}
-
-async function loadAdsFromServer() {
-
-  try {
-
-    const response =
-      await fetch("/.netlify/functions/ads");
-
-    const data =
-      await response.json();
-
-    if (Array.isArray(data)) {
-
-      savedAds = data;
-
-      localStorage.setItem(
-        "countyCompassAds",
-        JSON.stringify(data)
-      );
-
-    } else {
-
-      savedAds =
-        JSON.parse(
-          localStorage.getItem("countyCompassAds")
-        ) || [];
-    }
-
-  } catch (error) {
-
-    console.error(error);
-
-    savedAds =
-      JSON.parse(
-        localStorage.getItem("countyCompassAds")
-      ) || [];
-  }
 }
 
 function getCategoryImage(category) {
@@ -172,6 +108,60 @@ function getGoodUrl(link) {
   return "https://" + link;
 }
 
+function getActiveAds(ads) {
+
+  const today =
+    new Date();
+
+  today.setHours(0,0,0,0);
+
+  return ads.filter(function(ad) {
+
+    if (ad.active !== "Yes") {
+      return false;
+    }
+
+    if (!ad.expiration) {
+      return true;
+    }
+
+    const expirationDate =
+      new Date(
+        ad.expiration + "T00:00:00"
+      );
+
+    return expirationDate >= today;
+  });
+}
+
+function getActiveBusinesses(businesses) {
+
+  const today =
+    new Date();
+
+  today.setHours(0,0,0,0);
+
+  return businesses.filter(function(business) {
+
+    if (
+      business.paid !== "Yes"
+    ) {
+      return true;
+    }
+
+    if (!business.expiration) {
+      return true;
+    }
+
+    const expirationDate =
+      new Date(
+        business.expiration + "T00:00:00"
+      );
+
+    return expirationDate >= today;
+  });
+}
+
 function renderHomepageAds() {
 
   if (!homepageAdsContainer) {
@@ -179,13 +169,13 @@ function renderHomepageAds() {
   }
 
   const homepageAds =
-    savedAds.filter(function(ad) {
+    getActiveAds(savedAds)
+      .filter(function(ad) {
 
-      return (
-        ad.location === "homepage" &&
-        ad.active === "Yes"
-      );
-    });
+        return (
+          ad.location === "homepage"
+        );
+      });
 
   homepageAdsContainer.innerHTML = "";
 
@@ -225,8 +215,11 @@ function renderFeaturedBusinesses() {
     return;
   }
 
+  const activeBusinesses =
+    getActiveBusinesses(savedBusinesses);
+
   const featuredBusinesses =
-    savedBusinesses.filter(function(business) {
+    activeBusinesses.filter(function(business) {
 
       const currentPage =
         window.location.pathname
@@ -239,11 +232,29 @@ function renderFeaturedBusinesses() {
         (
           business.featuredLocation === "all" ||
 
-          business.featuredLocation === currentPage ||
-
           (
             currentPage === "index" &&
             business.featuredLocation === "homepage"
+          ) ||
+
+          (
+            currentPage === "businesses" &&
+            business.featuredLocation === "businesses"
+          ) ||
+
+          (
+            currentPage === "coupons" &&
+            business.featuredLocation === "coupons"
+          ) ||
+
+          (
+            currentPage === "events" &&
+            business.featuredLocation === "events"
+          ) ||
+
+          (
+            currentPage === "hiring" &&
+            business.featuredLocation === "hiring"
           )
         )
       );

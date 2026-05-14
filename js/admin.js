@@ -1,26 +1,21 @@
 let businesses = [];
-
 let editingBusinessId = null;
 
 let coupons =
   JSON.parse(localStorage.getItem("countyCompassCoupons")) || [];
-
 let editingCouponId = null;
 
 let events =
   JSON.parse(localStorage.getItem("countyCompassEvents")) || [];
-
 let editingEventId = null;
 
 let ads =
   JSON.parse(localStorage.getItem("countyCompassAds")) || [];
+let editingAdId = null;
 
 let hiringPosts =
   JSON.parse(localStorage.getItem("countyCompassHiring")) || [];
-
 let editingHiringId = null;
-
-let editingAdId = null;
 
 loadBusinessesFromServer();
 
@@ -31,26 +26,18 @@ renderAdPreviews();
 
 async function loadBusinessesFromServer() {
   try {
-    const response =
-      await fetch("/.netlify/functions/businesses");
-
-    const data =
-      await response.json();
+    const response = await fetch("/.netlify/functions/businesses");
+    const data = await response.json();
 
     if (Array.isArray(data)) {
       businesses = data;
-
-      localStorage.setItem(
-        "countyCompassBusinesses",
-        JSON.stringify(data)
-      );
+      localStorage.setItem("countyCompassBusinesses", JSON.stringify(data));
     } else {
       businesses =
         JSON.parse(localStorage.getItem("countyCompassBusinesses")) || [];
     }
   } catch (error) {
     console.error(error);
-
     businesses =
       JSON.parse(localStorage.getItem("countyCompassBusinesses")) || [];
   }
@@ -59,22 +46,16 @@ async function loadBusinessesFromServer() {
 }
 
 async function saveBusinesses() {
-  localStorage.setItem(
-    "countyCompassBusinesses",
-    JSON.stringify(businesses)
-  );
+  localStorage.setItem("countyCompassBusinesses", JSON.stringify(businesses));
 
   try {
-    await fetch(
-      "/.netlify/functions/businesses",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(businesses)
-      }
-    );
+    await fetch("/.netlify/functions/businesses", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(businesses)
+    });
   } catch (error) {
     console.error("Business sync failed:", error);
   }
@@ -85,8 +66,7 @@ function generateId() {
 }
 
 function formatPhoneNumber(value) {
-  const cleaned =
-    String(value || "").replace(/\D/g, "");
+  const cleaned = String(value || "").replace(/\D/g, "");
 
   if (cleaned.length <= 3) {
     return cleaned;
@@ -152,52 +132,54 @@ function makeGoodUrl(link) {
   return "https://" + link;
 }
 
+function getExpirationText(expiration) {
+  if (!expiration) {
+    return "";
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const expirationDate = new Date(expiration + "T00:00:00");
+
+  if (expirationDate < today) {
+    return "Expired: " + expiration;
+  }
+
+  return "Expires: " + expiration;
+}
+
 function saveCoupons() {
-  localStorage.setItem(
-    "countyCompassCoupons",
-    JSON.stringify(coupons)
-  );
+  localStorage.setItem("countyCompassCoupons", JSON.stringify(coupons));
 }
 
 async function saveEvents() {
-  localStorage.setItem(
-    "countyCompassEvents",
-    JSON.stringify(events)
-  );
+  localStorage.setItem("countyCompassEvents", JSON.stringify(events));
 
   try {
-    await fetch(
-      "/.netlify/functions/events",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(events)
-      }
-    );
+    await fetch("/.netlify/functions/events", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(events)
+    });
   } catch (error) {
     console.error("Event sync failed:", error);
   }
 }
 
 async function saveAds() {
-  localStorage.setItem(
-    "countyCompassAds",
-    JSON.stringify(ads)
-  );
+  localStorage.setItem("countyCompassAds", JSON.stringify(ads));
 
   try {
-    await fetch(
-      "/.netlify/functions/ads",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(ads)
-      }
-    );
+    await fetch("/.netlify/functions/ads", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(ads)
+    });
   } catch (error) {
     console.error("Ad sync failed:", error);
   }
@@ -235,15 +217,11 @@ async function addBusinessPreview() {
   const name = getValue("businessName");
   const category = getValue("businessCategory");
   const address = getValue("businessAddress");
-
-  const phone =
-    formatPhoneNumber(
-      getValue("businessPhone")
-    );
-
+  const phone = formatPhoneNumber(getValue("businessPhone"));
   const website = makeGoodUrl(getValue("businessWebsite"));
   const image = getValue("businessImage");
   const paid = getValue("businessPaid");
+  const expiration = getValue("businessExpiration");
   const featured = getValue("businessFeatured");
   const featuredLocation = getValue("businessFeaturedLocation");
   const description = getValue("businessDescription");
@@ -280,6 +258,7 @@ async function addBusinessPreview() {
             website,
             image,
             paid,
+            expiration,
             featured,
             featuredLocation,
             description
@@ -308,6 +287,7 @@ async function addBusinessPreview() {
       website,
       image,
       paid,
+      expiration,
       featured,
       featuredLocation,
       description
@@ -336,8 +316,8 @@ function renderBusinessPreviews() {
         ? business.image
         : getCategoryImage(business.category);
 
-    const fallbackImage =
-      getCategoryImage(business.category);
+    const fallbackImage = getCategoryImage(business.category);
+    const expirationText = getExpirationText(business.expiration);
 
     area.innerHTML += `
       <article class="business-card">
@@ -354,6 +334,15 @@ function renderBusinessPreviews() {
         <p><strong>Category:</strong> ${business.category}</p>
         <p><strong>Address:</strong> ${business.address}</p>
         <p><strong>Phone:</strong> ${formatPhoneNumber(business.phone)}</p>
+        <p><strong>Paid:</strong> ${business.paid || "No"}</p>
+        <p><strong>Featured:</strong> ${business.featured || "No"}</p>
+        <p><strong>Featured Location:</strong> ${business.featuredLocation || "homepage"}</p>
+
+        ${
+          expirationText
+            ? `<p><strong>${expirationText}</strong></p>`
+            : ""
+        }
 
         <p class="business-description">
           ${business.description}
@@ -399,6 +388,7 @@ function editBusiness(id) {
   setValue("businessWebsite", business.website);
   setValue("businessImage", business.image);
   setValue("businessPaid", business.paid);
+  setValue("businessExpiration", business.expiration || "");
   setValue("businessFeatured", business.featured);
 
   setValue(
@@ -447,13 +437,9 @@ function clearBusinessForm() {
   setValue("businessWebsite", "");
   setValue("businessImage", "");
   setValue("businessPaid", "No");
+  setValue("businessExpiration", "");
   setValue("businessFeatured", "No");
-
-  setValue(
-    "businessFeaturedLocation",
-    "homepage"
-  );
-
+  setValue("businessFeaturedLocation", "homepage");
   setValue("businessDescription", "");
 
   resetPreviewImage("businessImagePreview");
@@ -466,6 +452,7 @@ function addCouponPreview() {
   const category = getValue("couponCategory");
   const title = getValue("couponTitle");
   const image = getValue("couponImage");
+  const expiration = getValue("couponExpiration");
   const details = getValue("couponDetails");
 
   if (!businessName || !category || !title || !details) {
@@ -483,6 +470,7 @@ function addCouponPreview() {
             category,
             title,
             image,
+            expiration,
             details
           };
         }
@@ -500,6 +488,7 @@ function addCouponPreview() {
       category,
       title,
       image,
+      expiration,
       details
     });
 
@@ -529,6 +518,8 @@ function renderCouponPreviews() {
         ? coupon.image
         : fallbackImage;
 
+    const expirationText = getExpirationText(coupon.expiration);
+
     area.innerHTML += `
       <article class="coupon-card">
 
@@ -549,6 +540,12 @@ function renderCouponPreviews() {
           <strong>Category:</strong>
           ${coupon.category}
         </p>
+
+        ${
+          expirationText
+            ? `<p><strong>${expirationText}</strong></p>`
+            : ""
+        }
 
         <p class="business-description">
           ${coupon.details}
@@ -591,6 +588,7 @@ function editCoupon(id) {
   setValue("couponCategory", coupon.category);
   setValue("couponTitle", coupon.title);
   setValue("couponImage", coupon.image);
+  setValue("couponExpiration", coupon.expiration || "");
   setValue("couponDetails", coupon.details);
 
   setPreviewImage("couponImagePreview", coupon.image);
@@ -623,6 +621,7 @@ function clearCouponForm() {
   setValue("couponCategory", "");
   setValue("couponTitle", "");
   setValue("couponImage", "");
+  setValue("couponExpiration", "");
   setValue("couponDetails", "");
 
   resetPreviewImage("couponImagePreview");
@@ -696,8 +695,7 @@ function renderEventPreviews() {
   area.innerHTML = "";
 
   events.forEach(function(event) {
-    const fallbackImage =
-      "images/categories/events.jpg";
+    const fallbackImage = "images/categories/events.jpg";
 
     const imagePath =
       event.image && event.image.trim() !== ""
@@ -812,6 +810,7 @@ async function addAdPreview() {
   const image = getValue("adImage");
   const link = makeGoodUrl(getValue("adLink"));
   const active = getValue("adActive");
+  const expiration = getValue("adExpiration");
 
   if (!title || !location || !shape || !image) {
     alert("Please complete all ad fields.");
@@ -829,7 +828,8 @@ async function addAdPreview() {
             shape,
             image,
             link,
-            active
+            active,
+            expiration
           };
         }
 
@@ -847,7 +847,8 @@ async function addAdPreview() {
       shape,
       image,
       link,
-      active
+      active,
+      expiration
     });
 
     alert("Advertisement added.");
@@ -873,6 +874,8 @@ function renderAdPreviews() {
         ? ad.shape.toLowerCase()
         : "square";
 
+    const expirationText = getExpirationText(ad.expiration);
+
     area.innerHTML += `
       <article class="ad-preview-card ad-${shape}">
 
@@ -889,6 +892,12 @@ function renderAdPreviews() {
 
         <p><strong>${ad.title}</strong></p>
         <p>${ad.location} | ${shape} | Active: ${ad.active}</p>
+
+        ${
+          expirationText
+            ? `<p><strong>${expirationText}</strong></p>`
+            : ""
+        }
 
         <button
           type="button"
@@ -929,6 +938,7 @@ function editAd(id) {
   setValue("adImage", ad.image);
   setValue("adLink", ad.link);
   setValue("adActive", ad.active);
+  setValue("adExpiration", ad.expiration || "");
 
   setPreviewImage("adImagePreview", ad.image);
 
@@ -962,6 +972,7 @@ function clearAdForm() {
   setValue("adImage", "");
   setValue("adLink", "");
   setValue("adActive", "Yes");
+  setValue("adExpiration", "");
 
   resetPreviewImage("adImagePreview");
 }
@@ -1003,33 +1014,15 @@ function filterBusinesses() {
 /* HIRING */
 
 function addHiringPreview() {
-  const business =
-    getValue("hiringBusiness");
-
-  const title =
-    getValue("hiringTitle");
-
-  const jobType =
-    getValue("hiringType");
-
-  const pay =
-    getValue("hiringPay");
-
-  const phone =
-    formatPhoneNumber(
-      getValue("hiringPhone")
-    );
-
-  const website =
-    makeGoodUrl(
-      getValue("hiringWebsite")
-    );
-
-  const image =
-    getValue("hiringImage");
-
-  const description =
-    getValue("hiringDescription");
+  const business = getValue("hiringBusiness");
+  const title = getValue("hiringTitle");
+  const jobType = getValue("hiringType");
+  const pay = getValue("hiringPay");
+  const phone = formatPhoneNumber(getValue("hiringPhone"));
+  const website = makeGoodUrl(getValue("hiringWebsite"));
+  const image = getValue("hiringImage");
+  const expiration = getValue("hiringExpiration");
+  const description = getValue("hiringDescription");
 
   if (
     !business ||
@@ -1038,10 +1031,7 @@ function addHiringPreview() {
     !phone ||
     !description
   ) {
-    alert(
-      "Please complete all hiring fields."
-    );
-
+    alert("Please complete all hiring fields.");
     return;
   }
 
@@ -1058,6 +1048,7 @@ function addHiringPreview() {
             phone,
             website,
             image,
+            expiration,
             description
           };
         }
@@ -1078,6 +1069,7 @@ function addHiringPreview() {
       phone,
       website,
       image,
+      expiration,
       description
     });
 
@@ -1090,17 +1082,12 @@ function addHiringPreview() {
 }
 
 function saveHiringPosts() {
-  localStorage.setItem(
-    "countyCompassHiring",
-    JSON.stringify(hiringPosts)
-  );
+  localStorage.setItem("countyCompassHiring", JSON.stringify(hiringPosts));
 }
 
 function renderHiringPreviews() {
   const area =
-    document.getElementById(
-      "hiringPreviewArea"
-    );
+    document.getElementById("hiringPreviewArea");
 
   if (!area) {
     return;
@@ -1113,6 +1100,8 @@ function renderHiringPreviews() {
       post.image && post.image.trim() !== ""
         ? post.image
         : "images/categories/hiring.jpg";
+
+    const expirationText = getExpirationText(post.expiration);
 
     area.innerHTML += `
       <article class="business-card">
@@ -1146,6 +1135,12 @@ function renderHiringPreviews() {
           <strong>Phone:</strong>
           ${formatPhoneNumber(post.phone)}
         </p>
+
+        ${
+          expirationText
+            ? `<p><strong>${expirationText}</strong></p>`
+            : ""
+        }
 
         <p class="business-description">
           ${post.description}
@@ -1191,12 +1186,10 @@ function editHiringPost(id) {
   setValue("hiringPhone", formatPhoneNumber(post.phone));
   setValue("hiringWebsite", post.website);
   setValue("hiringImage", post.image);
+  setValue("hiringExpiration", post.expiration || "");
   setValue("hiringDescription", post.description);
 
-  setPreviewImage(
-    "hiringImagePreview",
-    post.image
-  );
+  setPreviewImage("hiringImagePreview", post.image);
 
   window.scrollTo({
     top: 0,
@@ -1206,9 +1199,7 @@ function editHiringPost(id) {
 
 function deleteHiringPost(id) {
   const confirmDelete =
-    confirm(
-      "Delete this hiring post?"
-    );
+    confirm("Delete this hiring post?");
 
   if (!confirmDelete) {
     return;
@@ -1231,11 +1222,10 @@ function clearHiringForm() {
   setValue("hiringPhone", "");
   setValue("hiringWebsite", "");
   setValue("hiringImage", "");
+  setValue("hiringExpiration", "");
   setValue("hiringDescription", "");
 
-  resetPreviewImage(
-    "hiringImagePreview"
-  );
+  resetPreviewImage("hiringImagePreview");
 }
 
 document.addEventListener("DOMContentLoaded", function() {
