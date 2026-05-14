@@ -263,7 +263,7 @@ function renderFeaturedBusinesses() {
   featuredContainer.innerHTML = "";
 
   featuredBusinesses
-    .slice(0, 12)
+    .slice(0, 20)
     .forEach(function(business) {
 
       const businessLink =
