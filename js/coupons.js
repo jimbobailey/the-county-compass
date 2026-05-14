@@ -6,36 +6,10 @@ const couponGrid =
 
 let visibleCouponCount = 12;
 
-const couponCategoryImages = {
-  "Automotive Repair": "images/categories/automotive.jpg",
-  "Automotive Services": "images/categories/automotive.jpg",
-  "Churches": "images/categories/churches.jpg",
-  "Custom Crafts & Fabrication": "images/categories/shopping.jpg",
-  "Entertainment": "images/categories/entertainment.jpg",
-  "Fitness": "images/categories/fitness.jpg",
-  "Food & Dining": "images/categories/food-dining.jpg",
-  "Gravel, Rock & Fill Dirt": "images/categories/home-services.jpg",
-  "Handyman Services": "images/categories/home-services.jpg",
-  "Health & Beauty": "images/categories/health-beauty.jpg",
-  "Home Improvement": "images/categories/home-services.jpg",
-  "IT & Computer Repair": "images/categories/professional-services.jpg",
-  "Land Clearing & Tractor Services": "images/categories/home-services.jpg",
-  "Landscaping": "images/categories/home-services.jpg",
-  "Locksmithing": "images/categories/professional-services.jpg",
-  "Professional Services": "images/categories/professional-services.jpg",
-  "Real Estate": "images/categories/real-estate.jpg",
-  "Shopping": "images/categories/shopping.jpg",
-  "Other": "images/categories/coupons.jpg"
-};
-
-renderCoupons(
-  getActiveCoupons()
-);
+renderCoupons(getActiveCoupons());
 
 function getActiveCoupons() {
-  const today =
-    new Date();
-
+  const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   return savedCoupons.filter(function(coupon) {
@@ -43,31 +17,19 @@ function getActiveCoupons() {
       return true;
     }
 
-    const expirationDate =
-      new Date(
-        coupon.expiration + "T00:00:00"
-      );
+    const expirationDate = new Date(coupon.expiration + "T00:00:00");
+    expirationDate.setHours(0, 0, 0, 0);
 
     return expirationDate >= today;
   });
 }
 
-function getCouponFallbackImage(coupon) {
-  return (
-    couponCategoryImages[coupon.category] ||
-    "images/categories/coupons.jpg"
-  );
-}
-
 function getCouponImage(coupon) {
-  if (
-    coupon.image &&
-    coupon.image.trim() !== ""
-  ) {
+  if (coupon.image && coupon.image.trim() !== "") {
     return coupon.image;
   }
 
-  return getCouponFallbackImage(coupon);
+  return "images/categories/coupons.jpg";
 }
 
 function formatExpirationDate(dateValue) {
@@ -75,20 +37,13 @@ function formatExpirationDate(dateValue) {
     return "";
   }
 
-  const parts =
-    dateValue.split("-");
+  const parts = dateValue.split("-");
 
   if (parts.length !== 3) {
     return dateValue;
   }
 
-  return (
-    parts[1] +
-    "/" +
-    parts[2] +
-    "/" +
-    parts[0]
-  );
+  return parts[1] + "/" + parts[2] + "/" + parts[0];
 }
 
 function renderCoupons(couponsToShow) {
@@ -104,16 +59,12 @@ function renderCoupons(couponsToShow) {
         No coupons found.
       </p>
     `;
-
     return;
   }
 
   couponsToShow
     .slice(0, visibleCouponCount)
     .forEach(function(coupon) {
-      const fallbackImage =
-        getCouponFallbackImage(coupon);
-
       const expirationLine =
         coupon.expiration
           ? `
@@ -124,52 +75,45 @@ function renderCoupons(couponsToShow) {
           : "";
 
       couponGrid.innerHTML += `
-        <article class="coupon-card">
+        <article class="business-card compact-business-card">
 
           <img
             src="${getCouponImage(coupon)}"
-            alt="${coupon.title}"
-            class="business-card-image"
+            alt="${coupon.title || "Coupon"}"
+            class="business-card-image compact-business-image"
             loading="lazy"
-            onerror="this.onerror=null; this.src='${fallbackImage}';"
+            onerror="this.onerror=null; this.src='images/categories/coupons.jpg';"
           >
 
           <div class="coupon-tag">Local Deal</div>
 
-          <h2>${coupon.title}</h2>
+          <h2>
+            ${coupon.title || ""}
+          </h2>
 
-          <p class="coupon-business">
-            ${coupon.businessName}
-          </p>
-
-          <p>
-            ${coupon.category || "General"}
+          <p class="business-category">
+            ${coupon.businessName || ""}
           </p>
 
           ${expirationLine}
 
-          <p class="business-description">
-            ${coupon.details}
+          <p class="business-description compact-description">
+            ${coupon.details || ""}
           </p>
 
         </article>
       `;
     });
 
-  if (
-    couponsToShow.length >
-    visibleCouponCount
-  ) {
+  if (couponsToShow.length > visibleCouponCount) {
     couponGrid.innerHTML += `
       <div class="load-more-wrap">
-
         <button
           type="button"
           onclick="loadMoreCoupons()"
         >
           Load More Coupons
         </button>
-
       </div>
     `;
   }
@@ -177,8 +121,5 @@ function renderCoupons(couponsToShow) {
 
 function loadMoreCoupons() {
   visibleCouponCount += 12;
-
-  renderCoupons(
-    getActiveCoupons()
-  );
+  renderCoupons(getActiveCoupons());
 }
