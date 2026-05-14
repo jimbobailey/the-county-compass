@@ -80,6 +80,28 @@ function makeGoodUrl(link) {
   return "https://" + link;
 }
 
+function formatPhoneNumber(value) {
+  const cleaned =
+    String(value || "").replace(/\D/g, "");
+
+  if (cleaned.length <= 3) {
+    return cleaned;
+  }
+
+  if (cleaned.length <= 6) {
+    return "(" + cleaned.slice(0, 3) + ") " + cleaned.slice(3);
+  }
+
+  return (
+    "(" +
+    cleaned.slice(0, 3) +
+    ") " +
+    cleaned.slice(3, 6) +
+    "-" +
+    cleaned.slice(6, 10)
+  );
+}
+
 function applyCategoryFromUrl() {
   const urlParams =
     new URLSearchParams(window.location.search);
@@ -138,6 +160,9 @@ function getFilteredBusinesses() {
       const address =
         business.address ? business.address.toLowerCase() : "";
 
+      const phone =
+        business.phone ? business.phone.toLowerCase() : "";
+
       const description =
         business.description ? business.description.toLowerCase() : "";
 
@@ -145,6 +170,7 @@ function getFilteredBusinesses() {
         name.includes(searchInput) ||
         category.includes(searchInput) ||
         address.includes(searchInput) ||
+        phone.includes(searchInput) ||
         description.includes(searchInput);
 
       const matchesCategory =
@@ -191,30 +217,23 @@ function renderBusinesses(businessesToShow) {
           business.website
         );
 
-      const websiteButton =
-        websiteUrl
-          ? `
-            <a
-              href="${websiteUrl}"
-              target="_blank"
-            >
-              Visit Website
-            </a>
-          `
-          : "";
-
       const fallbackImage =
         getCategoryImage(
           business.category
         );
 
+      const displayPhone =
+        formatPhoneNumber(
+          business.phone
+        );
+
       businessList.innerHTML += `
-        <article class="business-card">
+        <article class="business-card compact-business-card">
 
           <img
             src="${getBusinessImage(business)}"
             alt="${business.category}"
-            class="business-card-image"
+            class="business-card-image compact-business-image"
             loading="lazy"
             onerror="this.onerror=null; this.src='${fallbackImage}';"
           >
@@ -223,33 +242,47 @@ function renderBusinesses(businessesToShow) {
             ${business.name}
           </h2>
 
-          <p>
-            <strong>Category:</strong>
+          <p class="business-category">
             ${business.category}
           </p>
 
-          <p>
-            <strong>Address:</strong>
+          <p class="business-address">
             ${business.address}
           </p>
 
-          <p>
-            <strong>Phone:</strong>
-            ${business.phone}
+          <p class="business-phone">
+            ${displayPhone}
           </p>
 
-          <p class="business-description">
+          <p class="business-description compact-description">
             ${business.description}
           </p>
 
-          <a
-            href="${mapsLink}"
-            target="_blank"
-          >
-            Get Directions
-          </a>
+          <div class="business-button-row">
 
-          ${websiteButton}
+            <a
+              href="${mapsLink}"
+              target="_blank"
+              class="compact-button"
+            >
+              Directions
+            </a>
+
+            ${
+              websiteUrl
+                ? `
+                  <a
+                    href="${websiteUrl}"
+                    target="_blank"
+                    class="compact-button"
+                  >
+                    Website
+                  </a>
+                `
+                : ""
+            }
+
+          </div>
 
         </article>
       `;

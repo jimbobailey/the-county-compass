@@ -410,6 +410,66 @@ body {
   background: #ffaa33;
 }
 
+/* COMPACT BUSINESS CARDS */
+.compact-business-card {
+  max-width: 280px;
+  padding: 12px;
+}
+
+.compact-business-image {
+  aspect-ratio: 1 / 1;
+  margin-bottom: 10px;
+}
+
+.compact-business-card h2 {
+  font-size: 19px;
+  margin-bottom: 8px;
+}
+
+.business-category,
+.business-address,
+.business-phone {
+  font-size: 14px;
+  color: #ccc;
+  margin-bottom: 6px;
+}
+
+.compact-description {
+  font-size: 14px;
+  line-height: 1.35;
+  margin-bottom: 10px;
+}
+
+.business-button-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.compact-button {
+  display: inline-block;
+  text-decoration: none;
+  background: #2b2b2b !important;
+  color: #fff !important;
+  padding: 7px 11px !important;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: bold;
+  border: 1px solid #444;
+  transition: all 0.2s ease;
+  margin-top: 4px !important;
+  margin-right: 0 !important;
+}
+
+.compact-button:hover {
+  background: #ff8c00 !important;
+  color: #000 !important;
+  border-color: #ffb347;
+  box-shadow:
+    0 0 10px rgba(255,140,0,0.7),
+    0 0 18px rgba(255,140,0,0.35);
+}
+
 .search-box {
   display: flex;
   gap: 14px;
@@ -735,5 +795,9 @@ body {
     flex-basis: 150px;
     width: 150px;
     max-width: 150px;
+  }
+
+  .compact-business-card {
+    max-width: 100%;
   }
 }

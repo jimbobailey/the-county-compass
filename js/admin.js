@@ -15,7 +15,7 @@ let editingEventId = null;
 let ads =
   JSON.parse(localStorage.getItem("countyCompassAds")) || [];
 
-  let hiringPosts =
+let hiringPosts =
   JSON.parse(localStorage.getItem("countyCompassHiring")) || [];
 
 let editingHiringId = null;
@@ -82,6 +82,28 @@ async function saveBusinesses() {
 
 function generateId() {
   return Date.now() + Math.floor(Math.random() * 100000);
+}
+
+function formatPhoneNumber(value) {
+  const cleaned =
+    String(value || "").replace(/\D/g, "");
+
+  if (cleaned.length <= 3) {
+    return cleaned;
+  }
+
+  if (cleaned.length <= 6) {
+    return "(" + cleaned.slice(0, 3) + ") " + cleaned.slice(3);
+  }
+
+  return (
+    "(" +
+    cleaned.slice(0, 3) +
+    ") " +
+    cleaned.slice(3, 6) +
+    "-" +
+    cleaned.slice(6, 10)
+  );
 }
 
 function getValue(id) {
@@ -183,63 +205,26 @@ async function saveAds() {
 
 function getCategoryImage(category) {
   const categoryImages = {
-
-  "Automotive Repair":
-    "images/categories/automotive.jpg",
-
-  "Automotive Services":
-    "images/categories/automotive.jpg",
-
-  "Churches":
-    "images/categories/churches.jpg",
-
-  "Custom Crafts & Fabrication":
-    "images/categories/shopping.jpg",
-
-  "Entertainment":
-    "images/categories/entertainment.jpg",
-
-  "Fitness":
-    "images/categories/fitness.jpg",
-
-  "Food & Dining":
-    "images/categories/food-dining.jpg",
-
-  "Gravel, Rock & Fill Dirt":
-    "images/categories/home-services.jpg",
-
-  "Handyman Services":
-    "images/categories/home-services.jpg",
-
-  "Health & Beauty":
-    "images/categories/health-beauty.jpg",
-
-  "Home Improvement":
-    "images/categories/home-services.jpg",
-
-  "IT & Computer Repair":
-    "images/categories/professional-services.jpg",
-
-  "Land Clearing & Tractor Services":
-    "images/categories/home-services.jpg",
-
-  "Landscaping":
-    "images/categories/home-services.jpg",
-    "Locksmithing":
-  "images/categories/professional-services.jpg",
-
-  "Professional Services":
-    "images/categories/professional-services.jpg",
-
-  "Real Estate":
-    "images/categories/real-estate.jpg",
-
-  "Shopping":
-    "images/categories/shopping.jpg",
-
-  "Other":
-    "images/categories/professional-services.jpg"
-};
+    "Automotive Repair": "images/categories/automotive.jpg",
+    "Automotive Services": "images/categories/automotive.jpg",
+    "Churches": "images/categories/churches.jpg",
+    "Custom Crafts & Fabrication": "images/categories/shopping.jpg",
+    "Entertainment": "images/categories/entertainment.jpg",
+    "Fitness": "images/categories/fitness.jpg",
+    "Food & Dining": "images/categories/food-dining.jpg",
+    "Gravel, Rock & Fill Dirt": "images/categories/home-services.jpg",
+    "Handyman Services": "images/categories/home-services.jpg",
+    "Health & Beauty": "images/categories/health-beauty.jpg",
+    "Home Improvement": "images/categories/home-services.jpg",
+    "IT & Computer Repair": "images/categories/professional-services.jpg",
+    "Land Clearing & Tractor Services": "images/categories/home-services.jpg",
+    "Landscaping": "images/categories/home-services.jpg",
+    "Locksmithing": "images/categories/professional-services.jpg",
+    "Professional Services": "images/categories/professional-services.jpg",
+    "Real Estate": "images/categories/real-estate.jpg",
+    "Shopping": "images/categories/shopping.jpg",
+    "Other": "images/categories/professional-services.jpg"
+  };
 
   return categoryImages[category] || "images/categories/professional-services.jpg";
 }
@@ -250,7 +235,12 @@ async function addBusinessPreview() {
   const name = getValue("businessName");
   const category = getValue("businessCategory");
   const address = getValue("businessAddress");
-  const phone = getValue("businessPhone");
+
+  const phone =
+    formatPhoneNumber(
+      getValue("businessPhone")
+    );
+
   const website = makeGoodUrl(getValue("businessWebsite"));
   const image = getValue("businessImage");
   const paid = getValue("businessPaid");
@@ -319,6 +309,7 @@ async function addBusinessPreview() {
       image,
       paid,
       featured,
+      featuredLocation,
       description
     });
 
@@ -362,7 +353,7 @@ function renderBusinessPreviews() {
 
         <p><strong>Category:</strong> ${business.category}</p>
         <p><strong>Address:</strong> ${business.address}</p>
-        <p><strong>Phone:</strong> ${business.phone}</p>
+        <p><strong>Phone:</strong> ${formatPhoneNumber(business.phone)}</p>
 
         <p class="business-description">
           ${business.description}
@@ -404,15 +395,17 @@ function editBusiness(id) {
   setValue("businessName", business.name);
   setValue("businessCategory", business.category);
   setValue("businessAddress", business.address);
-  setValue("businessPhone", business.phone);
+  setValue("businessPhone", formatPhoneNumber(business.phone));
   setValue("businessWebsite", business.website);
   setValue("businessImage", business.image);
   setValue("businessPaid", business.paid);
   setValue("businessFeatured", business.featured);
+
   setValue(
-  "businessFeaturedLocation",
-  business.featuredLocation || "homepage"
-);
+    "businessFeaturedLocation",
+    business.featuredLocation || "homepage"
+  );
+
   setValue("businessDescription", business.description);
 
   setPreviewImage("businessImagePreview", business.image);
@@ -455,10 +448,12 @@ function clearBusinessForm() {
   setValue("businessImage", "");
   setValue("businessPaid", "No");
   setValue("businessFeatured", "No");
+
   setValue(
-  "businessFeaturedLocation",
-  "homepage"
-);
+    "businessFeaturedLocation",
+    "homepage"
+  );
+
   setValue("businessDescription", "");
 
   resetPreviewImage("businessImagePreview");
@@ -1008,7 +1003,6 @@ function filterBusinesses() {
 /* HIRING */
 
 function addHiringPreview() {
-
   const business =
     getValue("hiringBusiness");
 
@@ -1022,7 +1016,9 @@ function addHiringPreview() {
     getValue("hiringPay");
 
   const phone =
-    getValue("hiringPhone");
+    formatPhoneNumber(
+      getValue("hiringPhone")
+    );
 
   const website =
     makeGoodUrl(
@@ -1042,7 +1038,6 @@ function addHiringPreview() {
     !phone ||
     !description
   ) {
-
     alert(
       "Please complete all hiring fields."
     );
@@ -1051,12 +1046,9 @@ function addHiringPreview() {
   }
 
   if (editingHiringId) {
-
     hiringPosts =
       hiringPosts.map(function(post) {
-
         if (post.id === editingHiringId) {
-
           return {
             id: editingHiringId,
             business,
@@ -1076,13 +1068,9 @@ function addHiringPreview() {
     editingHiringId = null;
 
     alert("Hiring post updated.");
-
   } else {
-
     hiringPosts.unshift({
-
       id: generateId(),
-
       business,
       title,
       jobType,
@@ -1097,14 +1085,11 @@ function addHiringPreview() {
   }
 
   saveHiringPosts();
-
   renderHiringPreviews();
-
   clearHiringForm();
 }
 
 function saveHiringPosts() {
-
   localStorage.setItem(
     "countyCompassHiring",
     JSON.stringify(hiringPosts)
@@ -1112,7 +1097,6 @@ function saveHiringPosts() {
 }
 
 function renderHiringPreviews() {
-
   const area =
     document.getElementById(
       "hiringPreviewArea"
@@ -1125,14 +1109,12 @@ function renderHiringPreviews() {
   area.innerHTML = "";
 
   hiringPosts.forEach(function(post) {
-
     const imagePath =
       post.image && post.image.trim() !== ""
         ? post.image
         : "images/categories/hiring.jpg";
 
     area.innerHTML += `
-
       <article class="business-card">
 
         <img
@@ -1162,7 +1144,7 @@ function renderHiringPreviews() {
 
         <p>
           <strong>Phone:</strong>
-          ${post.phone}
+          ${formatPhoneNumber(post.phone)}
         </p>
 
         <p class="business-description">
@@ -1191,7 +1173,6 @@ function renderHiringPreviews() {
 }
 
 function editHiringPost(id) {
-
   const post =
     hiringPosts.find(function(item) {
       return item.id === id;
@@ -1203,45 +1184,14 @@ function editHiringPost(id) {
 
   editingHiringId = id;
 
-  setValue(
-    "hiringBusiness",
-    post.business
-  );
-
-  setValue(
-    "hiringTitle",
-    post.title
-  );
-
-  setValue(
-    "hiringType",
-    post.jobType
-  );
-
-  setValue(
-    "hiringPay",
-    post.pay
-  );
-
-  setValue(
-    "hiringPhone",
-    post.phone
-  );
-
-  setValue(
-    "hiringWebsite",
-    post.website
-  );
-
-  setValue(
-    "hiringImage",
-    post.image
-  );
-
-  setValue(
-    "hiringDescription",
-    post.description
-  );
+  setValue("hiringBusiness", post.business);
+  setValue("hiringTitle", post.title);
+  setValue("hiringType", post.jobType);
+  setValue("hiringPay", post.pay);
+  setValue("hiringPhone", formatPhoneNumber(post.phone));
+  setValue("hiringWebsite", post.website);
+  setValue("hiringImage", post.image);
+  setValue("hiringDescription", post.description);
 
   setPreviewImage(
     "hiringImagePreview",
@@ -1255,7 +1205,6 @@ function editHiringPost(id) {
 }
 
 function deleteHiringPost(id) {
-
   const confirmDelete =
     confirm(
       "Delete this hiring post?"
@@ -1271,53 +1220,41 @@ function deleteHiringPost(id) {
     });
 
   saveHiringPosts();
-
   renderHiringPreviews();
 }
 
 function clearHiringForm() {
-
-  setValue(
-    "hiringBusiness",
-    ""
-  );
-
-  setValue(
-    "hiringTitle",
-    ""
-  );
-
-  setValue(
-    "hiringType",
-    ""
-  );
-
-  setValue(
-    "hiringPay",
-    ""
-  );
-
-  setValue(
-    "hiringPhone",
-    ""
-  );
-
-  setValue(
-    "hiringWebsite",
-    ""
-  );
-
-  setValue(
-    "hiringImage",
-    ""
-  );
-
-  setValue(
-    "hiringDescription",
-    ""
-  );
+  setValue("hiringBusiness", "");
+  setValue("hiringTitle", "");
+  setValue("hiringType", "");
+  setValue("hiringPay", "");
+  setValue("hiringPhone", "");
+  setValue("hiringWebsite", "");
+  setValue("hiringImage", "");
+  setValue("hiringDescription", "");
 
   resetPreviewImage(
     "hiringImagePreview"
   );
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+  const phoneFields = [
+    "businessPhone",
+    "hiringPhone"
+  ];
+
+  phoneFields.forEach(function(fieldId) {
+    const input =
+      document.getElementById(fieldId);
+
+    if (!input) {
+      return;
+    }
+
+    input.addEventListener("input", function() {
+      input.value =
+        formatPhoneNumber(input.value);
+    });
+  });
+});
