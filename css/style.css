@@ -121,7 +121,7 @@ body {
   );
 }
 
-..page-intro {
+.page-intro {
   max-width: 950px;
   margin: 0 auto 40px auto;
   padding: 22px 28px;
@@ -816,5 +816,10 @@ body {
 
   .compact-business-card {
     max-width: 100%;
+  }
+
+  .page-intro {
+    font-size: 18px;
+    padding: 18px 16px;
   }
 }
