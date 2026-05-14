@@ -100,12 +100,12 @@ function renderEvents(eventsToShow) {
 
       eventsList.innerHTML += `
 
-        <article class="business-card">
+        <article class="business-card compact-business-card">
 
           <img
             src="${getEventImage(event)}"
             alt="${event.title}"
-            class="business-card-image"
+            class="business-card-image compact-business-image"
             loading="lazy"
             onerror="this.onerror=null; this.src='images/categories/events.jpg';"
           >
@@ -114,27 +114,23 @@ function renderEvents(eventsToShow) {
             ${event.title}
           </h2>
 
-          <p>
-            <strong>Category:</strong>
+          <p class="business-category">
             ${event.category}
           </p>
 
-          <p>
-            <strong>Location:</strong>
+          <p class="business-address">
             ${event.location}
           </p>
 
-          <p>
-            <strong>Date:</strong>
+          <p class="business-phone">
             ${formatEventDate(event.date)}
           </p>
 
-          <p>
-            <strong>Time:</strong>
+          <p class="business-phone">
             ${event.time || ""}
           </p>
 
-          <p class="business-description">
+          <p class="business-description compact-description">
             ${event.description}
           </p>
 
