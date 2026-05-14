@@ -127,25 +127,31 @@ body {
   margin-bottom: 30px;
 }
 
+/* SPONSOR ADS - HORIZONTAL SCROLL */
 #homepageAds,
 #businessesAds,
 #couponsAds,
-#eventsAds {
+#eventsAds,
+#hiringAds {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 14px;
+  flex-wrap: nowrap;
+  gap: 18px;
   margin: 30px 0 45px;
-  padding-bottom: 35px;
+  padding: 0 0 35px;
   border-bottom: 2px solid rgba(0, 200, 255, 0.35);
   position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
 }
 
 #homepageAds::after,
 #businessesAds::after,
 #couponsAds::after,
-#eventsAds::after {
+#eventsAds::after,
+#hiringAds::after {
   content: "";
   position: absolute;
   bottom: -2px;
@@ -164,6 +170,7 @@ body {
 
 .site-ad {
   display: block;
+  flex: 0 0 auto;
   width: 220px;
   max-width: 220px;
   overflow: hidden;
@@ -172,6 +179,7 @@ body {
   background: #111;
   text-decoration: none;
   box-shadow: 0 8px 22px rgba(0,0,0,0.45);
+  scroll-snap-align: start;
 }
 
 .site-ad-image {
@@ -182,6 +190,78 @@ body {
   object-position: center;
   background: #111;
   border-radius: 14px;
+}
+
+/* FEATURED BUSINESS IMAGE-ONLY ROW */
+.featured-heading-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0 20px;
+}
+
+.featured-heading-img {
+  width: 640px;
+  max-width: 80%;
+  height: auto;
+  display: block;
+}
+
+#featuredBusinesses {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 22px;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px 0 30px;
+  margin-bottom: 45px;
+}
+
+#featuredBusinesses .site-ad {
+  flex: 0 0 180px;
+  width: 180px;
+  max-width: 180px;
+}
+
+/* HOME PAGE LINK CARDS */
+.home-info-section {
+  margin-top: 50px;
+}
+
+.home-link-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 34px;
+}
+
+.home-link-card {
+  display: block;
+  background: #1e1e1e;
+  border: 2px solid #333;
+  border-radius: 16px;
+  padding: 22px;
+  text-decoration: none;
+  color: #f5f5f5;
+}
+
+.home-link-card:hover {
+  border-color: #ff8c00;
+}
+
+.home-link-card h3 {
+  color: #ff8c00;
+  margin: 0 0 12px;
+  font-size: 22px;
+}
+
+.home-link-card p {
+  color: #ddd;
+  margin: 0;
+  line-height: 1.45;
 }
 
 .ad-preview-grid {
@@ -347,21 +427,6 @@ body {
   border-radius: 10px;
   background: #2b2b2b;
   color: #fff;
-}
-
-.featured-heading-wrap {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 10px 0 20px;
-}
-
-.featured-heading-img {
-  width: 640px;
-  max-width: 80%;
-  height: auto;
-  display: block;
 }
 
 .load-more-wrap {
@@ -589,6 +654,10 @@ body {
   .ad-options {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .home-link-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 768px) {
@@ -654,104 +723,11 @@ body {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 
-  .ad-request-form {
+  .home-link-grid {
     grid-template-columns: 1fr;
   }
 
-  #homepageAds,
-  #businessesAds,
-  #couponsAds,
-  #eventsAds {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-/* HOME PAGE LINK CARDS */
-.home-info-section {
-  margin-top: 50px;
-}
-
-.home-link-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 22px;
-  margin-top: 34px;
-}
-
-.home-link-card {
-  display: block;
-  background: #1e1e1e;
-  border: 2px solid #333;
-  border-radius: 16px;
-  padding: 22px;
-  text-decoration: none;
-  color: #f5f5f5;
-}
-
-.home-link-card:hover {
-  border-color: #ff8c00;
-}
-
-.home-link-card h3 {
-  color: #ff8c00;
-  margin: 0 0 12px;
-  font-size: 22px;
-}
-
-.home-link-card p {
-  color: #ddd;
-  margin: 0;
-  line-height: 1.45;
-}
-
-/* HORIZONTAL SPONSOR SCROLL */
-#homepageAds,
-#businessesAds,
-#couponsAds,
-#eventsAds,
-#hiringAds {
-  justify-content: flex-start;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-}
-
-#homepageAds .site-ad,
-#businessesAds .site-ad,
-#couponsAds .site-ad,
-#eventsAds .site-ad,
-#hiringAds .site-ad {
-  flex: 0 0 auto;
-  scroll-snap-align: start;
-}
-
-/* FEATURED BUSINESS IMAGE-ONLY ROW */
-#featuredBusinesses {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
-  gap: 22px;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 10px 0 30px;
-}
-
-#featuredBusinesses .site-ad {
-  flex: 0 0 180px;
-  width: 180px;
-  max-width: 180px;
-}
-
-@media (max-width: 1100px) {
-  .home-link-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 768px) {
-  .home-link-grid {
+  .ad-request-form {
     grid-template-columns: 1fr;
   }
 
