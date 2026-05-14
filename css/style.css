@@ -412,8 +412,8 @@ body {
 
 /* COMPACT BUSINESS CARDS */
 .compact-business-card {
-  max-width: 280px;
-  padding: 12px;
+  max-width: 250px;
+  padding: 10px;
 }
 
 .compact-business-image {
@@ -435,9 +435,9 @@ body {
 }
 
 .compact-description {
-  font-size: 14px;
-  line-height: 1.35;
-  margin-bottom: 10px;
+  font-size: 13px;
+  line-height: 1.25;
+  margin-bottom: 8px;
 }
 
 .business-button-row {
