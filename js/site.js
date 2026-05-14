@@ -10,17 +10,39 @@ const homepageAdsContainer =
   document.getElementById("homepageAds");
 
 const categoryImages = {
-  "Automotive": "images/categories/automotive.jpg",
-  "Food & Dining": "images/categories/food-dining.jpg",
-  "Home Services": "images/categories/home-services.jpg",
-  "Health & Beauty": "images/categories/health-beauty.jpg",
-  "Shopping": "images/categories/shopping.jpg",
-  "Real Estate": "images/categories/real-estate.jpg",
-  "Entertainment": "images/categories/entertainment.jpg",
-  "Churches": "images/categories/churches.jpg",
-  "Fitness": "images/categories/fitness.jpg",
-  "Professional Services": "images/categories/professional-services.jpg",
-  "Other": "images/categories/professional-services.jpg"
+
+  "Automotive":
+    "images/categories/automotive.jpg",
+
+  "Food & Dining":
+    "images/categories/food-dining.jpg",
+
+  "Home Services":
+    "images/categories/home-services.jpg",
+
+  "Health & Beauty":
+    "images/categories/health-beauty.jpg",
+
+  "Shopping":
+    "images/categories/shopping.jpg",
+
+  "Real Estate":
+    "images/categories/real-estate.jpg",
+
+  "Entertainment":
+    "images/categories/entertainment.jpg",
+
+  "Churches":
+    "images/categories/churches.jpg",
+
+  "Fitness":
+    "images/categories/fitness.jpg",
+
+  "Professional Services":
+    "images/categories/professional-services.jpg",
+
+  "Other":
+    "images/categories/professional-services.jpg"
 };
 
 loadHomepageData();
@@ -178,17 +200,20 @@ function renderHomepageAds() {
       getGoodUrl(ad.link);
 
     homepageAdsContainer.innerHTML += `
+
       <a
         href="${adLink}"
         target="_blank"
         class="site-ad ${shapeClass}"
       >
+
         <img
           src="${ad.image}"
           alt="${ad.title}"
           class="site-ad-image"
           onerror="this.onerror=null; this.style.display='none';"
         >
+
       </a>
     `;
   });
@@ -204,24 +229,24 @@ function renderFeaturedBusinesses() {
     savedBusinesses.filter(function(business) {
 
       const currentPage =
-  window.location.pathname
-    .split("/")
-    .pop()
-    .replace(".html", "") || "index";
+        window.location.pathname
+          .split("/")
+          .pop()
+          .replace(".html", "") || "index";
 
-  return (
-  business.featured === "Yes" &&
-  (
-    business.featuredLocation === "all" ||
+      return (
+        business.featured === "Yes" &&
+        (
+          business.featuredLocation === "all" ||
 
-    business.featuredLocation === currentPage ||
+          business.featuredLocation === currentPage ||
 
-    (
-      currentPage === "index" &&
-      business.featuredLocation === "homepage"
-    )
-  )
-  );
+          (
+            currentPage === "index" &&
+            business.featuredLocation === "homepage"
+          )
+        )
+      );
     });
 
   if (featuredBusinesses.length === 0) {
@@ -238,26 +263,13 @@ function renderFeaturedBusinesses() {
   featuredContainer.innerHTML = "";
 
   featuredBusinesses
-    .slice(0, 6)
+    .slice(0, 12)
     .forEach(function(business) {
 
-      const mapsLink =
-        "https://www.google.com/maps/search/?api=1&query=" +
-        encodeURIComponent(
-          business.address
-        );
-
-      const websiteButton =
+      const businessLink =
         business.website
-          ? `
-            <a
-              href="${getGoodUrl(business.website)}"
-              target="_blank"
-            >
-              Visit Website
-            </a>
-          `
-          : "";
+          ? getGoodUrl(business.website)
+          : "#";
 
       const fallbackImage =
         getCategoryImage(
@@ -265,38 +277,21 @@ function renderFeaturedBusinesses() {
         );
 
       featuredContainer.innerHTML += `
-        <article class="business-card">
+
+        <a
+          href="${businessLink}"
+          target="_blank"
+          class="site-ad ad-square"
+        >
 
           <img
             src="${getBusinessImage(business)}"
-            alt="${business.category}"
-            class="business-card-image"
+            alt="${business.name}"
+            class="site-ad-image"
             onerror="this.onerror=null; this.src='${fallbackImage}';"
           >
 
-          <h2>
-            ${business.name}
-          </h2>
-
-          <p>
-            <strong>Category:</strong>
-            ${business.category}
-          </p>
-
-          <p class="business-description">
-            ${business.description}
-          </p>
-
-          <a
-            href="${mapsLink}"
-            target="_blank"
-          >
-            Get Directions
-          </a>
-
-          ${websiteButton}
-
-        </article>
+        </a>
       `;
     });
 }
