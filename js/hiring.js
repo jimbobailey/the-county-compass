@@ -1,35 +1,50 @@
 let hiringPosts =
-  JSON.parse(
-    localStorage.getItem("countyCompassHiring")
-  ) || [];
+  JSON.parse(localStorage.getItem("countyCompassHiring")) || [];
 
 const hiringList =
   document.getElementById("hiringList");
 
+function getPostExpiration(post) {
+  return (
+    post.expiration ||
+    post.expirationDate ||
+    post.expires ||
+    post.endDate ||
+    ""
+  );
+}
+
+function isExpired(dateValue) {
+  if (!dateValue) {
+    return false;
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const expirationDate = new Date(dateValue + "T00:00:00");
+  expirationDate.setHours(0, 0, 0, 0);
+
+  return expirationDate < today;
+}
+
 function getActiveHiringPosts() {
-
-  const today =
-    new Date();
-
-  today.setHours(0,0,0,0);
-
-  return hiringPosts.filter(function(post) {
-
-    if (!post.expiration) {
-      return true;
-    }
-
-    const expirationDate =
-      new Date(
-        post.expiration + "T00:00:00"
-      );
-
-    return expirationDate >= today;
+  const activePosts = hiringPosts.filter(function(post) {
+    return !isExpired(getPostExpiration(post));
   });
+
+  if (activePosts.length !== hiringPosts.length) {
+    hiringPosts = activePosts;
+    localStorage.setItem(
+      "countyCompassHiring",
+      JSON.stringify(hiringPosts)
+    );
+  }
+
+  return activePosts;
 }
 
 function formatPhoneNumber(value) {
-
   const cleaned =
     String(value || "").replace(/\D/g, "");
 
@@ -38,21 +53,20 @@ function formatPhoneNumber(value) {
   }
 
   if (cleaned.length <= 6) {
-    return "(" + cleaned.slice(0,3) + ") " + cleaned.slice(3);
+    return "(" + cleaned.slice(0, 3) + ") " + cleaned.slice(3);
   }
 
   return (
     "(" +
-    cleaned.slice(0,3) +
+    cleaned.slice(0, 3) +
     ") " +
-    cleaned.slice(3,6) +
+    cleaned.slice(3, 6) +
     "-" +
-    cleaned.slice(6,10)
+    cleaned.slice(6, 10)
   );
 }
 
 function makeGoodUrl(link) {
-
   if (!link || link.trim() === "") {
     return "";
   }
@@ -68,13 +82,11 @@ function makeGoodUrl(link) {
 }
 
 function formatExpirationDate(dateValue) {
-
   if (!dateValue) {
     return "";
   }
 
-  const parts =
-    dateValue.split("-");
+  const parts = dateValue.split("-");
 
   if (parts.length !== 3) {
     return dateValue;
@@ -90,7 +102,6 @@ function formatExpirationDate(dateValue) {
 }
 
 function renderHiringPosts() {
-
   const activePosts =
     getActiveHiringPosts();
 
@@ -101,7 +112,6 @@ function renderHiringPosts() {
   hiringList.innerHTML = "";
 
   if (activePosts.length === 0) {
-
     hiringList.innerHTML = `
       <p class="empty-message">
         No hiring opportunities available right now.
@@ -112,18 +122,20 @@ function renderHiringPosts() {
   }
 
   activePosts.forEach(function(post) {
-
     const imagePath =
       post.image &&
       post.image.trim() !== ""
         ? post.image
         : "images/categories/hiring.jpg";
 
+    const expiration =
+      getPostExpiration(post);
+
     const expirationLine =
-      post.expiration
+      expiration
         ? `
           <p class="hiring-expiration">
-            Expires ${formatExpirationDate(post.expiration)}
+            Expires ${formatExpirationDate(expiration)}
           </p>
         `
         : "";
@@ -143,27 +155,26 @@ function renderHiringPosts() {
         : "";
 
     hiringList.innerHTML += `
-
       <article class="business-card compact-business-card">
 
         <img
           src="${imagePath}"
-          alt="${post.title}"
+          alt="${post.title || "Hiring opportunity"}"
           class="business-card-image compact-business-image"
           loading="lazy"
           onerror="this.onerror=null; this.src='images/categories/hiring.jpg';"
         >
 
         <h2>
-          ${post.title}
+          ${post.title || ""}
         </h2>
 
         <p class="business-category">
-          ${post.business}
+          ${post.business || ""}
         </p>
 
         <p class="business-address">
-          ${post.jobType}
+          ${post.jobType || ""}
         </p>
 
         <p class="business-phone">
@@ -177,17 +188,14 @@ function renderHiringPosts() {
         ${expirationLine}
 
         <p class="business-description compact-description">
-          ${post.description}
+          ${post.description || ""}
         </p>
 
         <div class="business-button-row">
-
           ${websiteButton}
-
         </div>
 
       </article>
-
     `;
   });
 }
