@@ -3,8 +3,8 @@ const savedEvents =
     localStorage.getItem("countyCompassEvents")
   ) || [];
 
-const eventGrid =
-  document.getElementById("eventGrid");
+const eventsList =
+  document.getElementById("eventsList");
 
 let visibleEventCount = 12;
 
@@ -70,15 +70,15 @@ function getEventImage(event) {
 
 function renderEvents(eventsToShow) {
 
-  if (!eventGrid) {
+  if (!eventsList) {
     return;
   }
 
-  eventGrid.innerHTML = "";
+  eventsList.innerHTML = "";
 
   if (eventsToShow.length === 0) {
 
-    eventGrid.innerHTML = `
+    eventsList.innerHTML = `
       <p class="empty-message">
         No upcoming events found.
       </p>
@@ -98,14 +98,14 @@ function renderEvents(eventsToShow) {
     .slice(0, visibleEventCount)
     .forEach(function(event) {
 
-      eventGrid.innerHTML += `
+      eventsList.innerHTML += `
 
-        <article class="business-card compact-business-card">
+        <article class="business-card">
 
           <img
             src="${getEventImage(event)}"
             alt="${event.title}"
-            class="business-card-image compact-business-image"
+            class="business-card-image"
             loading="lazy"
             onerror="this.onerror=null; this.src='images/categories/events.jpg';"
           >
@@ -114,28 +114,31 @@ function renderEvents(eventsToShow) {
             ${event.title}
           </h2>
 
-          <p class="business-category">
+          <p>
+            <strong>Category:</strong>
             ${event.category}
           </p>
 
-          <p class="business-address">
+          <p>
+            <strong>Location:</strong>
             ${event.location}
           </p>
 
-          <p class="business-phone">
+          <p>
+            <strong>Date:</strong>
             ${formatEventDate(event.date)}
           </p>
 
-          <p class="business-phone">
+          <p>
+            <strong>Time:</strong>
             ${event.time || ""}
           </p>
 
-          <p class="business-description compact-description">
+          <p class="business-description">
             ${event.description}
           </p>
 
         </article>
-
       `;
     });
 
@@ -144,7 +147,8 @@ function renderEvents(eventsToShow) {
     visibleEventCount
   ) {
 
-    eventGrid.innerHTML += `
+    eventsList.innerHTML += `
+
       <div class="load-more-wrap">
 
         <button
