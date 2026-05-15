@@ -191,6 +191,7 @@ function getCategoryImage(category) {
     "Automotive Services": "images/categories/automotive.jpg",
     "Churches": "images/categories/churches.jpg",
     "Custom Crafts & Fabrication": "images/categories/shopping.jpg",
+    "Catering & Event Services": "images/categories/catering-event-services.jpg",
     "Entertainment": "images/categories/entertainment.jpg",
     "Fitness": "images/categories/fitness.jpg",
     "Food & Dining": "images/categories/food-dining.jpg",
@@ -217,9 +218,9 @@ async function addBusinessPreview() {
   const name = getValue("businessName");
   const category = getValue("businessCategory");
   const address = getValue("businessAddress");
-const phone = formatPhoneNumber(getValue("businessPhone"));
-const email = getValue("businessEmail");
-const website = makeGoodUrl(getValue("businessWebsite"));
+  const phone = formatPhoneNumber(getValue("businessPhone"));
+  const email = getValue("businessEmail");
+  const website = makeGoodUrl(getValue("businessWebsite"));
   const image = getValue("businessImage");
   const paid = getValue("businessPaid");
   const expiration = getValue("businessExpiration");
@@ -256,6 +257,7 @@ const website = makeGoodUrl(getValue("businessWebsite"));
             category,
             address,
             phone,
+            email,
             website,
             image,
             paid,
@@ -285,6 +287,7 @@ const website = makeGoodUrl(getValue("businessWebsite"));
       category,
       address,
       phone,
+      email,
       website,
       image,
       paid,
@@ -320,6 +323,11 @@ function renderBusinessPreviews() {
     const fallbackImage = getCategoryImage(business.category);
     const expirationText = getExpirationText(business.expiration);
 
+    const emailLine =
+      business.email && business.email.trim() !== ""
+        ? `<p><strong>Email:</strong> ${business.email}</p>`
+        : "";
+
     area.innerHTML += `
       <article class="business-card">
 
@@ -334,6 +342,7 @@ function renderBusinessPreviews() {
 
         <p><strong>Category:</strong> ${business.category}</p>
         <p><strong>Address:</strong> ${business.address}</p>
+        ${emailLine}
         <p><strong>Phone:</strong> ${formatPhoneNumber(business.phone)}</p>
         <p><strong>Paid:</strong> ${business.paid || "No"}</p>
         <p><strong>Featured:</strong> ${business.featured || "No"}</p>
@@ -386,6 +395,7 @@ function editBusiness(id) {
   setValue("businessCategory", business.category);
   setValue("businessAddress", business.address);
   setValue("businessPhone", formatPhoneNumber(business.phone));
+  setValue("businessEmail", business.email || "");
   setValue("businessWebsite", business.website);
   setValue("businessImage", business.image);
   setValue("businessPaid", business.paid);
@@ -435,6 +445,7 @@ function clearBusinessForm() {
   setValue("businessCategory", "");
   setValue("businessAddress", "");
   setValue("businessPhone", "");
+  setValue("businessEmail", "");
   setValue("businessWebsite", "");
   setValue("businessImage", "");
   setValue("businessPaid", "No");
@@ -1002,6 +1013,7 @@ function filterBusinesses() {
         business.category.toLowerCase().includes(search) ||
         business.address.toLowerCase().includes(search) ||
         business.phone.toLowerCase().includes(search) ||
+        String(business.email || "").toLowerCase().includes(search) ||
         business.description.toLowerCase().includes(search)
       );
     });
