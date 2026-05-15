@@ -1,7 +1,50 @@
-const countyCompassAds =
-  JSON.parse(
-    localStorage.getItem("countyCompassAds")
-  ) || [];
+let countyCompassAds = [];
+
+loadAdsFromServer();
+
+async function loadAdsFromServer() {
+
+  try {
+
+    const response =
+      await fetch("/.netlify/functions/ads");
+
+    const data =
+      await response.json();
+
+    if (Array.isArray(data)) {
+
+      countyCompassAds = data;
+
+      localStorage.setItem(
+        "countyCompassAds",
+        JSON.stringify(countyCompassAds)
+      );
+
+    } else {
+
+      countyCompassAds =
+        JSON.parse(
+          localStorage.getItem("countyCompassAds")
+        ) || [];
+    }
+
+  } catch (error) {
+
+    console.error("Ads load failed:", error);
+
+    countyCompassAds =
+      JSON.parse(
+        localStorage.getItem("countyCompassAds")
+      ) || [];
+  }
+
+  renderAds("homepage", "homepageAds");
+  renderAds("businesses", "businessesAds");
+  renderAds("coupons", "couponsAds");
+  renderAds("events", "eventsAds");
+  renderAds("hiring", "hiringAds");
+}
 
 function shuffleArray(array) {
 
