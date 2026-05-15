@@ -1099,4 +1099,71 @@ document.addEventListener("DOMContentLoaded", function() {
     couponDuration.addEventListener("change", updateCouponExpirationDate);
     couponStartDate.addEventListener("change", updateCouponExpirationDate);
   }
+  const hiringDuration =
+  document.getElementById("hiringDuration");
+
+const hiringStartDate =
+  document.getElementById("hiringStartDate");
+
+const hiringExpiration =
+  document.getElementById("hiringExpiration");
+
+function updateHiringExpirationDate() {
+
+  if (
+    !hiringDuration ||
+    !hiringStartDate ||
+    !hiringExpiration
+  ) {
+    return;
+  }
+
+  const durationDays =
+    parseInt(hiringDuration.value);
+
+  const startDate =
+    hiringStartDate.value;
+
+  if (!durationDays || !startDate) {
+    hiringExpiration.value = "";
+    return;
+  }
+
+  const calculatedDate =
+    new Date(startDate + "T00:00:00");
+
+  calculatedDate.setDate(
+    calculatedDate.getDate() + durationDays
+  );
+
+  const year =
+    calculatedDate.getFullYear();
+
+  const month =
+    String(calculatedDate.getMonth() + 1)
+      .padStart(2, "0");
+
+  const day =
+    String(calculatedDate.getDate())
+      .padStart(2, "0");
+
+  hiringExpiration.value =
+    `${year}-${month}-${day}`;
+}
+
+if (
+  hiringDuration &&
+  hiringStartDate
+) {
+
+  hiringDuration.addEventListener(
+    "change",
+    updateHiringExpirationDate
+  );
+
+  hiringStartDate.addEventListener(
+    "change",
+    updateHiringExpirationDate
+  );
+}
 });
