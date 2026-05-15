@@ -1,0 +1,286 @@
+{
+  "countyCompassBusinesses": [
+    {
+      "id": 1778801642051,
+      "name": "Calm Your Soul Event Bartending",
+      "category": "Catering & Event Services",
+      "address": "Marianna, Fl.",
+      "phone": "(864) 274-4388",
+      "email": "calmyoursoulmb@yahoo.com",
+      "website": "https://calmyoursouleb.com/",
+      "image": "images\\businesses\\cys.png",
+      "paid": "Yes",
+      "expiration": "2026-06-13",
+      "featured": "Yes",
+      "featuredLocation": "events",
+      "description": "Calm Your Soul specializes in wedding and event bartending across Northwest Florida, designed to make hosting easy."
+    },
+    {
+      "id": 1778713764651,
+      "name": "Panhandle Glass Tinting",
+      "category": "Automotive Services",
+      "address": "5431 US-90, Marianna, FL 32446",
+      "phone": "(850) 209-5587",
+      "website": "https://www.facebook.com/p/Panhandle-Glass-Tinting-100063685627679/",
+      "image": "images\\businesses\\pgt.png",
+      "paid": "Yes",
+      "featured": "Yes",
+      "featuredLocation": "homepage",
+      "description": "We specialize in high-performance window tinting solutions tailored for your home, business, & vehicle."
+    },
+    {
+      "id": 1778695738369,
+      "name": "The Posse Shoppe",
+      "category": "Custom Crafts & Fabrication",
+      "address": "5138 Shawnee Trail",
+      "phone": "8507039920",
+      "website": "https://theposseshoppe.com/",
+      "image": "images\\businesses\\tps.png",
+      "paid": "Yes",
+      "featured": "Yes",
+      "featuredLocation": "homepage",
+      "description": "Expert computer and laptop repair. We handle hardware installs, software, updates, screens, and data backups."
+    },
+    {
+      "id": 1778694996084,
+      "name": "Bistro Palms",
+      "category": "Food & Dining",
+      "address": "2865 McPherson St, Marianna, FL 32448",
+      "phone": "(850) 526-2226",
+      "website": "https://bistropalmsflorida.com/",
+      "image": "images\\businesses\\bp.png",
+      "paid": "Yes",
+      "featured": "Yes",
+      "featuredLocation": "homepage",
+      "description": "We are a family owned restaurant that offers a fully stocked bar, with draft beers, wine, mixed drinks, and specialty cocktails in Marianna Florida!"
+    },
+    {
+      "id": 1778693525035,
+      "name": "US Mobile Homes",
+      "category": "Real Estate",
+      "address": "4626 US-90, Marianna, FL 32446",
+      "phone": "(850) 482-5056",
+      "website": "https://usmobilehomesales.com/",
+      "image": "images\\businesses\\usmh.png",
+      "paid": "Yes",
+      "featured": "Yes",
+      "featuredLocation": "homepage",
+      "description": "New modern home sales. Quality builds and floor plans with a seamless move-in."
+    },
+    {
+      "id": 1778691695195,
+      "name": "You Call We Haul",
+      "category": "Gravel, Rock & Fill Dirt",
+      "address": "Marianna, Fl. 32446",
+      "phone": "8502091677",
+      "website": "",
+      "image": "images\\businesses\\uc.png",
+      "paid": "Yes",
+      "featured": "Yes",
+      "featuredLocation": "homepage",
+      "description": "Professional rock and gravel delivery and precision spreading for driveways, parking pads, and landscapes."
+    },
+    {
+      "id": 1778420840081,
+      "name": "Firehouse Lock & Key",
+      "category": "Professional Services",
+      "address": "4664 US-90, Marianna, FL 32446",
+      "phone": "(850) 526-5397",
+      "website": "https://www.facebook.com/p/Firehouse-Lock-Key-100054881659806/",
+      "image": "images\\businesses\\fh.png",
+      "paid": "Yes",
+      "expiration": "",
+      "featured": "Yes",
+      "featuredLocation": "hiring",
+      "description": "Family-owned store offering a range of locksmithing services, including emergency lockouts."
+    },
+    {
+      "id": 1778420184754,
+      "name": "Marianna Tire Company",
+      "category": "Automotive Repair",
+      "address": "2456 FL-71, Marianna, FL 32448",
+      "phone": "(850) 526-2614",
+      "website": "https://mariannatirecompany.com/",
+      "image": "images\\businesses\\mtc.png",
+      "paid": "Yes",
+      "featured": "Yes",
+      "featuredLocation": "homepage",
+      "description": "Your Trusted Auto Repair & Tire Shop in Marianna, FL\nLocally owned, professional service, and conveniently located just 1 mile from I-10"
+    },
+    {
+      "id": 1778378699619,
+      "name": "Bailey's Computer Repair",
+      "category": "IT & Computer Repair",
+      "address": "5138 Shawnee Trail",
+      "phone": "8507039920",
+      "website": "",
+      "image": "images\\businesses\\bcr.png",
+      "paid": "Yes",
+      "featured": "Yes",
+      "featuredLocation": "homepage",
+      "description": "Professional desktop and laptop repair. We specialize in hardware and software installs, updates, screen replacements, and data backup. Reliable service you can trust."
+    }
+  ],
+  "countyCompassCoupons": [
+    {
+      "id": 1778442774764,
+      "businessName": "Bailey's Computer Repair",
+      "category": "IT & Computer Repair",
+      "title": "20% Discount",
+      "image": "images/coupons/bcrcoupon.png",
+      "details": "20% off of any Windows Installations.  Install includes all applicable updates."
+    }
+  ],
+  "countyCompassEvents": [
+    {
+      "id": 1778444790847,
+      "title": "Grand Ridge Spring Fling and Car Show",
+      "location": "6951 Florida Street Grand Ridge, Florida 32442",
+      "category": "Entertainment",
+      "date": "2026-05-23",
+      "time": "10:00",
+      "image": "images\\events\\carshow.png",
+      "description": "Car Show, food Trucks, Local Booths & Vendors, Face Painting, Youth Activities, Dinking booth 10am-3pm"
+    }
+  ],
+  "countyCompassHiring": [
+    {
+      "id": 1778711428305,
+      "business": "Test Only",
+      "title": "Only a Test",
+      "jobType": "Full Time",
+      "pay": "",
+      "phone": "(850) 123-4567",
+      "website": "",
+      "image": "",
+      "expiration": "2026-06-13",
+      "description": "This ad is only a test for functionality."
+    }
+  ],
+  "countyCompassAds": [
+    {
+      "id": 1778859446670,
+      "title": "asdfasf",
+      "location": "events",
+      "shape": "square",
+      "image": "images/ads/bcr.png",
+      "link": "https://www.facebook.com/jimbo.bailey.7524",
+      "active": "Yes",
+      "expiration": "2030-12-15"
+    },
+    {
+      "id": 1778805526420,
+      "title": "Calm Your Soul Event Bartending",
+      "location": "homepage",
+      "shape": "square",
+      "image": "images/ads/cys.png",
+      "link": "https://calmyoursouleb.com/",
+      "active": "Yes",
+      "expiration": "2026-12-31"
+    },
+    {
+      "id": 1778726379664,
+      "title": "You Call We Haul",
+      "location": "homepage",
+      "shape": "square",
+      "image": "images/ads/uc.png",
+      "link": "https://www.facebook.com/foreversouthern32446",
+      "active": "Yes",
+      "expiration": ""
+    },
+    {
+      "id": 1778726304891,
+      "title": "The Posse Shoppe",
+      "location": "homepage",
+      "shape": "square",
+      "image": "images/ads/tps.png",
+      "link": "https://theposseshoppe.com/",
+      "active": "Yes"
+    },
+    {
+      "id": 1778726148558,
+      "title": "Panhandle Glass Tinting",
+      "location": "homepage",
+      "shape": "square",
+      "image": "images/ads/pgt.png",
+      "link": "https://www.facebook.com/profile.php?id=100063685627679",
+      "active": "Yes"
+    },
+    {
+      "id": 1778714233704,
+      "title": "Panhandle Glass Tinting",
+      "location": "coupons",
+      "shape": "square",
+      "image": "images/ads/pgt.png",
+      "link": "https://www.facebook.com/p/Panhandle-Glass-Tinting-100063685627679/",
+      "active": "Yes",
+      "expiration": "2026-07-01"
+    },
+    {
+      "id": 1778694422800,
+      "title": "Bailey's Computer Repair",
+      "location": "homepage",
+      "shape": "square",
+      "image": "images/ads/bcr.png",
+      "link": "https://www.facebook.com/jimbo.bailey.7524",
+      "active": "Yes"
+    },
+    {
+      "id": 1778694253900,
+      "title": "Firehouse Lock & Key",
+      "location": "homepage",
+      "shape": "square",
+      "image": "images/ads/fh.png",
+      "link": "",
+      "active": "Yes"
+    },
+    {
+      "id": 1778694168373,
+      "title": "Marianna Tire Company",
+      "location": "homepage",
+      "shape": "square",
+      "image": "images/ads/mtc.png",
+      "link": "https://mariannatirecompany.com/",
+      "active": "Yes"
+    },
+    {
+      "id": 1778693996007,
+      "title": "US Mobile Home Sales",
+      "location": "coupons",
+      "shape": "square",
+      "image": "images/ads/usmh.png",
+      "link": "https://usmobilehomesales.com/contact-us/",
+      "active": "Yes",
+      "expiration": "2026-06-20"
+    },
+    {
+      "id": 1778517770326,
+      "title": "The Posse Shoppe - 3d Printing",
+      "location": "events",
+      "shape": "square",
+      "image": "images/ads/tps.png",
+      "link": "https://theposseshoppe.com/",
+      "active": "Yes",
+      "expiration": "2026-10-24"
+    },
+    {
+      "id": 1778517556551,
+      "title": "Bistro Palms | Marianna",
+      "location": "homepage",
+      "shape": "square",
+      "image": "images/ads/bp.png",
+      "link": "https://bistropalmsflorida.com/",
+      "active": "Yes"
+    },
+    {
+      "id": 1778434359028,
+      "title": "Firehouse Lock & Key",
+      "location": "hiring",
+      "shape": "square",
+      "image": "images/ads/fh.png",
+      "link": "",
+      "active": "Yes",
+      "expiration": "2026-08-29"
+    }
+  ]
+}

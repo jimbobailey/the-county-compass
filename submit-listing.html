@@ -1,0 +1,56 @@
+const { getStore } = require("@netlify/blobs");
+
+exports.handler = async function (event) {
+  if (event.httpMethod !== "POST") {
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ error: "Method not allowed" })
+    };
+  }
+
+  try {
+    const data = JSON.parse(event.body || "{}");
+
+    const submission = {
+      id: Date.now().toString(),
+      status: "pending",
+      submittedAt: new Date().toISOString(),
+
+      submissionType: data.submissionType || "",
+      businessName: data.businessName || "",
+      contactName: data.contactName || "",
+      email: data.email || "",
+      phone: data.phone || "",
+      address: data.address || "",
+      website: data.website || "",
+      category: data.category || "",
+      title: data.title || "",
+      description: data.description || "",
+      startDate: data.startDate || "",
+      endDate: data.endDate || "",
+      imageUrl: data.imageUrl || "",
+      notes: data.notes || ""
+    };
+
+    const store = getStore("pending-submissions");
+
+    await store.setJSON(submission.id, submission);
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        success: true,
+        message: "Submission saved.",
+        submission
+      })
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        error: "Failed to save submission.",
+        details: error.message
+      })
+    };
+  }
+};
