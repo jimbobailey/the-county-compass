@@ -6,9 +6,7 @@
   <title>Submit Listing | The County Compass</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -49,8 +47,7 @@
       margin-bottom: 24px;
     }
 
-    h2,
-    h3 {
+    h2, h3 {
       color: orange;
       margin-top: 0;
     }
@@ -95,12 +92,9 @@
       margin-top: 18px;
       margin-bottom: 6px;
       font-weight: bold;
-      color: #fff;
     }
 
-    input,
-    select,
-    textarea {
+    input, select, textarea {
       width: 100%;
       padding: 12px;
       border-radius: 8px;
@@ -114,10 +108,11 @@
       min-height: 115px;
       resize: vertical;
     }
+
     input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(1);
-  cursor: pointer;
-}
+      filter: invert(1);
+      cursor: pointer;
+    }
 
     .small-note {
       color: #bbb;
@@ -141,25 +136,6 @@
 
     button:hover {
       background: #ffb84d;
-    }
-
-    .status {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 8px;
-      display: none;
-    }
-
-    .success {
-      background: #123d1f;
-      border: 1px solid #2f8f46;
-      color: #b7ffca;
-    }
-
-    .error {
-      background: #3d1212;
-      border: 1px solid #9b3434;
-      color: #ffc0c0;
     }
   </style>
 </head>
@@ -185,62 +161,59 @@
     <h3>Listing & Advertising Options</h3>
 
     <div class="pricing-grid">
-
       <div class="price-card">
         Standard Business Listing
         <strong>$149 / Year</strong>
-        <div class="small-note">
-          Business directory listing with category placement, business details, image/logo, and searchable visibility.
-        </div>
+        <div class="small-note">Business directory listing with category placement, business details, image/logo, and searchable visibility.</div>
       </div>
 
       <div class="price-card">
         Featured Business Listing
         <strong>$249 / Year</strong>
-        <div class="small-note">
-          Includes full business listing plus featured placement across homepage, events, coupons, and hiring pages.
-        </div>
+        <div class="small-note">Includes full business listing plus featured placement across homepage, events, coupons, and hiring pages.</div>
       </div>
 
       <div class="price-card">
         Sponsor Placement
         <strong>$299 / Year</strong>
-        <div class="small-note">
-          Premium sponsor placement for businesses wanting maximum visibility.
-        </div>
+        <div class="small-note">Premium sponsor placement for businesses wanting maximum visibility.</div>
       </div>
 
       <div class="price-card">
         Coupon Listing
         <strong>$10 / Week</strong>
-        <div class="small-note">
-          Promote special offers, discounts, and limited-time deals.
-        </div>
+        <div class="small-note">Promote special offers, discounts, and limited-time deals.</div>
       </div>
 
       <div class="price-card">
         Event Listing
         <strong>$10 / Event</strong>
-        <div class="small-note">
-          Promote community events, church gatherings, fundraisers, festivals, and more.
-        </div>
+        <div class="small-note">Promote community events, church gatherings, fundraisers, festivals, and more.</div>
       </div>
 
       <div class="price-card">
         Hiring Listing
         <strong>$15 / Month</strong>
-        <div class="small-note">
-          Advertise available job positions within your business or organization.
-        </div>
+        <div class="small-note">Advertise available job positions within your business or organization.</div>
       </div>
-
     </div>
   </div>
 
   <div class="box">
     <h2>Submit Your Listing</h2>
 
-    <form id="submissionForm">
+    <form
+      name="county-compass-submission"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      action="/thank-you.html"
+    >
+
+      <input type="hidden" name="form-name" value="county-compass-submission">
+      <p style="display:none;">
+        <label>Do not fill this out: <input name="bot-field"></label>
+      </p>
 
       <label>Submission Type</label>
       <select name="submissionType" required>
@@ -316,15 +289,9 @@
       </div>
 
       <label>Listing Headline / Title</label>
-      <input
-        type="text"
-        name="title"
-        placeholder="Example: 20% Off This Month, Now Hiring, Grand Opening"
-      >
+      <input type="text" name="title" placeholder="Example: 20% Off This Month, Now Hiring, Grand Opening">
 
-      <div class="small-note">
-        This is the main title people will see publicly.
-      </div>
+      <div class="small-note">This is the main title people will see publicly.</div>
 
       <label>Description</label>
       <textarea name="description" required></textarea>
@@ -344,9 +311,7 @@
       <label>End Date</label>
       <input type="date" name="endDate" id="endDate" readonly>
 
-      <div class="small-note">
-        End date is automatically calculated from the selected package length.
-      </div>
+      <div class="small-note">End date is automatically calculated from the selected package length.</div>
 
       <label>Image Link</label>
       <input type="text" name="imageUrl">
@@ -361,17 +326,12 @@
 
       <button type="submit">Submit For Review</button>
 
-      <div id="statusBox" class="status"></div>
-
     </form>
   </div>
 
 </div>
 
 <script>
-  const form = document.getElementById("submissionForm");
-  const statusBox = document.getElementById("statusBox");
-
   const packageLength = document.getElementById("packageLength");
   const startDate = document.getElementById("startDate");
   const endDate = document.getElementById("endDate");
@@ -397,50 +357,6 @@
 
   packageLength.addEventListener("change", updateEndDate);
   startDate.addEventListener("change", updateEndDate);
-
-  function showStatus(message, type) {
-    statusBox.style.display = "block";
-    statusBox.className = "status " + type;
-    statusBox.innerText = message;
-  }
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(form);
-    const payload = Object.fromEntries(formData.entries());
-
-    try {
-      const response = await fetch("/.netlify/functions/submissions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || "Submission failed");
-      }
-
-      form.reset();
-
-      showStatus(
-        "Submission received successfully. Your listing will be reviewed before approval.",
-        "success"
-      );
-
-    } catch (error) {
-      console.error(error);
-
-      showStatus(
-        "There was a problem submitting the form. Please try again.",
-        "error"
-      );
-    }
-  });
 </script>
 
 </body>
