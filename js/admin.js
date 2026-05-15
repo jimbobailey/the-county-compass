@@ -1,63 +1,125 @@
 let businesses = [];
 let editingBusinessId = null;
 
-let coupons =
-  JSON.parse(localStorage.getItem("countyCompassCoupons")) || [];
+let coupons = [];
 let editingCouponId = null;
 
-let events =
-  JSON.parse(localStorage.getItem("countyCompassEvents")) || [];
+let events = [];
 let editingEventId = null;
 
-let ads =
-  JSON.parse(localStorage.getItem("countyCompassAds")) || [];
+let ads = [];
 let editingAdId = null;
 
-let hiringPosts =
-  JSON.parse(localStorage.getItem("countyCompassHiring")) || [];
+let hiringPosts = [];
 let editingHiringId = null;
 
-loadBusinessesFromServer();
+loadAdminData();
 
-renderCouponPreviews();
-renderEventPreviews();
-renderHiringPreviews();
-renderAdPreviews();
+async function loadAdminData() {
+  await loadBusinessesFromServer();
+  await loadCouponsFromServer();
+  await loadEventsFromServer();
+  await loadAdsFromServer();
+  await loadHiringFromServer();
+
+  renderBusinessPreviews();
+  renderCouponPreviews();
+  renderEventPreviews();
+  renderHiringPreviews();
+  renderAdPreviews();
+}
 
 async function loadBusinessesFromServer() {
   try {
     const response = await fetch("/.netlify/functions/businesses");
     const data = await response.json();
-
-    if (Array.isArray(data)) {
-      businesses = data;
-      localStorage.setItem("countyCompassBusinesses", JSON.stringify(data));
-    } else {
-      businesses =
-        JSON.parse(localStorage.getItem("countyCompassBusinesses")) || [];
-    }
+    businesses = Array.isArray(data) ? data : [];
   } catch (error) {
-    console.error(error);
-    businesses =
-      JSON.parse(localStorage.getItem("countyCompassBusinesses")) || [];
+    console.error("Business load failed:", error);
+    businesses = [];
   }
+}
 
-  renderBusinessPreviews();
+async function loadCouponsFromServer() {
+  try {
+    const response = await fetch("/.netlify/functions/coupons");
+    const data = await response.json();
+    coupons = Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error("Coupon load failed:", error);
+    coupons = [];
+  }
+}
+
+async function loadEventsFromServer() {
+  try {
+    const response = await fetch("/.netlify/functions/events");
+    const data = await response.json();
+    events = Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error("Event load failed:", error);
+    events = [];
+  }
+}
+
+async function loadAdsFromServer() {
+  try {
+    const response = await fetch("/.netlify/functions/ads");
+    const data = await response.json();
+    ads = Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error("Ad load failed:", error);
+    ads = [];
+  }
+}
+
+async function loadHiringFromServer() {
+  try {
+    const response = await fetch("/.netlify/functions/hiring");
+    const data = await response.json();
+    hiringPosts = Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error("Hiring load failed:", error);
+    hiringPosts = [];
+  }
 }
 
 async function saveBusinesses() {
-  localStorage.setItem("countyCompassBusinesses", JSON.stringify(businesses));
+  await saveToServer("/.netlify/functions/businesses", businesses, "Business");
+}
 
+async function saveCoupons() {
+  await saveToServer("/.netlify/functions/coupons", coupons, "Coupon");
+}
+
+async function saveEvents() {
+  await saveToServer("/.netlify/functions/events", events, "Event");
+}
+
+async function saveAds() {
+  await saveToServer("/.netlify/functions/ads", ads, "Ad");
+}
+
+async function saveHiringPosts() {
+  await saveToServer("/.netlify/functions/hiring", hiringPosts, "Hiring");
+}
+
+async function saveToServer(url, data, label) {
   try {
-    await fetch("/.netlify/functions/businesses", {
+    const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(businesses)
+      body: JSON.stringify(data)
     });
+
+    if (!response.ok) {
+      throw new Error(label + " save failed.");
+    }
   } catch (error) {
-    console.error("Business sync failed:", error);
+    console.error(label + " sync failed:", error);
+    alert(label + " could not be saved to the server.");
   }
 }
 
@@ -68,22 +130,10 @@ function generateId() {
 function formatPhoneNumber(value) {
   const cleaned = String(value || "").replace(/\D/g, "");
 
-  if (cleaned.length <= 3) {
-    return cleaned;
-  }
+  if (cleaned.length <= 3) return cleaned;
+  if (cleaned.length <= 6) return "(" + cleaned.slice(0, 3) + ") " + cleaned.slice(3);
 
-  if (cleaned.length <= 6) {
-    return "(" + cleaned.slice(0, 3) + ") " + cleaned.slice(3);
-  }
-
-  return (
-    "(" +
-    cleaned.slice(0, 3) +
-    ") " +
-    cleaned.slice(3, 6) +
-    "-" +
-    cleaned.slice(6, 10)
-  );
+  return "(" + cleaned.slice(0, 3) + ") " + cleaned.slice(3, 6) + "-" + cleaned.slice(6, 10);
 }
 
 function getValue(id) {
@@ -93,15 +143,11 @@ function getValue(id) {
 
 function setValue(id, value) {
   const element = document.getElementById(id);
-
-  if (element) {
-    element.value = value || "";
-  }
+  if (element) element.value = value || "";
 }
 
 function resetPreviewImage(id) {
   const preview = document.getElementById(id);
-
   if (preview) {
     preview.src = "";
     preview.style.display = "none";
@@ -110,7 +156,6 @@ function resetPreviewImage(id) {
 
 function setPreviewImage(id, imagePath) {
   const preview = document.getElementById(id);
-
   if (preview && imagePath) {
     preview.src = imagePath;
     preview.style.display = "block";
@@ -118,24 +163,13 @@ function setPreviewImage(id, imagePath) {
 }
 
 function makeGoodUrl(link) {
-  if (!link || link.trim() === "") {
-    return "";
-  }
-
-  if (
-    link.startsWith("http://") ||
-    link.startsWith("https://")
-  ) {
-    return link;
-  }
-
+  if (!link || link.trim() === "") return "";
+  if (link.startsWith("http://") || link.startsWith("https://")) return link;
   return "https://" + link;
 }
 
 function getExpirationText(expiration) {
-  if (!expiration) {
-    return "";
-  }
+  if (!expiration) return "";
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -149,63 +183,43 @@ function getExpirationText(expiration) {
   return "Expires: " + expiration;
 }
 
-function saveCoupons() {
-  localStorage.setItem("countyCompassCoupons", JSON.stringify(coupons));
-}
-
-async function saveEvents() {
-  localStorage.setItem("countyCompassEvents", JSON.stringify(events));
-
-  try {
-    await fetch("/.netlify/functions/events", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(events)
-    });
-  } catch (error) {
-    console.error("Event sync failed:", error);
-  }
-}
-
-async function saveAds() {
-  localStorage.setItem("countyCompassAds", JSON.stringify(ads));
-
-  try {
-    await fetch("/.netlify/functions/ads", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(ads)
-    });
-  } catch (error) {
-    console.error("Ad sync failed:", error);
-  }
-}
-
 function getCategoryImage(category) {
   const categoryImages = {
+    "Agriculture & Farm Services": "images/categories/professional-services.jpg",
+    "Animals & Pet Services": "images/categories/professional-services.jpg",
     "Automotive Repair": "images/categories/automotive.jpg",
     "Automotive Services": "images/categories/automotive.jpg",
-    "Churches": "images/categories/churches.jpg",
-    "Custom Crafts & Fabrication": "images/categories/shopping.jpg",
     "Catering & Event Services": "images/categories/catering-event-services.jpg",
+    "Churches": "images/categories/churches.jpg",
+    "Construction": "images/categories/home-services.jpg",
+    "Custom Crafts & Fabrication": "images/categories/shopping.jpg",
+    "Education & Training": "images/categories/professional-services.jpg",
     "Entertainment": "images/categories/entertainment.jpg",
+    "Financial Services": "images/categories/professional-services.jpg",
     "Fitness": "images/categories/fitness.jpg",
     "Food & Dining": "images/categories/food-dining.jpg",
+    "Government & Community": "images/categories/professional-services.jpg",
     "Gravel, Rock & Fill Dirt": "images/categories/home-services.jpg",
     "Handyman Services": "images/categories/home-services.jpg",
     "Health & Beauty": "images/categories/health-beauty.jpg",
     "Home Improvement": "images/categories/home-services.jpg",
+    "Insurance": "images/categories/professional-services.jpg",
     "IT & Computer Repair": "images/categories/professional-services.jpg",
     "Land Clearing & Tractor Services": "images/categories/home-services.jpg",
     "Landscaping": "images/categories/home-services.jpg",
+    "Legal Services": "images/categories/professional-services.jpg",
     "Locksmithing": "images/categories/professional-services.jpg",
+    "Lodging & Travel": "images/categories/professional-services.jpg",
+    "Massage & Spa Services": "images/categories/health-beauty.jpg",
+    "Medical & Dental": "images/categories/health-beauty.jpg",
+    "Moving & Hauling": "images/categories/home-services.jpg",
+    "Photography & Media": "images/categories/professional-services.jpg",
+    "Pools & Outdoor Living": "images/categories/home-services.jpg",
     "Professional Services": "images/categories/professional-services.jpg",
     "Real Estate": "images/categories/real-estate.jpg",
     "Shopping": "images/categories/shopping.jpg",
+    "Towing & Recovery": "images/categories/automotive.jpg",
+    "Weddings & Parties": "images/categories/catering-event-services.jpg",
     "Other": "images/categories/professional-services.jpg"
   };
 
@@ -233,14 +247,13 @@ async function addBusinessPreview() {
     return;
   }
 
-  const duplicate =
-    businesses.some(function(business) {
-      return (
-        business.name.toLowerCase() === name.toLowerCase() &&
-        business.address.toLowerCase() === address.toLowerCase() &&
-        business.id !== editingBusinessId
-      );
-    });
+  const duplicate = businesses.some(function(business) {
+    return (
+      business.name.toLowerCase() === name.toLowerCase() &&
+      business.address.toLowerCase() === address.toLowerCase() &&
+      business.id !== editingBusinessId
+    );
+  });
 
   if (duplicate) {
     alert("This business already exists.");
@@ -248,36 +261,32 @@ async function addBusinessPreview() {
   }
 
   if (editingBusinessId) {
-    businesses =
-      businesses.map(function(business) {
-        if (business.id === editingBusinessId) {
-          return {
-            id: editingBusinessId,
-            name,
-            category,
-            address,
-            phone,
-            email,
-            website,
-            image,
-            paid,
-            expiration,
-            featured,
-            featuredLocation,
-            description
-          };
-        }
+    businesses = businesses.map(function(business) {
+      if (business.id === editingBusinessId) {
+        return {
+          id: editingBusinessId,
+          name,
+          category,
+          address,
+          phone,
+          email,
+          website,
+          image,
+          paid,
+          expiration,
+          featured,
+          featuredLocation,
+          description
+        };
+      }
 
-        return business;
-      });
+      return business;
+    });
 
     editingBusinessId = null;
 
     const button = document.getElementById("businessSubmitButton");
-
-    if (button) {
-      button.textContent = "Add Business";
-    }
+    if (button) button.textContent = "Add Business";
 
     alert("Business updated.");
   } else {
@@ -307,10 +316,7 @@ async function addBusinessPreview() {
 
 function renderBusinessPreviews() {
   const area = document.getElementById("businessPreviewArea");
-
-  if (!area) {
-    return;
-  }
+  if (!area) return;
 
   area.innerHTML = "";
 
@@ -330,7 +336,6 @@ function renderBusinessPreviews() {
 
     area.innerHTML += `
       <article class="business-card">
-
         <img
           src="${imagePath}"
           alt="${business.name}"
@@ -348,46 +353,23 @@ function renderBusinessPreviews() {
         <p><strong>Featured:</strong> ${business.featured || "No"}</p>
         <p><strong>Featured Location:</strong> ${business.featuredLocation || "homepage"}</p>
 
-        ${
-          expirationText
-            ? `<p><strong>${expirationText}</strong></p>`
-            : ""
-        }
+        ${expirationText ? `<p><strong>${expirationText}</strong></p>` : ""}
 
-        <p class="business-description">
-          ${business.description}
-        </p>
+        <p class="business-description">${business.description}</p>
 
-        <button
-          type="button"
-          class="edit-button"
-          onclick="editBusiness(${business.id})"
-        >
-          Edit
-        </button>
-
-        <button
-          type="button"
-          class="delete-button"
-          onclick="deleteBusiness(${business.id})"
-        >
-          Delete
-        </button>
-
+        <button type="button" class="edit-button" onclick="editBusiness(${business.id})">Edit</button>
+        <button type="button" class="delete-button" onclick="deleteBusiness(${business.id})">Delete</button>
       </article>
     `;
   });
 }
 
 function editBusiness(id) {
-  const business =
-    businesses.find(function(item) {
-      return item.id === id;
-    });
+  const business = businesses.find(function(item) {
+    return item.id === id;
+  });
 
-  if (!business) {
-    return;
-  }
+  if (!business) return;
 
   editingBusinessId = id;
 
@@ -401,40 +383,24 @@ function editBusiness(id) {
   setValue("businessPaid", business.paid);
   setValue("businessExpiration", business.expiration || "");
   setValue("businessFeatured", business.featured);
-
-  setValue(
-    "businessFeaturedLocation",
-    business.featuredLocation || "homepage"
-  );
-
+  setValue("businessFeaturedLocation", business.featuredLocation || "homepage");
   setValue("businessDescription", business.description);
 
   setPreviewImage("businessImagePreview", business.image);
 
   const button = document.getElementById("businessSubmitButton");
+  if (button) button.textContent = "Update Business";
 
-  if (button) {
-    button.textContent = "Update Business";
-  }
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 async function deleteBusiness(id) {
-  const confirmDelete =
-    confirm("Delete this business?\n\nThis cannot be undone unless you restore a backup.");
+  const confirmDelete = confirm("Delete this business?");
+  if (!confirmDelete) return;
 
-  if (!confirmDelete) {
-    return;
-  }
-
-  businesses =
-    businesses.filter(function(business) {
-      return business.id !== id;
-    });
+  businesses = businesses.filter(function(business) {
+    return business.id !== id;
+  });
 
   await saveBusinesses();
   renderBusinessPreviews();
@@ -453,13 +419,12 @@ function clearBusinessForm() {
   setValue("businessFeatured", "No");
   setValue("businessFeaturedLocation", "homepage");
   setValue("businessDescription", "");
-
   resetPreviewImage("businessImagePreview");
 }
 
 /* COUPONS */
 
-function addCouponPreview() {
+async function addCouponPreview() {
   const businessName = getValue("couponBusinessName");
   const category = getValue("couponCategory");
   const title = getValue("couponTitle");
@@ -473,25 +438,23 @@ function addCouponPreview() {
   }
 
   if (editingCouponId) {
-    coupons =
-      coupons.map(function(coupon) {
-        if (coupon.id === editingCouponId) {
-          return {
-            id: editingCouponId,
-            businessName,
-            category,
-            title,
-            image,
-            expiration,
-            details
-          };
-        }
+    coupons = coupons.map(function(coupon) {
+      if (coupon.id === editingCouponId) {
+        return {
+          id: editingCouponId,
+          businessName,
+          category,
+          title,
+          image,
+          expiration,
+          details
+        };
+      }
 
-        return coupon;
-      });
+      return coupon;
+    });
 
     editingCouponId = null;
-
     alert("Coupon updated.");
   } else {
     coupons.unshift({
@@ -507,17 +470,14 @@ function addCouponPreview() {
     alert("Coupon added.");
   }
 
-  saveCoupons();
+  await saveCoupons();
   renderCouponPreviews();
   clearCouponForm();
 }
 
 function renderCouponPreviews() {
   const area = document.getElementById("couponPreviewArea");
-
-  if (!area) {
-    return;
-  }
+  if (!area) return;
 
   area.innerHTML = "";
 
@@ -534,7 +494,6 @@ function renderCouponPreviews() {
 
     area.innerHTML += `
       <article class="coupon-card">
-
         <img
           src="${imagePath}"
           alt="${coupon.title}"
@@ -547,52 +506,25 @@ function renderCouponPreviews() {
         <h2>${coupon.title}</h2>
 
         <p><strong>${coupon.businessName}</strong></p>
+        <p><strong>Category:</strong> ${coupon.category}</p>
 
-        <p>
-          <strong>Category:</strong>
-          ${coupon.category}
-        </p>
+        ${expirationText ? `<p><strong>${expirationText}</strong></p>` : ""}
 
-        ${
-          expirationText
-            ? `<p><strong>${expirationText}</strong></p>`
-            : ""
-        }
+        <p class="business-description">${coupon.details}</p>
 
-        <p class="business-description">
-          ${coupon.details}
-        </p>
-
-        <button
-          type="button"
-          class="edit-button"
-          onclick="editCoupon(${coupon.id})"
-        >
-          Edit
-        </button>
-
-        <button
-          type="button"
-          class="delete-button"
-          onclick="deleteCoupon(${coupon.id})"
-        >
-          Delete
-        </button>
-
+        <button type="button" class="edit-button" onclick="editCoupon(${coupon.id})">Edit</button>
+        <button type="button" class="delete-button" onclick="deleteCoupon(${coupon.id})">Delete</button>
       </article>
     `;
   });
 }
 
 function editCoupon(id) {
-  const coupon =
-    coupons.find(function(item) {
-      return item.id === id;
-    });
+  const coupon = coupons.find(function(item) {
+    return item.id === id;
+  });
 
-  if (!coupon) {
-    return;
-  }
+  if (!coupon) return;
 
   editingCouponId = id;
 
@@ -605,26 +537,18 @@ function editCoupon(id) {
 
   setPreviewImage("couponImagePreview", coupon.image);
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function deleteCoupon(id) {
-  const confirmDelete =
-    confirm("Delete this coupon?\n\nThis cannot be undone unless you restore a backup.");
+async function deleteCoupon(id) {
+  const confirmDelete = confirm("Delete this coupon?");
+  if (!confirmDelete) return;
 
-  if (!confirmDelete) {
-    return;
-  }
+  coupons = coupons.filter(function(coupon) {
+    return coupon.id !== id;
+  });
 
-  coupons =
-    coupons.filter(function(coupon) {
-      return coupon.id !== id;
-    });
-
-  saveCoupons();
+  await saveCoupons();
   renderCouponPreviews();
 }
 
@@ -633,15 +557,16 @@ function clearCouponForm() {
   setValue("couponCategory", "");
   setValue("couponTitle", "");
   setValue("couponImage", "");
+  setValue("couponDuration", "");
+  setValue("couponStartDate", "");
   setValue("couponExpiration", "");
   setValue("couponDetails", "");
-
   resetPreviewImage("couponImagePreview");
 }
 
 /* EVENTS */
 
-function addEventPreview() {
+async function addEventPreview() {
   const title = getValue("eventTitle");
   const location = getValue("eventLocation");
   const category = getValue("eventCategory");
@@ -656,26 +581,24 @@ function addEventPreview() {
   }
 
   if (editingEventId) {
-    events =
-      events.map(function(event) {
-        if (event.id === editingEventId) {
-          return {
-            id: editingEventId,
-            title,
-            location,
-            category,
-            date,
-            time,
-            image,
-            description
-          };
-        }
+    events = events.map(function(event) {
+      if (event.id === editingEventId) {
+        return {
+          id: editingEventId,
+          title,
+          location,
+          category,
+          date,
+          time,
+          image,
+          description
+        };
+      }
 
-        return event;
-      });
+      return event;
+    });
 
     editingEventId = null;
-
     alert("Event updated.");
   } else {
     events.unshift({
@@ -692,17 +615,14 @@ function addEventPreview() {
     alert("Event added.");
   }
 
-  saveEvents();
+  await saveEvents();
   renderEventPreviews();
   clearEventForm();
 }
 
 function renderEventPreviews() {
   const area = document.getElementById("eventPreviewArea");
-
-  if (!area) {
-    return;
-  }
+  if (!area) return;
 
   area.innerHTML = "";
 
@@ -716,7 +636,6 @@ function renderEventPreviews() {
 
     area.innerHTML += `
       <article class="business-card">
-
         <img
           src="${imagePath}"
           alt="${event.title}"
@@ -731,40 +650,21 @@ function renderEventPreviews() {
         <p><strong>Date:</strong> ${event.date}</p>
         <p><strong>Time:</strong> ${event.time}</p>
 
-        <p class="business-description">
-          ${event.description}
-        </p>
+        <p class="business-description">${event.description}</p>
 
-        <button
-          type="button"
-          class="edit-button"
-          onclick="editEvent(${event.id})"
-        >
-          Edit
-        </button>
-
-        <button
-          type="button"
-          class="delete-button"
-          onclick="deleteEvent(${event.id})"
-        >
-          Delete
-        </button>
-
+        <button type="button" class="edit-button" onclick="editEvent(${event.id})">Edit</button>
+        <button type="button" class="delete-button" onclick="deleteEvent(${event.id})">Delete</button>
       </article>
     `;
   });
 }
 
 function editEvent(id) {
-  const event =
-    events.find(function(item) {
-      return item.id === id;
-    });
+  const event = events.find(function(item) {
+    return item.id === id;
+  });
 
-  if (!event) {
-    return;
-  }
+  if (!event) return;
 
   editingEventId = id;
 
@@ -778,26 +678,18 @@ function editEvent(id) {
 
   setPreviewImage("eventImagePreview", event.image);
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function deleteEvent(id) {
-  const confirmDelete =
-    confirm("Delete this event?\n\nThis cannot be undone unless you restore a backup.");
+async function deleteEvent(id) {
+  const confirmDelete = confirm("Delete this event?");
+  if (!confirmDelete) return;
 
-  if (!confirmDelete) {
-    return;
-  }
+  events = events.filter(function(event) {
+    return event.id !== id;
+  });
 
-  events =
-    events.filter(function(event) {
-      return event.id !== id;
-    });
-
-  saveEvents();
+  await saveEvents();
   renderEventPreviews();
 }
 
@@ -809,7 +701,6 @@ function clearEventForm() {
   setValue("eventTime", "");
   setValue("eventImage", "");
   setValue("eventDescription", "");
-
   resetPreviewImage("eventImagePreview");
 }
 
@@ -819,8 +710,7 @@ async function addAdPreview() {
   const title = getValue("adTitle");
   const location = getValue("adLocation");
   const shape = getValue("adShape");
-  const image = getValue("adImage")
-    .replace(/\\/g, "/");
+  const image = getValue("adImage").replace(/\\/g, "/");
   const link = makeGoodUrl(getValue("adLink"));
   const active = getValue("adActive");
   const expiration = getValue("adExpiration");
@@ -831,26 +721,24 @@ async function addAdPreview() {
   }
 
   if (editingAdId) {
-    ads =
-      ads.map(function(ad) {
-        if (ad.id === editingAdId) {
-          return {
-            id: editingAdId,
-            title,
-            location,
-            shape,
-            image,
-            link,
-            active,
-            expiration
-          };
-        }
+    ads = ads.map(function(ad) {
+      if (ad.id === editingAdId) {
+        return {
+          id: editingAdId,
+          title,
+          location,
+          shape,
+          image,
+          link,
+          active,
+          expiration
+        };
+      }
 
-        return ad;
-      });
+      return ad;
+    });
 
     editingAdId = null;
-
     alert("Advertisement updated.");
   } else {
     ads.unshift({
@@ -874,74 +762,38 @@ async function addAdPreview() {
 
 function renderAdPreviews() {
   const area = document.getElementById("adPreviewArea");
-
-  if (!area) {
-    return;
-  }
+  if (!area) return;
 
   area.innerHTML = "";
 
   ads.forEach(function(ad) {
-    const shape =
-      ad.shape
-        ? ad.shape.toLowerCase()
-        : "square";
-
+    const shape = ad.shape ? ad.shape.toLowerCase() : "square";
     const expirationText = getExpirationText(ad.expiration);
 
     area.innerHTML += `
       <article class="ad-preview-card ad-${shape}">
-
-        <a
-          href="${makeGoodUrl(ad.link) || "#"}"
-          target="_blank"
-        >
-          <img
-            src="${ad.image}"
-            alt="${ad.title}"
-            class="ad-preview-image"
-          >
+        <a href="${makeGoodUrl(ad.link) || "#"}" target="_blank">
+          <img src="${ad.image}" alt="${ad.title}" class="ad-preview-image">
         </a>
 
         <p><strong>${ad.title}</strong></p>
         <p>${ad.location} | ${shape} | Active: ${ad.active}</p>
 
-        ${
-          expirationText
-            ? `<p><strong>${expirationText}</strong></p>`
-            : ""
-        }
+        ${expirationText ? `<p><strong>${expirationText}</strong></p>` : ""}
 
-        <button
-          type="button"
-          class="edit-button"
-          onclick="editAd(${ad.id})"
-        >
-          Edit
-        </button>
-
-        <button
-          type="button"
-          class="delete-button"
-          onclick="deleteAd(${ad.id})"
-        >
-          Delete
-        </button>
-
+        <button type="button" class="edit-button" onclick="editAd(${ad.id})">Edit</button>
+        <button type="button" class="delete-button" onclick="deleteAd(${ad.id})">Delete</button>
       </article>
     `;
   });
 }
 
 function editAd(id) {
-  const ad =
-    ads.find(function(item) {
-      return item.id === id;
-    });
+  const ad = ads.find(function(item) {
+    return item.id === id;
+  });
 
-  if (!ad) {
-    return;
-  }
+  if (!ad) return;
 
   editingAdId = id;
 
@@ -955,26 +807,18 @@ function editAd(id) {
 
   setPreviewImage("adImagePreview", ad.image);
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function deleteAd(id) {
-  const confirmDelete =
-    confirm("Delete this advertisement?\n\nThis cannot be undone unless you restore a backup.");
+async function deleteAd(id) {
+  const confirmDelete = confirm("Delete this advertisement?");
+  if (!confirmDelete) return;
 
-  if (!confirmDelete) {
-    return;
-  }
+  ads = ads.filter(function(ad) {
+    return ad.id !== id;
+  });
 
-  ads =
-    ads.filter(function(ad) {
-      return ad.id !== id;
-    });
-
-  saveAds();
+  await saveAds();
   renderAdPreviews();
 }
 
@@ -986,48 +830,84 @@ function clearAdForm() {
   setValue("adLink", "");
   setValue("adActive", "Yes");
   setValue("adExpiration", "");
-
   resetPreviewImage("adImagePreview");
 }
 
 /* ADMIN BUSINESS SEARCH */
 
 function filterBusinesses() {
-  const searchInput =
-    document.getElementById("adminBusinessSearch");
+  const searchInput = document.getElementById("adminBusinessSearch");
 
   if (!searchInput) {
     renderBusinessPreviews();
     return;
   }
 
-  const search =
-    searchInput.value.toLowerCase().trim();
+  const search = searchInput.value.toLowerCase().trim();
 
-  const originalBusinesses =
-    businesses;
+  const filteredBusinesses = businesses.filter(function(business) {
+    return (
+      business.name.toLowerCase().includes(search) ||
+      business.category.toLowerCase().includes(search) ||
+      business.address.toLowerCase().includes(search) ||
+      business.phone.toLowerCase().includes(search) ||
+      String(business.email || "").toLowerCase().includes(search) ||
+      business.description.toLowerCase().includes(search)
+    );
+  });
 
-  businesses =
-    originalBusinesses.filter(function(business) {
-      return (
-        business.name.toLowerCase().includes(search) ||
-        business.category.toLowerCase().includes(search) ||
-        business.address.toLowerCase().includes(search) ||
-        business.phone.toLowerCase().includes(search) ||
-        String(business.email || "").toLowerCase().includes(search) ||
-        business.description.toLowerCase().includes(search)
-      );
-    });
+  const area = document.getElementById("businessPreviewArea");
+  if (!area) return;
 
-  renderBusinessPreviews();
+  area.innerHTML = "";
 
-  businesses =
-    originalBusinesses;
+  filteredBusinesses.forEach(function(business) {
+    const imagePath =
+      business.image && business.image.trim() !== ""
+        ? business.image
+        : getCategoryImage(business.category);
+
+    const fallbackImage = getCategoryImage(business.category);
+    const expirationText = getExpirationText(business.expiration);
+
+    const emailLine =
+      business.email && business.email.trim() !== ""
+        ? `<p><strong>Email:</strong> ${business.email}</p>`
+        : "";
+
+    area.innerHTML += `
+      <article class="business-card">
+        <img
+          src="${imagePath}"
+          alt="${business.name}"
+          class="business-card-image"
+          onerror="this.onerror=null; this.src='${fallbackImage}';"
+        >
+
+        <h2>${business.name}</h2>
+
+        <p><strong>Category:</strong> ${business.category}</p>
+        <p><strong>Address:</strong> ${business.address}</p>
+        ${emailLine}
+        <p><strong>Phone:</strong> ${formatPhoneNumber(business.phone)}</p>
+        <p><strong>Paid:</strong> ${business.paid || "No"}</p>
+        <p><strong>Featured:</strong> ${business.featured || "No"}</p>
+        <p><strong>Featured Location:</strong> ${business.featuredLocation || "homepage"}</p>
+
+        ${expirationText ? `<p><strong>${expirationText}</strong></p>` : ""}
+
+        <p class="business-description">${business.description}</p>
+
+        <button type="button" class="edit-button" onclick="editBusiness(${business.id})">Edit</button>
+        <button type="button" class="delete-button" onclick="deleteBusiness(${business.id})">Delete</button>
+      </article>
+    `;
+  });
 }
 
 /* HIRING */
 
-function addHiringPreview() {
+async function addHiringPreview() {
   const business = getValue("hiringBusiness");
   const title = getValue("hiringTitle");
   const jobType = getValue("hiringType");
@@ -1038,40 +918,32 @@ function addHiringPreview() {
   const expiration = getValue("hiringExpiration");
   const description = getValue("hiringDescription");
 
-  if (
-    !business ||
-    !title ||
-    !jobType ||
-    !phone ||
-    !description
-  ) {
+  if (!business || !title || !jobType || !phone || !description) {
     alert("Please complete all hiring fields.");
     return;
   }
 
   if (editingHiringId) {
-    hiringPosts =
-      hiringPosts.map(function(post) {
-        if (post.id === editingHiringId) {
-          return {
-            id: editingHiringId,
-            business,
-            title,
-            jobType,
-            pay,
-            phone,
-            website,
-            image,
-            expiration,
-            description
-          };
-        }
+    hiringPosts = hiringPosts.map(function(post) {
+      if (post.id === editingHiringId) {
+        return {
+          id: editingHiringId,
+          business,
+          title,
+          jobType,
+          pay,
+          phone,
+          website,
+          image,
+          expiration,
+          description
+        };
+      }
 
-        return post;
-      });
+      return post;
+    });
 
     editingHiringId = null;
-
     alert("Hiring post updated.");
   } else {
     hiringPosts.unshift({
@@ -1090,22 +962,14 @@ function addHiringPreview() {
     alert("Hiring post added.");
   }
 
-  saveHiringPosts();
+  await saveHiringPosts();
   renderHiringPreviews();
   clearHiringForm();
 }
 
-function saveHiringPosts() {
-  localStorage.setItem("countyCompassHiring", JSON.stringify(hiringPosts));
-}
-
 function renderHiringPreviews() {
-  const area =
-    document.getElementById("hiringPreviewArea");
-
-  if (!area) {
-    return;
-  }
+  const area = document.getElementById("hiringPreviewArea");
+  if (!area) return;
 
   area.innerHTML = "";
 
@@ -1119,77 +983,32 @@ function renderHiringPreviews() {
 
     area.innerHTML += `
       <article class="business-card">
+        <img src="${imagePath}" alt="${post.title}" class="business-card-image">
 
-        <img
-          src="${imagePath}"
-          alt="${post.title}"
-          class="business-card-image"
-        >
+        <h2>${post.title}</h2>
 
-        <h2>
-          ${post.title}
-        </h2>
+        <p><strong>Business:</strong> ${post.business}</p>
+        <p><strong>Type:</strong> ${post.jobType}</p>
+        <p><strong>Pay:</strong> ${post.pay}</p>
+        <p><strong>Phone:</strong> ${formatPhoneNumber(post.phone)}</p>
 
-        <p>
-          <strong>Business:</strong>
-          ${post.business}
-        </p>
+        ${expirationText ? `<p><strong>${expirationText}</strong></p>` : ""}
 
-        <p>
-          <strong>Type:</strong>
-          ${post.jobType}
-        </p>
+        <p class="business-description">${post.description}</p>
 
-        <p>
-          <strong>Pay:</strong>
-          ${post.pay}
-        </p>
-
-        <p>
-          <strong>Phone:</strong>
-          ${formatPhoneNumber(post.phone)}
-        </p>
-
-        ${
-          expirationText
-            ? `<p><strong>${expirationText}</strong></p>`
-            : ""
-        }
-
-        <p class="business-description">
-          ${post.description}
-        </p>
-
-        <button
-          type="button"
-          class="edit-button"
-          onclick="editHiringPost(${post.id})"
-        >
-          Edit
-        </button>
-
-        <button
-          type="button"
-          class="delete-button"
-          onclick="deleteHiringPost(${post.id})"
-        >
-          Delete
-        </button>
-
+        <button type="button" class="edit-button" onclick="editHiringPost(${post.id})">Edit</button>
+        <button type="button" class="delete-button" onclick="deleteHiringPost(${post.id})">Delete</button>
       </article>
     `;
   });
 }
 
 function editHiringPost(id) {
-  const post =
-    hiringPosts.find(function(item) {
-      return item.id === id;
-    });
+  const post = hiringPosts.find(function(item) {
+    return item.id === id;
+  });
 
-  if (!post) {
-    return;
-  }
+  if (!post) return;
 
   editingHiringId = id;
 
@@ -1205,26 +1024,18 @@ function editHiringPost(id) {
 
   setPreviewImage("hiringImagePreview", post.image);
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function deleteHiringPost(id) {
-  const confirmDelete =
-    confirm("Delete this hiring post?");
+async function deleteHiringPost(id) {
+  const confirmDelete = confirm("Delete this hiring post?");
+  if (!confirmDelete) return;
 
-  if (!confirmDelete) {
-    return;
-  }
+  hiringPosts = hiringPosts.filter(function(post) {
+    return post.id !== id;
+  });
 
-  hiringPosts =
-    hiringPosts.filter(function(post) {
-      return post.id !== id;
-    });
-
-  saveHiringPosts();
+  await saveHiringPosts();
   renderHiringPreviews();
 }
 
@@ -1238,9 +1049,10 @@ function clearHiringForm() {
   setValue("hiringImage", "");
   setValue("hiringExpiration", "");
   setValue("hiringDescription", "");
-
   resetPreviewImage("hiringImagePreview");
 }
+
+/* PAGE SETUP */
 
 document.addEventListener("DOMContentLoaded", function() {
   const phoneFields = [
@@ -1249,77 +1061,42 @@ document.addEventListener("DOMContentLoaded", function() {
   ];
 
   phoneFields.forEach(function(fieldId) {
-    const input =
-      document.getElementById(fieldId);
+    const input = document.getElementById(fieldId);
 
-    if (!input) {
+    if (!input) return;
+
+    input.addEventListener("input", function() {
+      input.value = formatPhoneNumber(input.value);
+    });
+  });
+
+  const couponDuration = document.getElementById("couponDuration");
+  const couponStartDate = document.getElementById("couponStartDate");
+  const couponExpiration = document.getElementById("couponExpiration");
+
+  function updateCouponExpirationDate() {
+    if (!couponDuration || !couponStartDate || !couponExpiration) return;
+
+    const durationDays = parseInt(couponDuration.value);
+    const startDate = couponStartDate.value;
+
+    if (!durationDays || !startDate) {
+      couponExpiration.value = "";
       return;
     }
 
-    input.addEventListener("input", function() {
-      input.value =
-        formatPhoneNumber(input.value);
-    });
-  });
-  const couponDuration =
-  document.getElementById("couponDuration");
+    const calculatedDate = new Date(startDate + "T00:00:00");
+    calculatedDate.setDate(calculatedDate.getDate() + durationDays);
 
-const couponStartDate =
-  document.getElementById("couponStartDate");
+    const year = calculatedDate.getFullYear();
+    const month = String(calculatedDate.getMonth() + 1).padStart(2, "0");
+    const day = String(calculatedDate.getDate()).padStart(2, "0");
 
-const couponExpiration =
-  document.getElementById("couponExpiration");
-
-function updateCouponExpirationDate() {
-
-  if (
-    !couponDuration ||
-    !couponStartDate ||
-    !couponExpiration
-  ) {
-    return;
+    couponExpiration.value = `${year}-${month}-${day}`;
   }
 
-  const durationDays =
-    parseInt(couponDuration.value);
-
-  const startDate =
-    couponStartDate.value;
-
-  if (!durationDays || !startDate) {
-    couponExpiration.value = "";
-    return;
+  if (couponDuration && couponStartDate) {
+    couponDuration.addEventListener("change", updateCouponExpirationDate);
+    couponStartDate.addEventListener("change", updateCouponExpirationDate);
   }
-
-  const calculatedDate =
-    new Date(startDate + "T00:00:00");
-
-  calculatedDate.setDate(
-    calculatedDate.getDate() + durationDays
-  );
-
-  const year =
-    calculatedDate.getFullYear();
-
-  const month =
-    String(calculatedDate.getMonth() + 1)
-      .padStart(2, "0");
-
-  const day =
-    String(calculatedDate.getDate())
-      .padStart(2, "0");
-
-  couponExpiration.value =
-    `${year}-${month}-${day}`;
-}
-
-couponDuration.addEventListener(
-  "change",
-  updateCouponExpirationDate
-);
-
-couponStartDate.addEventListener(
-  "change",
-  updateCouponExpirationDate
-);
 });
