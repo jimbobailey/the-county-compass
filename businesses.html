@@ -103,14 +103,15 @@
         id="businessSearchInput"
         placeholder="Search businesses..."
         oninput="filterBusinesses()"
+        
       >
 
       <select
   id="categoryFilter"
   onchange="filterBusinesses()"
 >
-
-  <option>Agriculture & Farm Services</option>
+<option value="all" selected>All Categories</option>
+<option>Agriculture & Farm Services</option>
 <option>Animals & Pet Services</option>
 <option>Automotive Repair</option>
 <option>Automotive Services</option>
@@ -135,6 +136,7 @@
 <option>Legal Services</option>
 <option>Locksmithing</option>
 <option>Lodging & Travel</option>
+<option>Massage & Spa Services</option>
 <option>Medical & Dental</option>
 <option>Moving & Hauling</option>
 <option>Photography & Media</option>
