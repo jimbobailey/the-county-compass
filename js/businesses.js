@@ -16,6 +16,7 @@ const categoryImages = {
   "Automotive Services": "images/categories/automotive.jpg",
   "Churches": "images/categories/churches.jpg",
   "Custom Crafts & Fabrication": "images/categories/shopping.jpg",
+  "Catering & Event Services": "images/categories/catering-event-services.jpg",
   "Entertainment": "images/categories/entertainment.jpg",
   "Fitness": "images/categories/fitness.jpg",
   "Food & Dining": "images/categories/food-dining.jpg",
@@ -33,12 +34,31 @@ const categoryImages = {
   "Other": "images/categories/professional-services.jpg"
 };
 
-function loadBusinessesFromServer() {
+async function loadBusinessesFromServer() {
+  try {
+    const response =
+      await fetch("/.netlify/functions/businesses");
 
-  savedBusinesses =
-    JSON.parse(
-      localStorage.getItem("countyCompassBusinesses")
-    ) || [];
+    const data =
+      await response.json();
+
+    if (Array.isArray(data)) {
+      savedBusinesses = data;
+
+      localStorage.setItem(
+        "countyCompassBusinesses",
+        JSON.stringify(savedBusinesses)
+      );
+    } else {
+      savedBusinesses =
+        JSON.parse(localStorage.getItem("countyCompassBusinesses")) || [];
+    }
+  } catch (error) {
+    console.error("Business load failed:", error);
+
+    savedBusinesses =
+      JSON.parse(localStorage.getItem("countyCompassBusinesses")) || [];
+  }
 
   applyCategoryFromUrl();
 
@@ -48,17 +68,13 @@ function loadBusinessesFromServer() {
 }
 
 function getActiveBusinesses(businesses) {
-
   const today =
     new Date();
 
-  today.setHours(0,0,0,0);
+  today.setHours(0, 0, 0, 0);
 
   return businesses.filter(function(business) {
-
-    if (
-      business.paid !== "Yes"
-    ) {
+    if (business.paid !== "Yes") {
       return true;
     }
 
@@ -67,16 +83,15 @@ function getActiveBusinesses(businesses) {
     }
 
     const expirationDate =
-      new Date(
-        business.expiration + "T00:00:00"
-      );
+      new Date(business.expiration + "T00:00:00");
+
+    expirationDate.setHours(0, 0, 0, 0);
 
     return expirationDate >= today;
   });
 }
 
 function makeGoodUrl(link) {
-
   if (!link || link.trim() === "") {
     return "";
   }
@@ -92,7 +107,6 @@ function makeGoodUrl(link) {
 }
 
 function formatPhoneNumber(value) {
-
   const cleaned =
     String(value || "").replace(/\D/g, "");
 
@@ -101,21 +115,20 @@ function formatPhoneNumber(value) {
   }
 
   if (cleaned.length <= 6) {
-    return "(" + cleaned.slice(0,3) + ") " + cleaned.slice(3);
+    return "(" + cleaned.slice(0, 3) + ") " + cleaned.slice(3);
   }
 
   return (
     "(" +
-    cleaned.slice(0,3) +
+    cleaned.slice(0, 3) +
     ") " +
-    cleaned.slice(3,6) +
+    cleaned.slice(3, 6) +
     "-" +
-    cleaned.slice(6,10)
+    cleaned.slice(6, 10)
   );
 }
 
 function applyCategoryFromUrl() {
-
   const urlParams =
     new URLSearchParams(window.location.search);
 
@@ -132,7 +145,6 @@ function applyCategoryFromUrl() {
 }
 
 function getCategoryImage(category) {
-
   return (
     categoryImages[category] ||
     "images/categories/professional-services.jpg"
@@ -140,7 +152,6 @@ function getCategoryImage(category) {
 }
 
 function getBusinessImage(business) {
-
   if (
     business.image &&
     business.image.trim() !== ""
@@ -154,7 +165,6 @@ function getBusinessImage(business) {
 }
 
 function getFilteredBusinesses() {
-
   const activeBusinesses =
     getActiveBusinesses(savedBusinesses);
 
@@ -168,56 +178,58 @@ function getFilteredBusinesses() {
       ? categoryFilter.value
       : "all";
 
-  return activeBusinesses.filter(
-    function(business) {
+  return activeBusinesses.filter(function(business) {
+    const name =
+      business.name
+        ? business.name.toLowerCase()
+        : "";
 
-      const name =
-        business.name
-          ? business.name.toLowerCase()
-          : "";
+    const category =
+      business.category
+        ? business.category.toLowerCase()
+        : "";
 
-      const category =
-        business.category
-          ? business.category.toLowerCase()
-          : "";
+    const address =
+      business.address
+        ? business.address.toLowerCase()
+        : "";
 
-      const address =
-        business.address
-          ? business.address.toLowerCase()
-          : "";
+    const phone =
+      business.phone
+        ? business.phone.toLowerCase()
+        : "";
 
-      const phone =
-        business.phone
-          ? business.phone.toLowerCase()
-          : "";
+    const email =
+      business.email
+        ? business.email.toLowerCase()
+        : "";
 
-      const description =
-        business.description
-          ? business.description.toLowerCase()
-          : "";
+    const description =
+      business.description
+        ? business.description.toLowerCase()
+        : "";
 
-      const matchesSearch =
-        name.includes(searchInput) ||
-        category.includes(searchInput) ||
-        address.includes(searchInput) ||
-        phone.includes(searchInput) ||
-        description.includes(searchInput);
+    const matchesSearch =
+      name.includes(searchInput) ||
+      category.includes(searchInput) ||
+      address.includes(searchInput) ||
+      phone.includes(searchInput) ||
+      email.includes(searchInput) ||
+      description.includes(searchInput);
 
-      const matchesCategory =
-        selectedCategory === "all" ||
-        selectedCategory === "" ||
-        business.category === selectedCategory;
+    const matchesCategory =
+      selectedCategory === "all" ||
+      selectedCategory === "" ||
+      business.category === selectedCategory;
 
-      return (
-        matchesSearch &&
-        matchesCategory
-      );
-    }
-  );
+    return (
+      matchesSearch &&
+      matchesCategory
+    );
+  });
 }
 
 function renderBusinesses(businessesToShow) {
-
   if (!businessList) {
     return;
   }
@@ -225,7 +237,6 @@ function renderBusinesses(businessesToShow) {
   businessList.innerHTML = "";
 
   if (businessesToShow.length === 0) {
-
     businessList.innerHTML = `
       <p class="empty-message">
         No businesses found.
@@ -238,16 +249,15 @@ function renderBusinesses(businessesToShow) {
   businessesToShow
     .slice(0, visibleBusinessCount)
     .forEach(function(business) {
-
       const mapsLink =
         "https://www.google.com/maps/search/?api=1&query=" +
         encodeURIComponent(
-          business.address
+          business.address || ""
         );
 
       const websiteUrl =
         makeGoodUrl(
-          business.website
+          business.website || ""
         );
 
       const fallbackImage =
@@ -260,36 +270,47 @@ function renderBusinesses(businessesToShow) {
           business.phone
         );
 
-      businessList.innerHTML += `
+      const emailLine =
+        business.email &&
+        business.email.trim() !== ""
+          ? `
+            <p class="business-phone">
+              ${business.email}
+            </p>
+          `
+          : "";
 
+      businessList.innerHTML += `
         <article class="business-card compact-business-card">
 
           <img
             src="${getBusinessImage(business)}"
-            alt="${business.category}"
+            alt="${business.category || "Business"}"
             class="business-card-image compact-business-image"
             loading="lazy"
             onerror="this.onerror=null; this.src='${fallbackImage}';"
           >
 
           <h2>
-            ${business.name}
+            ${business.name || ""}
           </h2>
 
           <p class="business-category">
-            ${business.category}
+            ${business.category || ""}
           </p>
 
           <p class="business-address">
-            ${business.address}
+            ${business.address || ""}
           </p>
+
+          ${emailLine}
 
           <p class="business-phone">
             ${displayPhone}
           </p>
 
           <p class="business-description compact-description">
-            ${business.description}
+            ${business.description || ""}
           </p>
 
           <div class="business-button-row">
@@ -319,32 +340,24 @@ function renderBusinesses(businessesToShow) {
           </div>
 
         </article>
-
       `;
     });
 
-  if (
-    businessesToShow.length >
-    visibleBusinessCount
-  ) {
-
+  if (businessesToShow.length > visibleBusinessCount) {
     businessList.innerHTML += `
       <div class="load-more-wrap">
-
         <button
           type="button"
           onclick="loadMoreBusinesses()"
         >
           Load More Businesses
         </button>
-
       </div>
     `;
   }
 }
 
 function filterBusinesses() {
-
   visibleBusinessCount = 12;
 
   renderBusinesses(
@@ -353,7 +366,6 @@ function filterBusinesses() {
 }
 
 function loadMoreBusinesses() {
-
   visibleBusinessCount += 12;
 
   renderBusinesses(
