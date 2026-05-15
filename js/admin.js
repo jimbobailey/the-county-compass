@@ -217,8 +217,9 @@ async function addBusinessPreview() {
   const name = getValue("businessName");
   const category = getValue("businessCategory");
   const address = getValue("businessAddress");
-  const phone = formatPhoneNumber(getValue("businessPhone"));
-  const website = makeGoodUrl(getValue("businessWebsite"));
+const phone = formatPhoneNumber(getValue("businessPhone"));
+const email = getValue("businessEmail");
+const website = makeGoodUrl(getValue("businessWebsite"));
   const image = getValue("businessImage");
   const paid = getValue("businessPaid");
   const expiration = getValue("businessExpiration");
