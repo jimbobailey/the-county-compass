@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Submissions | The County Compass</title>
+
+  <style>
+    body{
+      margin:0;
+      font-family:Arial,sans-serif;
+      background:#111;
+      color:#fff;
+    }
+
+    header{
+      background:#1b1b1b;
+      border-bottom:3px solid orange;
+      padding:20px;
+      text-align:center;
+    }
+
+    header h1{
+      margin:0;
+      color:orange;
+    }
+
+    .container{
+      max-width:1200px;
+      margin:30px auto;
+      padding:0 20px;
+    }
+
+    .submission-card{
+      background:#1b1b1b;
+      border:1px solid #333;
+      border-radius:14px;
+      padding:20px;
+      margin-bottom:20px;
+    }
+
+    .submission-card h2{
+      margin-top:0;
+      color:orange;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:12px;
+      margin-top:15px;
+    }
+
+    .field{
+      background:#222;
+      border-radius:8px;
+      padding:10px;
+    }
+
+    .label{
+      color:orange;
+      font-size:13px;
+      margin-bottom:4px;
+    }
+
+    .value{
+      word-break:break-word;
+    }
+
+    .loading{
+      text-align:center;
+      margin-top:50px;
+      color:#bbb;
+      font-size:20px;
+    }
+
+    a{
+      color:#ffaa33;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>County Compass Admin Submissions</h1>
+</header>
+
+<div class="container">
+
+  <div id="loading" class="loading">
+    Loading submissions...
+  </div>
+
+  <div id="submissions"></div>
+
+</div>
+
+<script>
+
+async function loadSubmissions(){
+
+  try{
+
+    const response = await fetch("/.netlify/functions/get-submissions");
+
+    const data = await response.json();
+
+    document.getElementById("loading").style.display = "none";
+
+    if(!data.submissions || !data.submissions.length){
+
+      document.getElementById("submissions").innerHTML = `
+        <div class="submission-card">
+          <h2>No submissions found.</h2>
+        </div>
+      `;
+
+      return;
+    }
+
+    const container = document.getElementById("submissions");
+
+    data.submissions.reverse().forEach(sub => {
+
+      const payload = sub.data || {};
+
+      const card = document.createElement("div");
+
+      card.className = "submission-card";
+
+      card.innerHTML = `
+
+        <h2>${payload.businessName || "Unnamed Submission"}</h2>
+
+        <div class="grid">
+
+          <div class="field">
+            <div class="label">Submission Type</div>
+            <div class="value">${payload.submissionType || ""}</div>
+          </div>
+
+          <div class="field">
+            <div class="label">Contact Name</div>
+            <div class="value">${payload.contactName || ""}</div>
+          </div>
+
+          <div class="field">
+            <div class="label">Email</div>
+            <div class="value">${payload.email || ""}</div>
+          </div>
+
+          <div class="field">
+            <div class="label">Phone</div>
+            <div class="value">${payload.phone || ""}</div>
+          </div>
+
+          <div class="field">
+            <div class="label">Category</div>
+            <div class="value">${payload.category || ""}</div>
+          </div>
+
+          <div class="field">
+            <div class="label">Package Length</div>
+            <div class="value">${payload.packageLength || ""}</div>
+          </div>
+
+          <div class="field">
+            <div class="label">Start Date</div>
+            <div class="value">${payload.startDate || ""}</div>
+          </div>
+
+          <div class="field">
+            <div class="label">End Date</div>
+            <div class="value">${payload.endDate || ""}</div>
+          </div>
+
+          <div class="field">
+            <div class="label">Website</div>
+            <div class="value">
+              <a href="${payload.website || "#"}" target="_blank">
+                ${payload.website || ""}
+              </a>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="label">Image Link</div>
+            <div class="value">
+              <a href="${payload.imageUrl || "#"}" target="_blank">
+                ${payload.imageUrl || ""}
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="field" style="margin-top:15px;">
+          <div class="label">Title</div>
+          <div class="value">${payload.title || ""}</div>
+        </div>
+
+        <div class="field" style="margin-top:15px;">
+          <div class="label">Description</div>
+          <div class="value">${payload.description || ""}</div>
+        </div>
+
+        <div class="field" style="margin-top:15px;">
+          <div class="label">Notes</div>
+          <div class="value">${payload.notes || ""}</div>
+        </div>
+
+      `;
+
+      container.appendChild(card);
+
+    });
+
+  }catch(error){
+
+    document.getElementById("loading").innerHTML =
+      "Failed to load submissions.";
+
+    console.error(error);
+  }
+}
+
+loadSubmissions();
+
+</script>
+
+</body>
+</html>
