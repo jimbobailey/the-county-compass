@@ -819,7 +819,8 @@ async function addAdPreview() {
   const title = getValue("adTitle");
   const location = getValue("adLocation");
   const shape = getValue("adShape");
-  const image = getValue("adImage");
+  const image = getValue("adImage")
+    .replace(/\\/g, "/");
   const link = makeGoodUrl(getValue("adLink"));
   const active = getValue("adActive");
   const expiration = getValue("adExpiration");
