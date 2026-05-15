@@ -1,15 +1,16 @@
 const { getStore } = require("@netlify/blobs");
 
 exports.handler = async function (event) {
-  const store = getStore("pending-submissions");
-
   if (event.httpMethod === "GET") {
     try {
+      const store = getStore("pending-submissions");
+
       const list = await store.list();
       const submissions = [];
 
       for (const item of list.blobs) {
         const submission = await store.get(item.key, { type: "json" });
+
         if (submission) {
           submissions.push(submission);
         }
@@ -39,6 +40,8 @@ exports.handler = async function (event) {
 
   if (event.httpMethod === "POST") {
     try {
+      const store = getStore("pending-submissions");
+
       const data = JSON.parse(event.body || "{}");
 
       const submission = {
