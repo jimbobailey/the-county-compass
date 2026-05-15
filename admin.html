@@ -493,13 +493,32 @@
           >
 
           <label class="image-upload-label">
-            Hiring Expiration Date
-          </label>
+  Hiring Duration
+</label>
 
-          <input
-            type="date"
-            id="hiringExpiration"
-          >
+<select id="hiringDuration">
+  <option value="">Select Duration</option>
+  <option value="30">Monthly</option>
+</select>
+
+<label class="image-upload-label">
+  Hiring Start Date
+</label>
+
+<input
+  type="date"
+  id="hiringStartDate"
+>
+
+<label class="image-upload-label">
+  Hiring Expiration Date
+</label>
+
+<input
+  type="date"
+  id="hiringExpiration"
+  readonly
+>
 
           <textarea
             id="hiringDescription"
