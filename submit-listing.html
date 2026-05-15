@@ -1,56 +1,236 @@
-const { getStore } = require("@netlify/blobs");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit a Listing | The County Compass</title>
 
-exports.handler = async function (event) {
-  if (event.httpMethod !== "POST") {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ error: "Method not allowed" })
-    };
-  }
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #f5f5f5;
+    }
 
-  try {
-    const data = JSON.parse(event.body || "{}");
+    header {
+      background: #1c1c1c;
+      border-bottom: 3px solid #ff8c00;
+      padding: 20px;
+      text-align: center;
+    }
 
-    const submission = {
-      id: Date.now().toString(),
-      status: "pending",
-      submittedAt: new Date().toISOString(),
+    header h1 {
+      margin: 0;
+      color: #ff8c00;
+    }
 
-      submissionType: data.submissionType || "",
-      businessName: data.businessName || "",
-      contactName: data.contactName || "",
-      email: data.email || "",
-      phone: data.phone || "",
-      address: data.address || "",
-      website: data.website || "",
-      category: data.category || "",
-      title: data.title || "",
-      description: data.description || "",
-      startDate: data.startDate || "",
-      endDate: data.endDate || "",
-      imageUrl: data.imageUrl || "",
-      notes: data.notes || ""
-    };
+    main {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #1b1b1b;
+      border: 1px solid #333;
+      border-radius: 12px;
+    }
 
-    const store = getStore("pending-submissions");
+    h2 {
+      color: #ff8c00;
+      margin-top: 0;
+    }
 
-    await store.setJSON(submission.id, submission);
+    label {
+      display: block;
+      margin-top: 16px;
+      font-weight: bold;
+    }
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        success: true,
-        message: "Submission saved.",
-        submission
-      })
-    };
-  } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        error: "Failed to save submission.",
-        details: error.message
-      })
-    };
-  }
-};
+    input,
+    select,
+    textarea {
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 6px;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #444;
+      background: #0f0f0f;
+      color: #fff;
+      font-size: 15px;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 24px;
+      width: 100%;
+      padding: 14px;
+      background: #ff8c00;
+      color: #111;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #ffaa33;
+    }
+
+    .note {
+      color: #ccc;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .status {
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .success {
+      background: #123d1f;
+      color: #b7ffca;
+      border: 1px solid #2f8f46;
+    }
+
+    .error {
+      background: #3d1212;
+      color: #ffc0c0;
+      border: 1px solid #9b3434;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>The County Compass</h1>
+    <p>Submit your business, coupon, event, ad, or hiring listing</p>
+  </header>
+
+  <main>
+    <h2>Submit a Listing</h2>
+
+    <p class="note">
+      Submissions are reviewed before they appear on The County Compass.
+      Sending this form does not automatically publish your listing.
+    </p>
+
+    <form id="submissionForm">
+      <label for="submissionType">Submission Type</label>
+      <select id="submissionType" name="submissionType" required>
+        <option value="">Choose one</option>
+        <option value="business">Business Listing</option>
+        <option value="coupon">Coupon</option>
+        <option value="event">Event</option>
+        <option value="ad">Advertisement</option>
+        <option value="hiring">Hiring / Job Posting</option>
+      </select>
+
+      <label for="businessName">Business / Organization Name</label>
+      <input id="businessName" name="businessName" required />
+
+      <label for="contactName">Contact Name</label>
+      <input id="contactName" name="contactName" required />
+
+      <label for="email">Contact Email</label>
+      <input id="email" name="email" type="email" required />
+
+      <label for="phone">Phone Number</label>
+      <input id="phone" name="phone" />
+
+      <label for="address">Address</label>
+      <input id="address" name="address" />
+
+      <label for="website">Website or Facebook Link</label>
+      <input id="website" name="website" />
+
+      <label for="category">Category</label>
+      <input id="category" name="category" placeholder="Example: Restaurant, Automotive, Church, Retail" />
+
+      <label for="title">Listing Title</label>
+      <input id="title" name="title" placeholder="Example: Grand Opening, 20% Off, Now Hiring" required />
+
+      <label for="description">Description / Details</label>
+      <textarea id="description" name="description" required></textarea>
+
+      <label for="startDate">Start Date</label>
+      <input id="startDate" name="startDate" type="date" />
+
+      <label for="endDate">End Date / Expiration Date</label>
+      <input id="endDate" name="endDate" type="date" />
+
+      <label for="imageUrl">Image Link</label>
+      <input id="imageUrl" name="imageUrl" placeholder="Optional for now. Image upload system comes later." />
+
+      <label for="notes">Extra Notes for Admin</label>
+      <textarea id="notes" name="notes"></textarea>
+
+      <button type="submit">Submit for Review</button>
+
+      <div id="statusBox" class="status"></div>
+    </form>
+  </main>
+
+  <script>
+    const form = document.getElementById("submissionForm");
+    const statusBox = document.getElementById("statusBox");
+
+    function showStatus(message, type) {
+      statusBox.textContent = message;
+      statusBox.className = "status " + type;
+      statusBox.style.display = "block";
+    }
+
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const formData = new FormData(form);
+
+      const payload = {
+        submissionType: formData.get("submissionType"),
+        businessName: formData.get("businessName"),
+        contactName: formData.get("contactName"),
+        email: formData.get("email"),
+        phone: formData.get("phone"),
+        address: formData.get("address"),
+        website: formData.get("website"),
+        category: formData.get("category"),
+        title: formData.get("title"),
+        description: formData.get("description"),
+        startDate: formData.get("startDate"),
+        endDate: formData.get("endDate"),
+        imageUrl: formData.get("imageUrl"),
+        notes: formData.get("notes"),
+        status: "pending",
+        submittedAt: new Date().toISOString()
+      };
+
+      try {
+        const response = await fetch("/.netlify/functions/submissions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error("Submission failed.");
+        }
+
+        form.reset();
+        showStatus("Submission received. It will be reviewed before publishing.", "success");
+      } catch (error) {
+        showStatus("There was a problem submitting the form. Please try again.", "error");
+      }
+    });
+  </script>
+</body>
+</html>
