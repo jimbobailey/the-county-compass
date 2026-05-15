@@ -6,80 +6,88 @@
   <title>Submit Listing | The County Compass</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #111;
+      background: #0f0f0f;
       color: #fff;
     }
 
     header {
       background: #1b1b1b;
       border-bottom: 3px solid orange;
-      padding: 20px;
+      padding: 24px 16px;
       text-align: center;
     }
 
     header h1 {
       color: orange;
       margin: 0;
+      font-size: 34px;
     }
 
-    .container {
-      max-width: 900px;
+    header p {
+      margin: 8px 0 0;
+      color: #ccc;
+    }
+
+    .page-wrap {
+      max-width: 1000px;
       margin: 30px auto;
-      padding: 20px;
+      padding: 0 16px;
+    }
+
+    .box {
       background: #1b1b1b;
-      border-radius: 12px;
       border: 1px solid #333;
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 24px;
     }
 
-    h2 {
-      color: orange;
-    }
-
-    .info-box {
-      background: #222;
-      border: 1px solid #444;
-      border-left: 4px solid orange;
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      line-height: 1.6;
-    }
-
-    .pricing-box {
-      background: #181818;
-      border: 1px solid #444;
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 25px;
-    }
-
-    .pricing-box h3 {
+    h2,
+    h3 {
       color: orange;
       margin-top: 0;
     }
 
+    .info-box {
+      background: #222;
+      border-left: 4px solid orange;
+      padding: 15px;
+      border-radius: 8px;
+      line-height: 1.6;
+      color: #eee;
+    }
+
     .pricing-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
     }
 
     .price-card {
       background: #222;
       border: 1px solid #444;
-      border-radius: 8px;
-      padding: 10px;
+      border-radius: 10px;
+      padding: 14px;
       text-align: center;
     }
 
     .price-card strong {
       display: block;
       color: orange;
-      font-size: 20px;
-      margin-top: 5px;
+      font-size: 22px;
+      margin: 8px 0;
+    }
+
+    form {
+      max-width: 760px;
+      margin: 0 auto;
     }
 
     label {
@@ -87,6 +95,7 @@
       margin-top: 18px;
       margin-bottom: 6px;
       font-weight: bold;
+      color: #fff;
     }
 
     input,
@@ -96,14 +105,21 @@
       padding: 12px;
       border-radius: 8px;
       border: 1px solid #444;
-      background: #111;
+      background: #101010;
       color: #fff;
-      box-sizing: border-box;
+      font-size: 15px;
     }
 
     textarea {
-      min-height: 120px;
+      min-height: 115px;
       resize: vertical;
+    }
+
+    .small-note {
+      color: #bbb;
+      font-size: 14px;
+      margin-top: 6px;
+      line-height: 1.5;
     }
 
     button {
@@ -141,13 +157,6 @@
       border: 1px solid #9b3434;
       color: #ffc0c0;
     }
-
-    .small-note {
-      color: #bbb;
-      font-size: 14px;
-      margin-top: 5px;
-      line-height: 1.5;
-    }
   </style>
 </head>
 
@@ -155,214 +164,235 @@
 
 <header>
   <h1>The County Compass</h1>
-  <p>Public Listing Submission Form</p>
+  <p>Submit your listing for review</p>
 </header>
 
-<div class="container">
+<div class="page-wrap">
 
-  <div class="info-box">
-    All submissions are reviewed before being published.<br><br>
-    There is currently NO charge to submit.<br>
-    You will only be contacted for payment AFTER approval.
+  <div class="box">
+    <div class="info-box">
+      All submissions are reviewed before being published.<br><br>
+      No payment is required during submission.<br>
+      You will only be contacted for payment after your submission is approved.
+    </div>
   </div>
 
-  <div class="pricing-box">
+  <div class="box">
+    <h3>Listing & Advertising Options</h3>
 
-  <h3>Listing & Advertising Options</h3>
+    <div class="pricing-grid">
 
-  <div class="pricing-grid">
-
-    <div class="price-card">
-      Standard Business Listing
-      <strong>$149 / Year</strong>
-
-      <div class="small-note">
-        Directory business listing with category placement, business details, image/logo, and searchable visibility.
+      <div class="price-card">
+        Standard Business Listing
+        <strong>$149 / Year</strong>
+        <div class="small-note">
+          Business directory listing with category placement, business details, image/logo, and searchable visibility.
+        </div>
       </div>
-    </div>
 
-    <div class="price-card">
-      Featured Business Listing
-      <strong>$249 / Year</strong>
-
-      <div class="small-note">
-        Includes full business listing PLUS featured placement across the website including homepage, events, coupons, and hiring pages.
+      <div class="price-card">
+        Featured Business Listing
+        <strong>$249 / Year</strong>
+        <div class="small-note">
+          Includes full business listing plus featured placement across homepage, events, coupons, and hiring pages.
+        </div>
       </div>
-    </div>
 
-    <div class="price-card">
-      Sponsor Placement
-      <strong>$299 / Year</strong>
-
-      <div class="small-note">
-        Premium sponsor placement for businesses wanting maximum visibility and community support recognition.
+      <div class="price-card">
+        Sponsor Placement
+        <strong>$299 / Year</strong>
+        <div class="small-note">
+          Premium sponsor placement for businesses wanting maximum visibility.
+        </div>
       </div>
-    </div>
 
-    <div class="price-card">
-      Coupon Listing
-      <strong>$10 / Week</strong>
-
-      <div class="small-note">
-        Promote special offers, discounts, and limited-time promotions.
+      <div class="price-card">
+        Coupon Listing
+        <strong>$10 / Week</strong>
+        <div class="small-note">
+          Promote special offers, discounts, and limited-time deals.
+        </div>
       </div>
-    </div>
 
-    <div class="price-card">
-      Event Listing
-      <strong>$10 / Event</strong>
-
-      <div class="small-note">
-        Promote community events, church gatherings, fundraisers, festivals, and more.
+      <div class="price-card">
+        Event Listing
+        <strong>$10 / Event</strong>
+        <div class="small-note">
+          Promote community events, church gatherings, fundraisers, festivals, and more.
+        </div>
       </div>
-    </div>
 
-    <div class="price-card">
-      Hiring Listing
-      <strong>$15 / Month</strong>
-
-      <div class="small-note">
-        Advertise available job positions within your business or organization.
+      <div class="price-card">
+        Hiring Listing
+        <strong>$15 / Month</strong>
+        <div class="small-note">
+          Advertise available job positions within your business or organization.
+        </div>
       </div>
-    </div>
 
+    </div>
   </div>
 
-  <div class="small-note" style="margin-top: 20px;">
-    No payment is required during submission. You will only be contacted for payment after your submission has been reviewed and approved.
+  <div class="box">
+    <h2>Submit Your Listing</h2>
+
+    <form id="submissionForm">
+
+      <label>Submission Type</label>
+      <select name="submissionType" required>
+        <option value="">Select Type</option>
+        <option value="business">Business Listing</option>
+        <option value="featured-business">Featured Business Listing</option>
+        <option value="sponsor">Sponsor Placement</option>
+        <option value="coupon">Coupon</option>
+        <option value="event">Event</option>
+        <option value="hiring">Hiring / Job Posting</option>
+      </select>
+
+      <label>Business / Organization Name</label>
+      <input type="text" name="businessName" required>
+
+      <label>Contact Name</label>
+      <input type="text" name="contactName" required>
+
+      <label>Email Address</label>
+      <input type="email" name="email" required>
+
+      <label>Phone Number</label>
+      <input type="text" name="phone">
+
+      <label>Business Address</label>
+      <input type="text" name="address">
+
+      <label>Website or Facebook Link</label>
+      <input type="text" name="website">
+
+      <label>Category</label>
+      <select name="category" required>
+        <option value="">Select Category</option>
+        <option>Agriculture & Farm Services</option>
+        <option>Animals & Pet Services</option>
+        <option>Automotive Repair</option>
+        <option>Automotive Services</option>
+        <option>Catering & Event Services</option>
+        <option>Churches</option>
+        <option>Construction</option>
+        <option>Custom Crafts & Fabrication</option>
+        <option>Education & Training</option>
+        <option>Entertainment</option>
+        <option>Financial Services</option>
+        <option>Fitness</option>
+        <option>Food & Dining</option>
+        <option>Government & Community</option>
+        <option>Gravel, Rock & Fill Dirt</option>
+        <option>Handyman Services</option>
+        <option>Health & Beauty</option>
+        <option>Home Improvement</option>
+        <option>Insurance</option>
+        <option>IT & Computer Repair</option>
+        <option>Land Clearing & Tractor Services</option>
+        <option>Landscaping</option>
+        <option>Legal Services</option>
+        <option>Locksmithing</option>
+        <option>Lodging & Travel</option>
+        <option>Medical & Dental</option>
+        <option>Moving & Hauling</option>
+        <option>Photography & Media</option>
+        <option>Pools & Outdoor Living</option>
+        <option>Professional Services</option>
+        <option>Real Estate</option>
+        <option>Shopping</option>
+        <option>Towing & Recovery</option>
+        <option>Weddings & Parties</option>
+        <option>Other</option>
+      </select>
+
+      <div class="small-note">
+        If your category does not exist, choose "Other" and explain the needed category in the notes section below.
+      </div>
+
+      <label>Listing Headline / Title</label>
+      <input
+        type="text"
+        name="title"
+        placeholder="Example: 20% Off This Month, Now Hiring, Grand Opening"
+      >
+
+      <div class="small-note">
+        This is the main title people will see publicly.
+      </div>
+
+      <label>Description</label>
+      <textarea name="description" required></textarea>
+
+      <label>Package Length</label>
+      <select name="packageLength" id="packageLength">
+        <option value="">Select Duration</option>
+        <option value="7">Weekly</option>
+        <option value="30">Monthly</option>
+        <option value="90">Quarterly</option>
+        <option value="365">Yearly</option>
+      </select>
+
+      <label>Start Date</label>
+      <input type="date" name="startDate" id="startDate">
+
+      <label>End Date</label>
+      <input type="date" name="endDate" id="endDate" readonly>
+
+      <div class="small-note">
+        End date is automatically calculated from the selected package length.
+      </div>
+
+      <label>Image Link</label>
+      <input type="text" name="imageUrl">
+
+      <div class="small-note">
+        For security reasons, direct uploads are not enabled yet.<br>
+        You may also email images to: thecountycompass@gmail.com
+      </div>
+
+      <label>Additional Notes</label>
+      <textarea name="notes"></textarea>
+
+      <button type="submit">Submit For Review</button>
+
+      <div id="statusBox" class="status"></div>
+
+    </form>
   </div>
 
-</div>
-  </div>
-
-  <h2>Submit Your Listing</h2>
-
-  <form id="submissionForm">
-
-    <label>Submission Type</label>
-    <select name="submissionType" required>
-      <option value="">Select Type</option>
-      <option value="business">Business Listing</option>
-      <option value="coupon">Coupon</option>
-      <option value="event">Event</option>
-      <option value="hiring">Hiring / Job Posting</option>
-      <option value="ad">Advertisement</option>
-    </select>
-
-    <label>Business / Organization Name</label>
-    <input type="text" name="businessName" required>
-
-    <label>Contact Name</label>
-    <input type="text" name="contactName" required>
-
-    <label>Email Address</label>
-    <input type="email" name="email" required>
-
-    <label>Phone Number</label>
-    <input type="text" name="phone">
-
-    <label>Business Address</label>
-    <input type="text" name="address">
-
-    <label>Website or Facebook Link</label>
-    <input type="text" name="website">
-
-    <label>Category</label>
-
-<select name="category" required>
-  <option value="">Select Category</option>
-
-  <option>Agriculture & Farm Services</option>
-  <option>Animals & Pet Services</option>
-  <option>Automotive Repair</option>
-  <option>Automotive Services</option>
-  <option>Catering & Event Services</option>
-  <option>Churches</option>
-  <option>Construction</option>
-  <option>Custom Crafts & Fabrication</option>
-  <option>Education & Training</option>
-  <option>Entertainment</option>
-  <option>Financial Services</option>
-  <option>Fitness</option>
-  <option>Food & Dining</option>
-  <option>Government & Community</option>
-  <option>Gravel, Rock & Fill Dirt</option>
-  <option>Handyman Services</option>
-  <option>Health & Beauty</option>
-  <option>Home Improvement</option>
-  <option>Insurance</option>
-  <option>IT & Computer Repair</option>
-  <option>Land Clearing & Tractor Services</option>
-  <option>Landscaping</option>
-  <option>Legal Services</option>
-  <option>Locksmithing</option>
-  <option>Lodging & Travel</option>
-  <option>Medical & Dental</option>
-  <option>Moving & Hauling</option>
-  <option>Photography & Media</option>
-  <option>Pools & Outdoor Living</option>
-  <option>Professional Services</option>
-  <option>Real Estate</option>
-  <option>Shopping</option>
-  <option>Towing & Recovery</option>
-  <option>Weddings & Parties</option>
-  <option>Other</option>
-</select>
-
-<div class="small-note">
-  If your category does not exist, choose "Other" and explain the needed category in the notes section below.
-</div>
-
-    <label>Listing Headline / Title</label>
-    <input type="text" name="title" placeholder="Example: 20% Off This Month, Now Hiring, Grand Opening">
-
-    <div class="small-note">
-      This is the main title people will see publicly.
-    </div>
-
-    <label>Description</label>
-    <textarea name="description" required></textarea>
-
-    <label>Package Length</label>
-    <select name="packageLength">
-      <option value="">Select Duration</option>
-      <option value="weekly">Weekly</option>
-      <option value="monthly">Monthly</option>
-      <option value="quarterly">Quarterly</option>
-      <option value="yearly">Yearly</option>
-    </select>
-
-    <label>Start Date</label>
-    <input type="date" name="startDate">
-
-    <label>End Date</label>
-    <input type="date" name="endDate">
-
-    <div class="small-note">
-      Date ranges that exceed the selected package length may require admin review.
-    </div>
-
-    <label>Image Link</label>
-    <input type="text" name="imageUrl">
-
-    <div class="small-note">
-      For security reasons, direct uploads are not enabled yet.<br>
-      You may also email images to: thecountycompass@gmail.com
-    </div>
-
-    <label>Additional Notes</label>
-    <textarea name="notes"></textarea>
-
-    <button type="submit">Submit For Review</button>
-
-    <div id="statusBox" class="status"></div>
-
-  </form>
 </div>
 
 <script>
   const form = document.getElementById("submissionForm");
   const statusBox = document.getElementById("statusBox");
+
+  const packageLength = document.getElementById("packageLength");
+  const startDate = document.getElementById("startDate");
+  const endDate = document.getElementById("endDate");
+
+  function updateEndDate() {
+    const days = parseInt(packageLength.value);
+    const start = startDate.value;
+
+    if (!days || !start) {
+      endDate.value = "";
+      return;
+    }
+
+    const date = new Date(start + "T00:00:00");
+    date.setDate(date.getDate() + days);
+
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
+    const dd = String(date.getDate()).padStart(2, "0");
+
+    endDate.value = `${yyyy}-${mm}-${dd}`;
+  }
+
+  packageLength.addEventListener("change", updateEndDate);
+  startDate.addEventListener("change", updateEndDate);
 
   function showStatus(message, type) {
     statusBox.style.display = "block";
@@ -374,7 +404,6 @@
     e.preventDefault();
 
     const formData = new FormData(form);
-
     const payload = Object.fromEntries(formData.entries());
 
     try {
@@ -400,13 +429,12 @@
       );
 
     } catch (error) {
+      console.error(error);
 
       showStatus(
         "There was a problem submitting the form. Please try again.",
         "error"
       );
-
-      console.error(error);
     }
   });
 </script>
