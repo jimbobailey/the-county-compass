@@ -240,9 +240,3 @@ function renderAds(locationName, containerId) {
     `;
   });
 }
-
-renderAds("homepage", "homepageAds");
-renderAds("businesses", "businessesAds");
-renderAds("coupons", "couponsAds");
-renderAds("events", "eventsAds");
-renderAds("hiring", "hiringAds");
