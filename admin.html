@@ -298,13 +298,33 @@
           >
 
           <label class="image-upload-label">
-            Coupon Expiration Date
-          </label>
+  Coupon Duration
+</label>
 
-          <input
-            type="date"
-            id="couponExpiration"
-          >
+<select id="couponDuration">
+  <option value="">Select Duration</option>
+  <option value="7">Weekly</option>
+  <option value="30">Monthly</option>
+</select>
+
+<label class="image-upload-label">
+  Coupon Start Date
+</label>
+
+<input
+  type="date"
+  id="couponStartDate"
+>
+
+<label class="image-upload-label">
+  Coupon Expiration Date
+</label>
+
+<input
+  type="date"
+  id="couponExpiration"
+  readonly
+>
 
           <textarea
             id="couponDetails"

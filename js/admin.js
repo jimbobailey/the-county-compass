@@ -1261,4 +1261,65 @@ document.addEventListener("DOMContentLoaded", function() {
         formatPhoneNumber(input.value);
     });
   });
+  const couponDuration =
+  document.getElementById("couponDuration");
+
+const couponStartDate =
+  document.getElementById("couponStartDate");
+
+const couponExpiration =
+  document.getElementById("couponExpiration");
+
+function updateCouponExpirationDate() {
+
+  if (
+    !couponDuration ||
+    !couponStartDate ||
+    !couponExpiration
+  ) {
+    return;
+  }
+
+  const durationDays =
+    parseInt(couponDuration.value);
+
+  const startDate =
+    couponStartDate.value;
+
+  if (!durationDays || !startDate) {
+    couponExpiration.value = "";
+    return;
+  }
+
+  const calculatedDate =
+    new Date(startDate + "T00:00:00");
+
+  calculatedDate.setDate(
+    calculatedDate.getDate() + durationDays
+  );
+
+  const year =
+    calculatedDate.getFullYear();
+
+  const month =
+    String(calculatedDate.getMonth() + 1)
+      .padStart(2, "0");
+
+  const day =
+    String(calculatedDate.getDate())
+      .padStart(2, "0");
+
+  couponExpiration.value =
+    `${year}-${month}-${day}`;
+}
+
+couponDuration.addEventListener(
+  "change",
+  updateCouponExpirationDate
+);
+
+couponStartDate.addEventListener(
+  "change",
+  updateCouponExpirationDate
+);
 });
