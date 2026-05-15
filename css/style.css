@@ -341,11 +341,12 @@ body {
 }
 
 .business-grid,
-.coupon-grid {
+.coupon-grid,
+.ad-preview-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 22px;
-  align-items: stretch;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  width: 100%;
 }
 
 .business-card,
@@ -735,7 +736,7 @@ body {
   .coupon-grid,
   .ad-preview-grid,
   .ad-options {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 
   .home-link-grid {
@@ -799,12 +800,14 @@ body {
     display: block;
   }
 
-  .business-grid,
-  .coupon-grid,
-  .ad-preview-grid,
-  .ad-options {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
+ .business-grid,
+.coupon-grid,
+.ad-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
 
   .home-link-grid {
     grid-template-columns: 1fr;
@@ -828,4 +831,23 @@ body {
     font-size: 18px;
     padding: 18px 16px;
   }
+}
+@media (max-width: 768px) {
+
+  .business-grid,
+  .coupon-grid,
+  .ad-preview-grid,
+  .home-link-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .business-card,
+  .coupon-card,
+  .event-card,
+  .hiring-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
 }
