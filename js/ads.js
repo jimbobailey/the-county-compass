@@ -7,26 +7,20 @@ async function loadAdsFromServer() {
     const response = await fetch("/.netlify/functions/ads");
     const data = await response.json();
 
-    if (Array.isArray(data)) {
-      countyCompassAds = data.map(function(ad) {
-        return {
-          ...ad,
-          location: String(ad.location || "").trim().toLowerCase(),
-          active: String(ad.active || "").trim(),
-          image: String(ad.image || "").replace(/\\/g, "/")
-        };
-      });
+    countyCompassAds = Array.isArray(data)
+      ? data.map(function(ad) {
+          return {
+            ...ad,
+            location: String(ad.location || "").trim().toLowerCase(),
+            active: String(ad.active || "").trim(),
+            image: String(ad.image || "").replace(/\\/g, "/")
+          };
+        })
+      : [];
 
-      localStorage.setItem(
-        "countyCompassAds",
-        JSON.stringify(countyCompassAds)
-      );
-    }
   } catch (error) {
     console.error("Ads load failed:", error);
-
-    countyCompassAds =
-      JSON.parse(localStorage.getItem("countyCompassAds")) || [];
+    countyCompassAds = [];
   }
 
   renderAds("homepage", "homepageAds");
@@ -41,10 +35,7 @@ function makeGoodUrl(link) {
     return "";
   }
 
-  if (
-    link.startsWith("http://") ||
-    link.startsWith("https://")
-  ) {
+  if (link.startsWith("http://") || link.startsWith("https://")) {
     return link;
   }
 
@@ -56,10 +47,9 @@ function getActiveAds(locationName) {
   today.setHours(0, 0, 0, 0);
 
   return countyCompassAds.filter(function(ad) {
-    if (
-      ad.location !== locationName &&
-      ad.location !== "all"
-    ) {
+    const adLocation = String(ad.location || "").trim().toLowerCase();
+
+    if (adLocation !== locationName && adLocation !== "all") {
       return false;
     }
 
@@ -71,9 +61,7 @@ function getActiveAds(locationName) {
       return true;
     }
 
-    const expirationDate =
-      new Date(ad.expiration + "T00:00:00");
-
+    const expirationDate = new Date(ad.expiration + "T00:00:00");
     expirationDate.setHours(0, 0, 0, 0);
 
     return expirationDate >= today;
@@ -92,11 +80,7 @@ function renderAds(locationName, containerId) {
   container.innerHTML = "";
 
   adsToShow.forEach(function(ad) {
-    const shapeClass =
-      ad.shape
-        ? ad.shape.toLowerCase()
-        : "square";
-
+    const shapeClass = ad.shape ? ad.shape.toLowerCase() : "square";
     const adUrl = makeGoodUrl(ad.link || "");
 
     const adImage = `
@@ -110,11 +94,7 @@ function renderAds(locationName, containerId) {
 
     if (adUrl) {
       container.innerHTML += `
-        <a
-          href="${adUrl}"
-          target="_blank"
-          class="site-ad site-ad-${shapeClass}"
-        >
+        <a href="${adUrl}" target="_blank" class="site-ad site-ad-${shapeClass}">
           ${adImage}
         </a>
       `;
