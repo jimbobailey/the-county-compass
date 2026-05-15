@@ -242,6 +242,8 @@ body {
   flex: 0 0 180px;
   width: 180px;
   max-width: 180px;
+  overflow: visible;
+  padding: 8px;
 }
 
 /* HOME PAGE LINK CARDS */
@@ -348,13 +350,13 @@ body {
 .business-card,
 .coupon-card {
   width: 100%;
-  max-width: 340px;
+  max-width: 250px;
   justify-self: center;
   background: #1e1e1e;
   border: 2px solid #333;
   border-radius: 14px;
-  padding: 16px;
-  overflow: hidden;
+  padding: 10px;
+  overflow: visible;
 }
 
 .coupon-card {
