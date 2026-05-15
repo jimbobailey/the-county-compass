@@ -294,11 +294,12 @@ body {
 
 .ad-preview-card {
   width: 100%;
-  max-width: 340px;
+  max-width: 250px;
   background: #1e1e1e;
   border: 2px solid #333;
-  border-radius: 16px;
-  padding: 16px;
+  border-radius: 14px;
+  padding: 8px;
+  overflow: visible;
 }
 
 .ad-preview-card a {
