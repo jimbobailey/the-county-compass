@@ -1,12 +1,53 @@
-const savedCoupons =
-  JSON.parse(localStorage.getItem("countyCompassCoupons")) || [];
+let savedCoupons = [];
 
 const couponGrid =
   document.getElementById("couponGrid");
 
 let visibleCouponCount = 12;
 
-renderCoupons(getActiveCoupons());
+loadCouponsFromServer();
+
+async function loadCouponsFromServer() {
+
+  try {
+
+    const response =
+      await fetch("/.netlify/functions/coupons");
+
+    const data =
+      await response.json();
+
+    if (Array.isArray(data)) {
+
+      savedCoupons = data;
+
+      localStorage.setItem(
+        "countyCompassCoupons",
+        JSON.stringify(savedCoupons)
+      );
+
+    } else {
+
+      savedCoupons =
+        JSON.parse(
+          localStorage.getItem("countyCompassCoupons")
+        ) || [];
+    }
+
+  } catch (error) {
+
+    console.error("Coupon load failed:", error);
+
+    savedCoupons =
+      JSON.parse(
+        localStorage.getItem("countyCompassCoupons")
+      ) || [];
+  }
+
+  renderCoupons(
+    getActiveCoupons()
+  );
+}
 
 function getActiveCoupons() {
   const today = new Date();
