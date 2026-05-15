@@ -386,15 +386,17 @@ body {
 .business-card h2,
 .coupon-card h2 {
   color: #ff8c00;
-  margin: 0 0 10px;
-  font-size: 22px;
+  margin: 0 0 6px;
+  font-size: 18px;
+  line-height: 1.1;
 }
 
 .business-card p,
 .coupon-card p {
   color: #ddd;
-  margin: 0 0 8px;
-  line-height: 1.45;
+  margin: 0 0 4px;
+  line-height: 1.25;
+  font-size: 14px;
 }
 
 .business-description {
