@@ -55,12 +55,13 @@ function getActiveAds(locationName) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  if (
-  ad.location !== locationName &&
-  ad.location !== "all"
-) {
-  return false;
-}
+  return countyCompassAds.filter(function(ad) {
+    if (
+      ad.location !== locationName &&
+      ad.location !== "all"
+    ) {
+      return false;
+    }
 
     if (ad.active !== "Yes") {
       return false;
