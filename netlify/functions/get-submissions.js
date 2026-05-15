@@ -1,13 +1,24 @@
 exports.handler = async function () {
+
   try {
+
     const token = process.env.NETLIFY_API_TOKEN;
     const siteId = process.env.NETLIFY_SITE_ID;
 
-    if (!token || !siteId) {
+    if (!token) {
       return {
         statusCode: 500,
         body: JSON.stringify({
-          error: "Missing NETLIFY_API_TOKEN or NETLIFY_SITE_ID."
+          error: "NETLIFY_API_TOKEN missing"
+        })
+      };
+    }
+
+    if (!siteId) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          error: "NETLIFY_SITE_ID missing"
         })
       };
     }
@@ -21,10 +32,6 @@ exports.handler = async function () {
       }
     );
 
-    if (!formsResponse.ok) {
-      throw new Error("Could not load Netlify forms.");
-    }
-
     const forms = await formsResponse.json();
 
     const targetForm = forms.find(
@@ -35,7 +42,7 @@ exports.handler = async function () {
       return {
         statusCode: 404,
         body: JSON.stringify({
-          error: "county-compass-submission form not found."
+          error: "Form not found"
         })
       };
     }
@@ -49,10 +56,6 @@ exports.handler = async function () {
       }
     );
 
-    if (!submissionsResponse.ok) {
-      throw new Error("Could not load form submissions.");
-    }
-
     const submissions = await submissionsResponse.json();
 
     return {
@@ -64,12 +67,14 @@ exports.handler = async function () {
     };
 
   } catch (error) {
+
     return {
       statusCode: 500,
       body: JSON.stringify({
-        error: "Failed to load submissions.",
-        details: error.message
+        error: error.message
       })
     };
+
   }
+
 };
