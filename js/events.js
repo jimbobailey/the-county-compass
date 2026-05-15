@@ -1,16 +1,53 @@
-const savedEvents =
-  JSON.parse(
-    localStorage.getItem("countyCompassEvents")
-  ) || [];
+let savedEvents = [];
 
 const eventsList =
   document.getElementById("eventsList");
 
 let visibleEventCount = 12;
 
-renderEvents(
-  getActiveEvents()
-);
+loadEventsFromServer();
+
+async function loadEventsFromServer() {
+
+  try {
+
+    const response =
+      await fetch("/.netlify/functions/events");
+
+    const data =
+      await response.json();
+
+    if (Array.isArray(data)) {
+
+      savedEvents = data;
+
+      localStorage.setItem(
+        "countyCompassEvents",
+        JSON.stringify(savedEvents)
+      );
+
+    } else {
+
+      savedEvents =
+        JSON.parse(
+          localStorage.getItem("countyCompassEvents")
+        ) || [];
+    }
+
+  } catch (error) {
+
+    console.error("Event load failed:", error);
+
+    savedEvents =
+      JSON.parse(
+        localStorage.getItem("countyCompassEvents")
+      ) || [];
+  }
+
+  renderEvents(
+    getActiveEvents()
+  );
+}
 
 function getActiveEvents() {
 
