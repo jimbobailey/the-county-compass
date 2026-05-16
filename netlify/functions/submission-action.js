@@ -6,6 +6,7 @@ const BUSINESS_KEY = "businesses";
 const COUPON_KEY = "coupons";
 const EVENT_KEY = "events";
 const HIRING_KEY = "hiring";
+const AD_KEY = "ads";
 
 exports.default = async function handler(request) {
   const headers = {
@@ -98,6 +99,11 @@ exports.default = async function handler(request) {
 
     const hiring =
       await store.get(HIRING_KEY, {
+        type: "json"
+      }) || [];
+
+    const ads =
+      await store.get(AD_KEY, {
         type: "json"
       }) || [];
 
@@ -291,6 +297,47 @@ exports.default = async function handler(request) {
       await store.setJSON(
         HIRING_KEY,
         hiring
+      );
+    }
+
+    // APPROVE SPONSOR
+    if (
+      action === "approved" &&
+      approvedAs === "sponsor"
+    ) {
+
+      const sponsorEntry = {
+        id: "ad-" + Date.now(),
+
+        title:
+          submissionData.businessName || "",
+
+        image:
+          submissionData.imageUrl || "",
+
+        link:
+          submissionData.website || "",
+
+        active:
+          "Yes",
+
+        shape:
+          "square",
+
+        location:
+          "all",
+
+        expiration:
+          ""
+      };
+
+      ads.push(
+        sponsorEntry
+      );
+
+      await store.setJSON(
+        AD_KEY,
+        ads
       );
     }
 
