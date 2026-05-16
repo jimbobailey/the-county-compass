@@ -3,6 +3,7 @@ const { getStore } = require("@netlify/blobs");
 const STORE_NAME = "county-compass-data";
 const HANDLED_KEY = "handled-submissions";
 const BUSINESS_KEY = "businesses";
+const COUPON_KEY = "coupons";
 
 exports.default = async function handler(request) {
   const headers = {
@@ -13,49 +14,84 @@ exports.default = async function handler(request) {
   };
 
   if (request.method === "OPTIONS") {
-    return new Response("", { status: 200, headers });
-  }
-
-  const store = getStore(STORE_NAME);
-
-  if (request.method === "GET") {
-    const handled = await store.get(HANDLED_KEY, { type: "json" });
-    const businesses =
-  await store.get(BUSINESS_KEY, { type: "json" }) || [];
-
-    return new Response(JSON.stringify(handled || []), {
+    return new Response("", {
       status: 200,
       headers
     });
   }
 
+  const store = getStore(STORE_NAME);
+
+  if (request.method === "GET") {
+    const handled =
+      await store.get(HANDLED_KEY, {
+        type: "json"
+      }) || [];
+
+    return new Response(
+      JSON.stringify(handled),
+      {
+        status: 200,
+        headers
+      }
+    );
+  }
+
   if (request.method === "POST") {
+
     let body = {};
 
     try {
       body = await request.json();
     } catch (error) {
-      return new Response(JSON.stringify({ error: "Invalid JSON." }), {
-        status: 400,
-        headers
-      });
-    }
-
-    const { submissionId, action, approvedAs, submissionData } = body;
-
-    if (!submissionId || !action) {
       return new Response(
-        JSON.stringify({ error: "Missing submissionId or action." }),
-        { status: 400, headers }
+        JSON.stringify({
+          error: "Invalid JSON."
+        }),
+        {
+          status: 400,
+          headers
+        }
       );
     }
 
-    const handled = await store.get(HANDLED_KEY, { type: "json" }) || [];
+    const {
+      submissionId,
+      action,
+      approvedAs,
+      submissionData
+    } = body;
+
+    if (!submissionId || !action) {
+      return new Response(
+        JSON.stringify({
+          error: "Missing submissionId or action."
+        }),
+        {
+          status: 400,
+          headers
+        }
+      );
+    }
+
+    const handled =
+      await store.get(HANDLED_KEY, {
+        type: "json"
+      }) || [];
+
     const businesses =
-  await store.get(BUSINESS_KEY, { type: "json" }) || [];
+      await store.get(BUSINESS_KEY, {
+        type: "json"
+      }) || [];
+
+    const coupons =
+      await store.get(COUPON_KEY, {
+        type: "json"
+      }) || [];
 
     const existingIndex = handled.findIndex(
-      item => item.submissionId === submissionId
+      item =>
+        item.submissionId === submissionId
     );
 
     const record = {
@@ -71,69 +107,121 @@ exports.default = async function handler(request) {
     } else {
       handled.push(record);
     }
+
+    // APPROVE BUSINESS
     if (
-  action === "approved" &&
-  approvedAs === "business"
-) {
+      action === "approved" &&
+      approvedAs === "business"
+    ) {
 
-  const businessEntry = {
-    id: "business-" + Date.now(),
+      const businessEntry = {
+        id: "business-" + Date.now(),
 
-    name:
-      submissionData.businessName || "",
+        name:
+          submissionData.businessName || "",
 
-    category:
-      submissionData.category || "",
+        category:
+          submissionData.category || "",
 
-    address:
-      submissionData.address || "",
+        address:
+          submissionData.address || "",
 
-    phone:
-      submissionData.phone || "",
+        phone:
+          submissionData.phone || "",
 
-    email:
-      submissionData.email || "",
+        email:
+          submissionData.email || "",
 
-    website:
-      submissionData.website || "",
+        website:
+          submissionData.website || "",
 
-    image:
-      submissionData.imageUrl || "",
+        image:
+          submissionData.imageUrl || "",
 
-    description:
-      submissionData.description || "",
+        description:
+          submissionData.description || "",
 
-    paid:
-      "No",
+        paid: "No",
 
-    featured:
-      "No",
+        featured: "No",
 
-    featuredLocation:
-      "homepage"
-  };
+        featuredLocation:
+          "homepage"
+      };
 
-  businesses.push(businessEntry);
+      businesses.push(
+        businessEntry
+      );
 
-  await store.setJSON(
-    BUSINESS_KEY,
-    businesses
-  );
-}
+      await store.setJSON(
+        BUSINESS_KEY,
+        businesses
+      );
+    }
 
-    await store.setJSON(HANDLED_KEY, handled);
+    // APPROVE COUPON
+    if (
+      action === "approved" &&
+      approvedAs === "coupon"
+    ) {
+
+      const couponEntry = {
+        id: "coupon-" + Date.now(),
+
+        businessName:
+          submissionData.businessName || "",
+
+        title:
+          submissionData.title || "",
+
+        category:
+          submissionData.category || "",
+
+        details:
+          submissionData.description || "",
+
+        image:
+          submissionData.imageUrl || "",
+
+        expiration: "",
+
+        active: "Yes"
+      };
+
+      coupons.push(
+        couponEntry
+      );
+
+      await store.setJSON(
+        COUPON_KEY,
+        coupons
+      );
+    }
+
+    await store.setJSON(
+      HANDLED_KEY,
+      handled
+    );
 
     return new Response(
       JSON.stringify({
         success: true,
         record
       }),
-      { status: 200, headers }
+      {
+        status: 200,
+        headers
+      }
     );
   }
 
-  return new Response(JSON.stringify({ error: "Method not allowed." }), {
-    status: 405,
-    headers
-  });
+  return new Response(
+    JSON.stringify({
+      error: "Method not allowed."
+    }),
+    {
+      status: 405,
+      headers
+    }
+  );
 };
