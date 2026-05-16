@@ -881,33 +881,19 @@ body {
     drop-shadow(0 0 6px rgba(255, 140, 0, 0.45));
 }
 .logo-text span {
-  font-size: 38px !important;
+  font-size: 36px !important;
   font-weight: 900 !important;
-  letter-spacing: 1.5px !important;
-
-  color: #4b525a !important;
-
-  -webkit-text-stroke: 1px #ff8c00;
-
+  letter-spacing: 1px !important;
+  color: #cfd3d8 !important;
+  -webkit-text-stroke: 0.45px #ff8c00;
   text-shadow:
-    0 2px 0 #111,
-    0 0 6px rgba(255, 140, 0, 0.35),
-    0 0 12px rgba(255, 140, 0, 0.15);
-
-  background: linear-gradient(
-    to bottom,
-    #707780,
-    #3a3f46
-  );
-
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+    0 2px 2px #000,
+    0 0 5px rgba(255, 140, 0, 0.28);
 }
 
 .site-logo {
-  width: 56px !important;
-  height: 56px !important;
-
-  filter:
-    drop-shadow(0 0 6px rgba(255, 140, 0, 0.4));
+  width: 54px !important;
+  height: 54px !important;
+  object-fit: contain;
+  filter: drop-shadow(0 0 5px rgba(255, 140, 0, 0.35));
 }
