@@ -357,8 +357,8 @@ function renderBusinessPreviews() {
 
         <p class="business-description">${business.description}</p>
 
-        <button type="button" class="edit-button" onclick='editBusiness(${JSON.stringify(business.id)})'>Edit</button>
-        <button type="button" class="delete-button" onclick='deleteBusiness(${JSON.stringify(business.id)})'>Delete</button>
+        <button type="button" class="edit-button" onclick='editCoupon(${JSON.stringify(coupon.id)})'>Edit</button>
+<button type="button" class="delete-button" onclick='deleteCoupon(${JSON.stringify(coupon.id)})'>Delete</button>
       </article>
     `;
   });
@@ -512,8 +512,8 @@ function renderCouponPreviews() {
 
         <p class="business-description">${coupon.details}</p>
 
-        <button type="button" class="edit-button" onclick="editCoupon(${coupon.id})">Edit</button>
-        <button type="button" class="delete-button" onclick="deleteCoupon(${coupon.id})">Delete</button>
+        <<button type="button" class="edit-button" onclick='editEvent(${JSON.stringify(event.id)})'>Edit</button>
+<button type="button" class="delete-button" onclick='deleteEvent(${JSON.stringify(event.id)})'>Delete</button>
       </article>
     `;
   });
@@ -652,8 +652,8 @@ function renderEventPreviews() {
 
         <p class="business-description">${event.description}</p>
 
-        <button type="button" class="edit-button" onclick="editEvent(${event.id})">Edit</button>
-        <button type="button" class="delete-button" onclick="deleteEvent(${event.id})">Delete</button>
+        <button type="button" class="edit-button" onclick='editEvent(${JSON.stringify(event.id)})'>Edit</button>
+<button type="button" class="delete-button" onclick='deleteEvent(${JSON.stringify(event.id)})'>Delete</button>
       </article>
     `;
   });
@@ -781,8 +781,8 @@ function renderAdPreviews() {
 
         ${expirationText ? `<p><strong>${expirationText}</strong></p>` : ""}
 
-        <button type="button" class="edit-button" onclick="editAd(${ad.id})">Edit</button>
-        <button type="button" class="delete-button" onclick="deleteAd(${ad.id})">Delete</button>
+      <button type="button" class="edit-button" onclick='editEvent(${JSON.stringify(event.id)})'>Edit</button>
+<button type="button" class="delete-button" onclick='deleteEvent(${JSON.stringify(event.id)})'>Delete</button>
       </article>
     `;
   });
@@ -898,8 +898,8 @@ function filterBusinesses() {
 
         <p class="business-description">${business.description}</p>
 
-        <button type="button" class="edit-button" onclick="editBusiness(${business.id})">Edit</button>
-        <button type="button" class="delete-button" onclick="deleteBusiness(${business.id})">Delete</button>
+      <button type="button" class="edit-button" onclick='editEvent(${JSON.stringify(event.id)})'>Edit</button>
+<button type="button" class="delete-button" onclick='deleteEvent(${JSON.stringify(event.id)})'>Delete</button>
       </article>
     `;
   });
@@ -996,8 +996,8 @@ function renderHiringPreviews() {
 
         <p class="business-description">${post.description}</p>
 
-        <button type="button" class="edit-button" onclick="editHiringPost(${post.id})">Edit</button>
-        <button type="button" class="delete-button" onclick="deleteHiringPost(${post.id})">Delete</button>
+        <button type="button" class="edit-button" onclick='editEvent(${JSON.stringify(event.id)})'>Edit</button>
+<button type="button" class="delete-button" onclick='deleteEvent(${JSON.stringify(event.id)})'>Delete</button>
       </article>
     `;
   });
