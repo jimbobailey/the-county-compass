@@ -357,8 +357,8 @@ function renderBusinessPreviews() {
 
         <p class="business-description">${business.description}</p>
 
-        <button type="button" class="edit-button" onclick="editBusiness(${business.id})">Edit</button>
-        <button type="button" class="delete-button" onclick="deleteBusiness(${business.id})">Delete</button>
+        <button type="button" class="edit-button" onclick='editBusiness(${JSON.stringify(business.id)})'>Edit</button>
+        <button type="button" class="delete-button" onclick='deleteBusiness(${JSON.stringify(business.id)})'>Delete</button>
       </article>
     `;
   });
