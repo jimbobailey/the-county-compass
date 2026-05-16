@@ -202,15 +202,7 @@
   <div class="box">
     <h2>Submit Your Listing</h2>
 
- <form
-  name="county-compass-submission"
-  method="POST"
-  data-netlify="true"
-  action="/thank-you.html"
-  enctype="multipart/form-data"
->
-
-  <input type="hidden" name="form-name" value="county-compass-submission">
+ <form id="submissionForm">
 
       <label>Submission Type</label>
       <select name="submissionType" required>
@@ -364,6 +356,68 @@
 
   packageLength.addEventListener("change", updateEndDate);
   startDate.addEventListener("change", updateEndDate);
+</script>
+<script>
+  const submissionForm =
+    document.getElementById("submissionForm");
+
+  submissionForm.addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+      const formData =
+        new FormData(submissionForm);
+
+      const data = {};
+
+      formData.forEach(function(value, key) {
+        data[key] = value;
+      });
+
+      try {
+
+        const response =
+          await fetch(
+            "/.netlify/functions/submit-listing",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(data)
+            }
+          );
+
+        const result =
+          await response.json();
+
+        if (result.success) {
+
+          alert(
+            "Submission sent successfully for review."
+          );
+
+          submissionForm.reset();
+
+        } else {
+
+          alert(
+            "Submission failed."
+          );
+        }
+
+      } catch (error) {
+
+        console.error(error);
+
+        alert(
+          "There was a problem submitting the form."
+        );
+      }
+    }
+  );
 </script>
 
 </body>
