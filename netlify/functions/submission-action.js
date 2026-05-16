@@ -2,6 +2,7 @@ const { getStore } = require("@netlify/blobs");
 
 const STORE_NAME = "county-compass-data";
 const HANDLED_KEY = "handled-submissions";
+const BUSINESS_KEY = "businesses";
 
 exports.default = async function handler(request) {
   const headers = {
@@ -19,6 +20,8 @@ exports.default = async function handler(request) {
 
   if (request.method === "GET") {
     const handled = await store.get(HANDLED_KEY, { type: "json" });
+    const businesses =
+  await store.get(BUSINESS_KEY, { type: "json" }) || [];
 
     return new Response(JSON.stringify(handled || []), {
       status: 200,
@@ -66,6 +69,55 @@ exports.default = async function handler(request) {
     } else {
       handled.push(record);
     }
+    if (
+  action === "approved" &&
+  approvedAs === "business"
+) {
+
+  const businessEntry = {
+    id: "business-" + Date.now(),
+
+    name:
+      submissionData.businessName || "",
+
+    category:
+      submissionData.category || "",
+
+    address:
+      submissionData.address || "",
+
+    phone:
+      submissionData.phone || "",
+
+    email:
+      submissionData.email || "",
+
+    website:
+      submissionData.website || "",
+
+    image:
+      submissionData.imageUrl || "",
+
+    description:
+      submissionData.description || "",
+
+    paid:
+      "No",
+
+    featured:
+      "No",
+
+    featuredLocation:
+      "homepage"
+  };
+
+  businesses.push(businessEntry);
+
+  await store.setJSON(
+    BUSINESS_KEY,
+    businesses
+  );
+}
 
     await store.setJSON(HANDLED_KEY, handled);
 
