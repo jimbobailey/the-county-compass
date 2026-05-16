@@ -767,9 +767,16 @@ body {
     font-size: 32px;
   }
 
-  .logo-text span {
-    font-size: 24px;
-  }
+ .logo-text span {
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: #f28c00;
+  text-shadow:
+    0 2px 0 #111,
+    0 0 8px rgba(255, 140, 0, 0.45),
+    0 0 18px rgba(255, 140, 0, 0.18);
+}
 
   .site-logo {
     width: 52px;
