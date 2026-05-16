@@ -130,7 +130,6 @@
 <header>
   <h1>County Compass Admin Submissions</h1>
 </header>
-<h3>BUTTON TEST</h3>
 <div class="container">
 
   <div id="loading" class="loading">
@@ -284,22 +283,18 @@ async function loadSubmissions(){
           </div>
 
           <div class="field">
-            <div class="label">Website</div>
-            <div class="value">
-              <a href="${payload.website || "#"}" target="_blank">
-                ${payload.website || ""}
-              </a>
-            </div>
-          </div>
+  <div class="label">Website</div>
+  <div class="value">
+    ${payload.website || ""}
+  </div>
+</div>
 
           <div class="field">
-            <div class="label">Image Link</div>
-            <div class="value">
-              <a href="${payload.imageUrl || "#"}" target="_blank">
-                ${payload.imageUrl || ""}
-              </a>
-            </div>
-          </div>
+  <div class="label">Image Link</div>
+  <div class="value">
+    ${payload.imageUrl || ""}
+  </div>
+</div>
 
         </div>
 
