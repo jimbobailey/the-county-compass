@@ -25,7 +25,7 @@ async function loadAdsFromServer() {
 
   renderAds("homepage", "homepageAds");
   renderAds("businesses", "businessesAds");
-  renderAds("coupons", "couponsAds");
+  renderAds("deals", "couponsAds");
   renderAds("events", "eventsAds");
   renderAds("hiring", "hiringAds");
 }

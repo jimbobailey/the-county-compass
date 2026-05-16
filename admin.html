@@ -64,7 +64,7 @@
       <nav class="main-nav">
         <a href="index.html">Home</a>
         <a href="businesses.html">Businesses</a>
-        <a href="coupons.html">Coupons</a>
+        <a href="deals.html">Deals</a>
         <a href="events.html">Events</a>
         <a href="hiring.html">Hiring</a>
         <a href="advertise.html">Advertise</a>
@@ -103,7 +103,7 @@
       </section>
 
       <p class="page-intro">
-        Manage businesses, coupons, events, hiring posts, advertisements, and featured listings.
+        Manage businesses, deals, events, hiring posts, advertisements, and featured listings.
       </p>
 
       <section class="admin-grid">
@@ -226,7 +226,7 @@
 
           <select id="businessFeaturedLocation">
             <option value="homepage">Featured Location: Homepage</option>
-            <option value="coupons">Featured Location: Coupons Page</option>
+            <option value="deals">Featured Location: Deals Page</option>
             <option value="events">Featured Location: Events Page</option>
             <option value="hiring">Featured Location: Hiring Page</option>
             <option value="all">Featured Location: All Pages</option>
@@ -302,13 +302,13 @@
             type="file"
             id="couponImageUpload"
             accept="image/*"
-            onchange="handleImageUpload(event, 'couponImage', 'couponImagePreview', 'images/coupons/', 'coupon')"
+            onchange="handleImageUpload(event, 'couponImage', 'couponImagePreview', 'images/deals/', 'coupon')"
           >
 
           <input
             type="text"
             id="couponImage"
-            placeholder="Type image path, example: images/coupons/example.jpg"
+            placeholder="Type image path, example: images/deals/example.jpg"
           >
 
           <img
@@ -546,7 +546,7 @@
             <option value="all">All Pages</option>
             <option value="homepage">Homepage</option>
             <option value="businesses">Businesses Page</option>
-            <option value="coupons">Coupons Page</option>
+            <option value="deals">Deals Page</option>
             <option value="events">Events Page</option>
             <option value="hiring">Hiring Page</option>
           </select>
@@ -810,7 +810,7 @@ downloadLink.download = "county-compass-backup_" + timestamp + ".json";
     function importCountyCompassBackup(event) {
       const confirmImport =
         confirm(
-          "Importing a backup will REPLACE all current businesses, coupons, events, hiring posts, and ads.\n\nContinue?"
+          "Importing a backup will REPLACE all current businesses, deals, events, hiring posts, and ads.\n\nContinue?"
         );
 
       if (!confirmImport) {
