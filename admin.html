@@ -192,13 +192,32 @@
           </select>
 
           <label class="image-upload-label">
-            Business Paid-Through Date
-          </label>
+  Business Listing Duration
+</label>
 
-          <input
-            type="date"
-            id="businessExpiration"
-          >
+<select id="businessDuration">
+  <option value="">Select Duration</option>
+  <option value="365">Yearly</option>
+</select>
+
+<label class="image-upload-label">
+  Business Start Date
+</label>
+
+<input
+  type="date"
+  id="businessStartDate"
+>
+
+<label class="image-upload-label">
+  Business Paid-Through Date
+</label>
+
+<input
+  type="date"
+  id="businessExpiration"
+  readonly
+>
 
           <select id="businessFeatured">
             <option value="No">Featured Business: No</option>
