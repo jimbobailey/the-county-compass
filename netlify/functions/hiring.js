@@ -1,7 +1,7 @@
 const { getStore } = require("@netlify/blobs");
 
 const STORE_NAME = "county-compass-data";
-const DATA_KEY = "coupons";
+const DATA_KEY = "hiring";
 
 exports.default = async function handler(request) {
   const headers = {
@@ -51,7 +51,7 @@ exports.default = async function handler(request) {
     if (!Array.isArray(incomingData)) {
       return new Response(
         JSON.stringify({
-          error: "Coupon data must be an array."
+          error: "Hiring data must be an array."
         }),
         {
           status: 400,

@@ -5,6 +5,7 @@ const HANDLED_KEY = "handled-submissions";
 const BUSINESS_KEY = "businesses";
 const COUPON_KEY = "coupons";
 const EVENT_KEY = "events";
+const HIRING_KEY = "hiring";
 
 exports.default = async function handler(request) {
   const headers = {
@@ -92,6 +93,11 @@ exports.default = async function handler(request) {
 
     const events =
       await store.get(EVENT_KEY, {
+        type: "json"
+      }) || [];
+
+    const hiring =
+      await store.get(HIRING_KEY, {
         type: "json"
       }) || [];
 
@@ -241,6 +247,50 @@ exports.default = async function handler(request) {
       await store.setJSON(
         EVENT_KEY,
         events
+      );
+    }
+
+    // APPROVE HIRING
+    if (
+      action === "approved" &&
+      approvedAs === "hiring"
+    ) {
+
+      const hiringEntry = {
+        id: "hiring-" + Date.now(),
+
+        business:
+          submissionData.businessName || "",
+
+        title:
+          submissionData.title || "",
+
+        phone:
+          submissionData.phone || "",
+
+        website:
+          submissionData.website || "",
+
+        image:
+          submissionData.imageUrl || "",
+
+        description:
+          submissionData.description || "",
+
+        type:
+          "Full Time",
+
+        pay:
+          ""
+      };
+
+      hiring.push(
+        hiringEntry
+      );
+
+      await store.setJSON(
+        HIRING_KEY,
+        hiring
       );
     }
 
