@@ -202,11 +202,12 @@
   <div class="box">
     <h2>Submit Your Listing</h2>
 
-    <form
+ <form
   name="county-compass-submission"
   method="POST"
   data-netlify="true"
   action="/thank-you.html"
+  enctype="multipart/form-data"
 >
 
   <input type="hidden" name="form-name" value="county-compass-submission">
@@ -309,13 +310,23 @@
 
       <div class="small-note">End date is automatically calculated from the selected package length.</div>
 
-      <label>Image Link</label>
-      <input type="text" name="imageUrl">
+      <label>Upload Logo / Flyer / Ad Graphic</label>
+<input
+  type="file"
+  name="graphicUpload"
+  accept="image/png, image/jpeg, image/jpg, image/webp"
+>
 
-      <div class="small-note">
-        For security reasons, direct uploads are not enabled yet.<br>
-        You may also email images to: thecountycompass@gmail.com
-      </div>
+<div class="small-note">
+  Upload a logo, coupon image, flyer, or ad graphic. PNG, JPG, JPEG, or WEBP only.
+</div>
+
+<label>Image Link</label>
+<input type="text" name="imageUrl">
+
+<div class="small-note">
+  Optional: If your graphic is already online, paste the image link here instead.
+</div>
 
       <label>Additional Notes</label>
       <textarea name="notes"></textarea>
