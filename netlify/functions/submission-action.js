@@ -51,6 +51,8 @@ exports.default = async function handler(request) {
     }
 
     const handled = await store.get(HANDLED_KEY, { type: "json" }) || [];
+    const businesses =
+  await store.get(BUSINESS_KEY, { type: "json" }) || [];
 
     const existingIndex = handled.findIndex(
       item => item.submissionId === submissionId
