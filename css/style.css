@@ -779,9 +779,11 @@ body {
 }
 
   .site-logo {
-    width: 52px;
-    height: 52px;
-  }
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 6px rgba(255, 140, 0, 0.45));
+}
 
   .hero-section {
     height: auto;
