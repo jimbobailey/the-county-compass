@@ -147,7 +147,7 @@ body {
 /* SPONSOR ADS - HORIZONTAL SCROLL */
 #homepageAds,
 #businessesAds,
-#couponsAds,
+#dealsAds,
 #eventsAds,
 #hiringAds {
   display: flex;
@@ -166,7 +166,7 @@ body {
 
 #homepageAds::after,
 #businessesAds::after,
-#couponsAds::after,
+#dealsAds::after,
 #eventsAds::after,
 #hiringAds::after {
   content: "";
