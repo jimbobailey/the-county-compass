@@ -252,10 +252,16 @@ body {
 }
 
 .home-link-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 22px;
-  margin-top: 34px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.home-link-card {
+  width: 240px;
+  min-height: 160px;
 }
 
 .home-link-card {
