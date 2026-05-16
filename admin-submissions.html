@@ -77,6 +77,51 @@
     a{
       color:#ffaa33;
     }
+
+    .action-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:20px;
+    }
+
+    .approve-btn,
+    .deny-btn,
+    .delete-btn{
+      border:none;
+      padding:12px 18px;
+      border-radius:8px;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.2s;
+    }
+
+    .approve-btn{
+      background:orange;
+      color:#111;
+    }
+
+    .approve-btn:hover{
+      background:#ffbf47;
+    }
+
+    .deny-btn{
+      background:#555;
+      color:#fff;
+    }
+
+    .deny-btn:hover{
+      background:#777;
+    }
+
+    .delete-btn{
+      background:#8b1e1e;
+      color:#fff;
+    }
+
+    .delete-btn:hover{
+      background:#b32626;
+    }
   </style>
 </head>
 
@@ -98,19 +143,64 @@
 
 <script>
 
+async function markSubmissionHandled(submissionId, action, approvedAs, submissionData){
+
+  const confirmText =
+    action === "deleted"
+      ? "Delete this submission from the pending page?"
+      : "Mark this submission as denied?";
+
+  if(!confirm(confirmText)){
+    return;
+  }
+
+  const response = await fetch("/.netlify/functions/submission-actions", {
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify({
+      submissionId,
+      action,
+      approvedAs: approvedAs || "",
+      submissionData
+    })
+  });
+
+  const result = await response.json();
+
+  if(!result.success){
+    alert(result.error || "Action failed.");
+    return;
+  }
+
+  loadSubmissions();
+}
+
 async function loadSubmissions(){
 
   try{
 
-    const response = await fetch("/.netlify/functions/get-submissions");
+    const [submissionsResponse, handledResponse] = await Promise.all([
+      fetch("/.netlify/functions/get-submissions"),
+      fetch("/.netlify/functions/submission-actions")
+    ]);
 
-    const data = await response.json();
+    const data = await submissionsResponse.json();
+    const handledData = await handledResponse.json();
+
+    const handledIds = Array.isArray(handledData)
+      ? handledData.map(item => item.submissionId)
+      : [];
 
     document.getElementById("loading").style.display = "none";
 
+    const container = document.getElementById("submissions");
+    container.innerHTML = "";
+
     if(!data.submissions || !data.submissions.length){
 
-      document.getElementById("submissions").innerHTML = `
+      container.innerHTML = `
         <div class="submission-card">
           <h2>No submissions found.</h2>
         </div>
@@ -119,9 +209,22 @@ async function loadSubmissions(){
       return;
     }
 
-    const container = document.getElementById("submissions");
+    const pendingSubmissions = data.submissions
+      .filter(sub => !handledIds.includes(sub.id))
+      .reverse();
 
-    data.submissions.reverse().forEach(sub => {
+    if(!pendingSubmissions.length){
+
+      container.innerHTML = `
+        <div class="submission-card">
+          <h2>No pending submissions.</h2>
+        </div>
+      `;
+
+      return;
+    }
+
+    pendingSubmissions.forEach(sub => {
 
       const payload = sub.data || {};
 
@@ -134,6 +237,11 @@ async function loadSubmissions(){
         <h2>${payload.businessName || "Unnamed Submission"}</h2>
 
         <div class="grid">
+
+          <div class="field">
+            <div class="label">Submission ID</div>
+            <div class="value">${sub.id || ""}</div>
+          </div>
 
           <div class="field">
             <div class="label">Submission Type</div>
@@ -208,6 +316,50 @@ async function loadSubmissions(){
         <div class="field" style="margin-top:15px;">
           <div class="label">Notes</div>
           <div class="value">${payload.notes || ""}</div>
+        </div>
+
+        <div class="action-row">
+
+          <button class="approve-btn" disabled>
+            Approve as Business
+          </button>
+
+          <button class="approve-btn" disabled>
+            Approve as Coupon
+          </button>
+
+          <button class="approve-btn" disabled>
+            Approve as Event
+          </button>
+
+          <button class="approve-btn" disabled>
+            Approve as Hiring
+          </button>
+
+          <button class="approve-btn" disabled>
+            Approve as Sponsor
+          </button>
+
+          <button class="deny-btn"
+            onclick='markSubmissionHandled(
+              ${JSON.stringify(sub.id)},
+              "denied",
+              "",
+              ${JSON.stringify(payload)}
+            )'>
+            Deny
+          </button>
+
+          <button class="delete-btn"
+            onclick='markSubmissionHandled(
+              ${JSON.stringify(sub.id)},
+              "deleted",
+              "",
+              ${JSON.stringify(payload)}
+            )'>
+            Delete
+          </button>
+
         </div>
 
       `;
