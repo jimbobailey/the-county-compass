@@ -1,77 +1,52 @@
 console.log("The County Compass Loaded");
 
-let savedBusinesses =
-  JSON.parse(
-    localStorage.getItem("countyCompassBusinesses")
-  ) || [];
-
-let savedAds =
-  JSON.parse(
-    localStorage.getItem("countyCompassAds")
-  ) || [];
+let savedBusinesses = [];
 
 const featuredContainer =
   document.getElementById("featuredBusinesses");
 
-const homepageAdsContainer =
-  document.getElementById("homepageAds");
-
 const categoryImages = {
-
-  "Automotive":
-    "images/categories/automotive.jpg",
-
-  "Food & Dining":
-    "images/categories/food-dining.jpg",
-
-  "Home Services":
-    "images/categories/home-services.jpg",
-
-  "Health & Beauty":
-    "images/categories/health-beauty.jpg",
-
-  "Shopping":
-    "images/categories/shopping.jpg",
-
-  "Real Estate":
-    "images/categories/real-estate.jpg",
-
-  "Entertainment":
-    "images/categories/entertainment.jpg",
-
-  "Churches":
-    "images/categories/churches.jpg",
-
-  "Fitness":
-    "images/categories/fitness.jpg",
-
-  "Professional Services":
-    "images/categories/professional-services.jpg",
-
-  "Other":
-    "images/categories/professional-services.jpg"
+  "Automotive Repair": "images/categories/automotive.jpg",
+  "Automotive Services": "images/categories/automotive.jpg",
+  "Churches": "images/categories/churches.jpg",
+  "Custom Crafts & Fabrication": "images/categories/shopping.jpg",
+  "Catering & Event Services": "images/categories/catering-event-services.jpg",
+  "Entertainment": "images/categories/entertainment.jpg",
+  "Fitness": "images/categories/fitness.jpg",
+  "Food & Dining": "images/categories/food-dining.jpg",
+  "Gravel, Rock & Fill Dirt": "images/categories/home-services.jpg",
+  "Handyman Services": "images/categories/home-services.jpg",
+  "Health & Beauty": "images/categories/health-beauty.jpg",
+  "Home Improvement": "images/categories/home-services.jpg",
+  "IT & Computer Repair": "images/categories/professional-services.jpg",
+  "Land Clearing & Tractor Services": "images/categories/home-services.jpg",
+  "Landscaping": "images/categories/home-services.jpg",
+  "Locksmithing": "images/categories/professional-services.jpg",
+  "Massage & Spa Services": "images/categories/health-beauty.jpg",
+  "Medical & Dental": "images/categories/health-beauty.jpg",
+  "Professional Services": "images/categories/professional-services.jpg",
+  "Real Estate": "images/categories/real-estate.jpg",
+  "Shopping": "images/categories/shopping.jpg",
+  "Other": "images/categories/professional-services.jpg"
 };
 
-loadHomepageData();
+loadFeaturedBusinesses();
 
-function loadHomepageData() {
+async function loadFeaturedBusinesses() {
+  try {
+    const response = await fetch("/.netlify/functions/businesses");
+    const data = await response.json();
 
-  savedBusinesses =
-    JSON.parse(
-      localStorage.getItem("countyCompassBusinesses")
-    ) || [];
+    savedBusinesses = Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error("Featured business load failed:", error);
+    savedBusinesses = [];
+  }
 
-  savedAds =
-    JSON.parse(
-      localStorage.getItem("countyCompassAds")
-    ) || [];
-
-  renderHomepageAds();
   renderFeaturedBusinesses();
 }
 
 function getCategoryImage(category) {
-
   return (
     categoryImages[category] ||
     "images/categories/professional-services.jpg"
@@ -79,73 +54,31 @@ function getCategoryImage(category) {
 }
 
 function getBusinessImage(business) {
-
-  if (
-    business.image &&
-    business.image.trim() !== ""
-  ) {
+  if (business.image && business.image.trim() !== "") {
     return business.image;
   }
 
-  return getCategoryImage(
-    business.category
-  );
+  return getCategoryImage(business.category);
 }
 
 function getGoodUrl(link) {
-
   if (!link || link.trim() === "") {
     return "#";
   }
 
-  if (
-    link.startsWith("http://") ||
-    link.startsWith("https://")
-  ) {
+  if (link.startsWith("http://") || link.startsWith("https://")) {
     return link;
   }
 
   return "https://" + link;
 }
 
-function getActiveAds(ads) {
-
-  const today =
-    new Date();
-
-  today.setHours(0,0,0,0);
-
-  return ads.filter(function(ad) {
-
-    if (ad.active !== "Yes") {
-      return false;
-    }
-
-    if (!ad.expiration) {
-      return true;
-    }
-
-    const expirationDate =
-      new Date(
-        ad.expiration + "T00:00:00"
-      );
-
-    return expirationDate >= today;
-  });
-}
-
 function getActiveBusinesses(businesses) {
-
-  const today =
-    new Date();
-
-  today.setHours(0,0,0,0);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
   return businesses.filter(function(business) {
-
-    if (
-      business.paid !== "Yes"
-    ) {
+    if (business.paid !== "Yes") {
       return true;
     }
 
@@ -154,74 +87,15 @@ function getActiveBusinesses(businesses) {
     }
 
     const expirationDate =
-      new Date(
-        business.expiration + "T00:00:00"
-      );
+      new Date(business.expiration + "T00:00:00");
+
+    expirationDate.setHours(0, 0, 0, 0);
 
     return expirationDate >= today;
   });
 }
 
-function renderHomepageAds() {
-
-  if (!homepageAdsContainer) {
-    return;
-  }
-
-  const currentPage =
-    window.location.pathname
-      .split("/")
-      .pop()
-      .replace(".html", "") || "index";
-
-  const pageName =
-    currentPage === "index"
-      ? "homepage"
-      : currentPage;
-
-  const homepageAds =
-    getActiveAds(savedAds)
-      .filter(function(ad) {
-
-        return (
-          ad.location === pageName
-        );
-      });
-
-  homepageAdsContainer.innerHTML = "";
-
-  homepageAds.forEach(function(ad) {
-
-    const shapeClass =
-      ad.shape
-        ? "ad-" + ad.shape.toLowerCase()
-        : "ad-square";
-
-    const adLink =
-      getGoodUrl(ad.link);
-
-    homepageAdsContainer.innerHTML += `
-
-      <a
-        href="${adLink}"
-        target="_blank"
-        class="site-ad ${shapeClass}"
-      >
-
-        <img
-          src="${ad.image}"
-          alt="${ad.title}"
-          class="site-ad-image"
-          onerror="this.onerror=null; this.style.display='none';"
-        >
-
-      </a>
-    `;
-  });
-}
-
 function renderFeaturedBusinesses() {
-
   if (!featuredContainer) {
     return;
   }
@@ -242,7 +116,6 @@ function renderFeaturedBusinesses() {
 
   const featuredBusinesses =
     activeBusinesses.filter(function(business) {
-
       return (
         business.featured === "Yes" &&
         (
@@ -252,48 +125,40 @@ function renderFeaturedBusinesses() {
       );
     });
 
-  if (featuredBusinesses.length === 0) {
+  featuredContainer.innerHTML = "";
 
+  if (featuredBusinesses.length === 0) {
     featuredContainer.innerHTML = `
       <p class="empty-message">
         No featured businesses available yet.
       </p>
     `;
-
     return;
   }
-
-  featuredContainer.innerHTML = "";
 
   featuredBusinesses
     .slice(0, 20)
     .forEach(function(business) {
-
       const businessLink =
         business.website
           ? getGoodUrl(business.website)
           : "#";
 
       const fallbackImage =
-        getCategoryImage(
-          business.category
-        );
+        getCategoryImage(business.category);
 
       featuredContainer.innerHTML += `
-
         <a
           href="${businessLink}"
           target="_blank"
           class="site-ad ad-square"
         >
-
           <img
             src="${getBusinessImage(business)}"
             alt="${business.name}"
             class="site-ad-image"
             onerror="this.onerror=null; this.src='${fallbackImage}';"
           >
-
         </a>
       `;
     });
