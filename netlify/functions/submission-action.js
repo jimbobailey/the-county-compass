@@ -133,7 +133,7 @@ exports.default = async function handler(request) {
     ) {
 
       const businessEntry = {
-        id: "business-" + Date.now(),
+        id: Date.now(),
 
         name:
           submissionData.businessName || "",
@@ -184,7 +184,7 @@ exports.default = async function handler(request) {
     ) {
 
       const couponEntry = {
-        id: "coupon-" + Date.now(),
+        id: Date.now(),
 
         businessName:
           submissionData.businessName || "",
@@ -223,7 +223,7 @@ exports.default = async function handler(request) {
     ) {
 
       const eventEntry = {
-        id: "event-" + Date.now(),
+        id: Date.now(),
 
         title:
           submissionData.title || "",
@@ -263,7 +263,7 @@ exports.default = async function handler(request) {
     ) {
 
       const hiringEntry = {
-        id: "hiring-" + Date.now(),
+        id: Date.now(),
 
         business:
           submissionData.businessName || "",
@@ -307,7 +307,7 @@ exports.default = async function handler(request) {
     ) {
 
       const sponsorEntry = {
-        id: "ad-" + Date.now(),
+        id: Date.now(),
 
         title:
           submissionData.businessName || "",
