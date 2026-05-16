@@ -4,6 +4,7 @@ const STORE_NAME = "county-compass-data";
 const HANDLED_KEY = "handled-submissions";
 const BUSINESS_KEY = "businesses";
 const COUPON_KEY = "coupons";
+const EVENT_KEY = "events";
 
 exports.default = async function handler(request) {
   const headers = {
@@ -86,6 +87,11 @@ exports.default = async function handler(request) {
 
     const coupons =
       await store.get(COUPON_KEY, {
+        type: "json"
+      }) || [];
+
+    const events =
+      await store.get(EVENT_KEY, {
         type: "json"
       }) || [];
 
@@ -195,6 +201,46 @@ exports.default = async function handler(request) {
       await store.setJSON(
         COUPON_KEY,
         coupons
+      );
+    }
+
+    // APPROVE EVENT
+    if (
+      action === "approved" &&
+      approvedAs === "event"
+    ) {
+
+      const eventEntry = {
+        id: "event-" + Date.now(),
+
+        title:
+          submissionData.title || "",
+
+        location:
+          submissionData.address || "",
+
+        category:
+          submissionData.category || "",
+
+        date:
+          submissionData.startDate || "",
+
+        time: "",
+
+        image:
+          submissionData.imageUrl || "",
+
+        description:
+          submissionData.description || ""
+      };
+
+      events.push(
+        eventEntry
+      );
+
+      await store.setJSON(
+        EVENT_KEY,
+        events
       );
     }
 
