@@ -6,122 +6,22 @@
   <title>Admin Submissions | The County Compass</title>
 
   <style>
-    body{
-      margin:0;
-      font-family:Arial,sans-serif;
-      background:#111;
-      color:#fff;
-    }
-
-    header{
-      background:#1b1b1b;
-      border-bottom:3px solid orange;
-      padding:20px;
-      text-align:center;
-    }
-
-    header h1{
-      margin:0;
-      color:orange;
-    }
-
-    .container{
-      max-width:1200px;
-      margin:30px auto;
-      padding:0 20px;
-    }
-
-    .submission-card{
-      background:#1b1b1b;
-      border:1px solid #333;
-      border-radius:14px;
-      padding:20px;
-      margin-bottom:20px;
-    }
-
-    .submission-card h2{
-      margin-top:0;
-      color:orange;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-      gap:12px;
-      margin-top:15px;
-    }
-
-    .field{
-      background:#222;
-      border-radius:8px;
-      padding:10px;
-    }
-
-    .label{
-      color:orange;
-      font-size:13px;
-      margin-bottom:4px;
-    }
-
-    .value{
-      word-break:break-word;
-    }
-
-    .loading{
-      text-align:center;
-      margin-top:50px;
-      color:#bbb;
-      font-size:20px;
-    }
-
-    a{
-      color:#ffaa33;
-    }
-
-    .action-row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:20px;
-    }
-
-    .approve-btn,
-    .deny-btn,
-    .delete-btn{
-      border:none;
-      padding:12px 18px;
-      border-radius:8px;
-      font-weight:bold;
-      cursor:pointer;
-      transition:0.2s;
-    }
-
-    .approve-btn{
-      background:orange;
-      color:#111;
-    }
-
-    .approve-btn:hover{
-      background:#ffbf47;
-    }
-
-    .deny-btn{
-      background:#555;
-      color:#fff;
-    }
-
-    .deny-btn:hover{
-      background:#777;
-    }
-
-    .delete-btn{
-      background:#8b1e1e;
-      color:#fff;
-    }
-
-    .delete-btn:hover{
-      background:#b32626;
-    }
+    body{margin:0;font-family:Arial,sans-serif;background:#111;color:#fff;}
+    header{background:#1b1b1b;border-bottom:3px solid orange;padding:20px;text-align:center;}
+    header h1{margin:0;color:orange;}
+    .container{max-width:1200px;margin:30px auto;padding:0 20px;}
+    .submission-card{background:#1b1b1b;border:1px solid #333;border-radius:14px;padding:20px;margin-bottom:20px;}
+    .submission-card h2{margin-top:0;color:orange;}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:15px;}
+    .field{background:#222;border-radius:8px;padding:10px;}
+    .label{color:orange;font-size:13px;margin-bottom:4px;}
+    .value{word-break:break-word;}
+    .loading{text-align:center;margin-top:50px;color:#bbb;font-size:20px;}
+    .action-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;}
+    .approve-btn,.deny-btn,.delete-btn{border:none;padding:12px 18px;border-radius:8px;font-weight:bold;cursor:pointer;}
+    .approve-btn{background:orange;color:#111;}
+    .deny-btn{background:#555;color:#fff;}
+    .delete-btn{background:#8b1e1e;color:#fff;}
   </style>
 </head>
 
@@ -130,24 +30,33 @@
 <header>
   <h1>County Compass Admin Submissions</h1>
 </header>
+
 <div class="container">
-
-  <div id="loading" class="loading">
-    Loading submissions...
-  </div>
-
+  <div id="loading" class="loading">Loading submissions...</div>
   <div id="submissions"></div>
-
 </div>
 
 <script>
+function clean(value){
+  return value ? String(value) : "";
+}
+
+function makeField(label, value){
+  return `
+    <div class="field">
+      <div class="label">${label}</div>
+      <div class="value">${clean(value)}</div>
+    </div>
+  `;
+}
 
 async function markSubmissionHandled(submissionId, action, approvedAs, submissionData){
-
   const confirmText =
     action === "deleted"
       ? "Delete this submission from the pending page?"
-      : "Mark this submission as denied?";
+      : action === "denied"
+        ? "Mark this submission as denied?"
+        : "Approve this submission as " + approvedAs + "?";
 
   if(!confirm(confirmText)){
     return;
@@ -155,9 +64,7 @@ async function markSubmissionHandled(submissionId, action, approvedAs, submissio
 
   const response = await fetch("/.netlify/functions/submission-action", {
     method:"POST",
-    headers:{
-      "Content-Type":"application/json"
-    },
+    headers:{ "Content-Type":"application/json" },
     body:JSON.stringify({
       submissionId,
       action,
@@ -177,9 +84,7 @@ async function markSubmissionHandled(submissionId, action, approvedAs, submissio
 }
 
 async function loadSubmissions(){
-
   try{
-
     const [submissionsResponse, handledResponse] = await Promise.all([
       fetch("/.netlify/functions/get-submissions"),
       fetch("/.netlify/functions/submission-action")
@@ -192,188 +97,113 @@ async function loadSubmissions(){
       ? handledData.map(item => item.submissionId)
       : [];
 
-    document.getElementById("loading").style.display = "none";
-
+    const loading = document.getElementById("loading");
     const container = document.getElementById("submissions");
+
+    loading.style.display = "none";
     container.innerHTML = "";
 
-    if(!data.submissions || !data.submissions.length){
+    const allSubmissions = Array.isArray(data.submissions)
+      ? data.submissions
+      : [];
 
-      container.innerHTML = `
-        <div class="submission-card">
-          <h2>No submissions found.</h2>
-        </div>
-      `;
-
-      return;
-    }
-
-    const pendingSubmissions = data.submissions
+    const pendingSubmissions = allSubmissions
       .filter(sub => !handledIds.includes(sub.id))
       .reverse();
 
     if(!pendingSubmissions.length){
-
       container.innerHTML = `
         <div class="submission-card">
           <h2>No pending submissions.</h2>
         </div>
       `;
-
       return;
     }
 
-    pendingSubmissions.forEach(sub => {
-
+    pendingSubmissions.forEach(function(sub){
       const payload = sub.data || {};
-
       const card = document.createElement("div");
-
       card.className = "submission-card";
 
       card.innerHTML = `
-
-        <h2>${payload.businessName || "Unnamed Submission"}</h2>
+        <h2>${clean(payload.businessName) || "Unnamed Submission"}</h2>
 
         <div class="grid">
-
-          <div class="field">
-            <div class="label">Submission ID</div>
-            <div class="value">${sub.id || ""}</div>
-          </div>
-
-          <div class="field">
-            <div class="label">Submission Type</div>
-            <div class="value">${payload.submissionType || ""}</div>
-          </div>
-
-          <div class="field">
-            <div class="label">Contact Name</div>
-            <div class="value">${payload.contactName || ""}</div>
-          </div>
-
-          <div class="field">
-            <div class="label">Email</div>
-            <div class="value">${payload.email || ""}</div>
-          </div>
-
-          <div class="field">
-            <div class="label">Phone</div>
-            <div class="value">${payload.phone || ""}</div>
-          </div>
-
-          <div class="field">
-            <div class="label">Category</div>
-            <div class="value">${payload.category || ""}</div>
-          </div>
-
-          <div class="field">
-            <div class="label">Package Length</div>
-            <div class="value">${payload.packageLength || ""}</div>
-          </div>
-
-          <div class="field">
-            <div class="label">Start Date</div>
-            <div class="value">${payload.startDate || ""}</div>
-          </div>
-
-          <div class="field">
-            <div class="label">End Date</div>
-            <div class="value">${payload.endDate || ""}</div>
-          </div>
-
-          <div class="field">
-  <div class="label">Website</div>
-  <div class="value">
-    ${payload.website || ""}
-  </div>
-</div>
-
-          <div class="field">
-  <div class="label">Image Link</div>
-  <div class="value">
-    ${payload.imageUrl || ""}
-  </div>
-</div>
-
+          ${makeField("Submission ID", sub.id)}
+          ${makeField("Submission Type", payload.submissionType)}
+          ${makeField("Contact Name", payload.contactName)}
+          ${makeField("Email", payload.email)}
+          ${makeField("Phone", payload.phone)}
+          ${makeField("Category", payload.category)}
+          ${makeField("Package Length", payload.packageLength)}
+          ${makeField("Start Date", payload.startDate)}
+          ${makeField("End Date", payload.endDate)}
+          ${makeField("Website", payload.website)}
+          ${makeField("Image Link", payload.imageUrl)}
         </div>
 
         <div class="field" style="margin-top:15px;">
           <div class="label">Title</div>
-          <div class="value">${payload.title || ""}</div>
+          <div class="value">${clean(payload.title)}</div>
         </div>
 
         <div class="field" style="margin-top:15px;">
           <div class="label">Description</div>
-          <div class="value">${payload.description || ""}</div>
+          <div class="value">${clean(payload.description)}</div>
         </div>
 
         <div class="field" style="margin-top:15px;">
           <div class="label">Notes</div>
-          <div class="value">${payload.notes || ""}</div>
+          <div class="value">${clean(payload.notes)}</div>
         </div>
-
-        <div class="action-row">
-
-          <button class="approve-btn" disabled>
-            Approve as Business
-          </button>
-
-          <button class="approve-btn" disabled>
-            Approve as Coupon
-          </button>
-
-          <button class="approve-btn" disabled>
-            Approve as Event
-          </button>
-
-          <button class="approve-btn" disabled>
-            Approve as Hiring
-          </button>
-
-          <button class="approve-btn" disabled>
-            Approve as Sponsor
-          </button>
-
-          <button class="deny-btn"
-            onclick='markSubmissionHandled(
-              ${JSON.stringify(sub.id)},
-              "denied",
-              "",
-              ${JSON.stringify(payload)}
-            )'>
-            Deny
-          </button>
-
-          <button class="delete-btn"
-            onclick='markSubmissionHandled(
-              ${JSON.stringify(sub.id)},
-              "deleted",
-              "",
-              ${JSON.stringify(payload)}
-            )'>
-            Delete
-          </button>
-
-        </div>
-
       `;
 
-      container.appendChild(card);
+      const actionRow = document.createElement("div");
+      actionRow.className = "action-row";
 
+      [
+        ["Business", "business"],
+        ["Deal", "coupon"],
+        ["Event", "event"],
+        ["Hiring", "hiring"],
+        ["Sponsor", "sponsor"]
+      ].forEach(function(item){
+        const button = document.createElement("button");
+        button.className = "approve-btn";
+        button.textContent = "Approve as " + item[0];
+        button.onclick = function(){
+          markSubmissionHandled(sub.id, "approved", item[1], payload);
+        };
+        actionRow.appendChild(button);
+      });
+
+      const denyButton = document.createElement("button");
+      denyButton.className = "deny-btn";
+      denyButton.textContent = "Deny";
+      denyButton.onclick = function(){
+        markSubmissionHandled(sub.id, "denied", "", payload);
+      };
+      actionRow.appendChild(denyButton);
+
+      const deleteButton = document.createElement("button");
+      deleteButton.className = "delete-btn";
+      deleteButton.textContent = "Delete";
+      deleteButton.onclick = function(){
+        markSubmissionHandled(sub.id, "deleted", "", payload);
+      };
+      actionRow.appendChild(deleteButton);
+
+      card.appendChild(actionRow);
+      container.appendChild(card);
     });
 
   }catch(error){
-
-    document.getElementById("loading").innerHTML =
-      "Failed to load submissions.";
-
+    document.getElementById("loading").innerHTML = "Failed to load submissions.";
     console.error(error);
   }
 }
 
 loadSubmissions();
-
 </script>
 
 </body>
