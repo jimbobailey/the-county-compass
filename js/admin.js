@@ -1167,3 +1167,70 @@ if (
   );
 }
 });
+const businessDuration =
+  document.getElementById("businessDuration");
+
+const businessStartDate =
+  document.getElementById("businessStartDate");
+
+const businessExpiration =
+  document.getElementById("businessExpiration");
+
+function updateBusinessExpirationDate() {
+
+  if (
+    !businessDuration ||
+    !businessStartDate ||
+    !businessExpiration
+  ) {
+    return;
+  }
+
+  const durationDays =
+    parseInt(businessDuration.value);
+
+  const startDate =
+    businessStartDate.value;
+
+  if (!durationDays || !startDate) {
+    businessExpiration.value = "";
+    return;
+  }
+
+  const calculatedDate =
+    new Date(startDate + "T00:00:00");
+
+  calculatedDate.setDate(
+    calculatedDate.getDate() + durationDays
+  );
+
+  const year =
+    calculatedDate.getFullYear();
+
+  const month =
+    String(calculatedDate.getMonth() + 1)
+      .padStart(2, "0");
+
+  const day =
+    String(calculatedDate.getDate())
+      .padStart(2, "0");
+
+  businessExpiration.value =
+    `${year}-${month}-${day}`;
+}
+
+if (
+  businessDuration &&
+  businessStartDate
+) {
+
+  businessDuration.addEventListener(
+    "change",
+    updateBusinessExpirationDate
+  );
+
+  businessStartDate.addEventListener(
+    "change",
+    updateBusinessExpirationDate
+  );
+}
