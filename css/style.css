@@ -880,3 +880,34 @@ body {
   filter:
     drop-shadow(0 0 6px rgba(255, 140, 0, 0.45));
 }
+.logo-text span {
+  font-size: 38px !important;
+  font-weight: 900 !important;
+  letter-spacing: 1.5px !important;
+
+  color: #4b525a !important;
+
+  -webkit-text-stroke: 1px #ff8c00;
+
+  text-shadow:
+    0 2px 0 #111,
+    0 0 6px rgba(255, 140, 0, 0.35),
+    0 0 12px rgba(255, 140, 0, 0.15);
+
+  background: linear-gradient(
+    to bottom,
+    #707780,
+    #3a3f46
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.site-logo {
+  width: 56px !important;
+  height: 56px !important;
+
+  filter:
+    drop-shadow(0 0 6px rgba(255, 140, 0, 0.4));
+}
