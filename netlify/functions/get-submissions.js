@@ -1,65 +1,27 @@
+const { getStore } = require("@netlify/blobs");
+
+const STORE_NAME = "county-compass-data";
+const SUBMISSIONS_KEY = "pending-submissions";
+
 exports.handler = async function () {
+  const headers = {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*"
+  };
 
   try {
+    const store = getStore({
+  name: STORE_NAME,
+  siteID: process.env.NETLIFY_SITE_ID,
+  token: process.env.NETLIFY_API_TOKEN
+});
 
-    const token = process.env.NETLIFY_API_TOKEN;
-    const siteId = process.env.NETLIFY_SITE_ID;
-
-    if (!token) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({
-          error: "NETLIFY_API_TOKEN missing"
-        })
-      };
-    }
-
-    if (!siteId) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({
-          error: "NETLIFY_SITE_ID missing"
-        })
-      };
-    }
-
-    const formsResponse = await fetch(
-      `https://api.netlify.com/api/v1/sites/${siteId}/forms`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
-
-    const forms = await formsResponse.json();
-
-    const targetForm = forms.find(
-      form => form.name === "county-compass-submission"
-    );
-
-    if (!targetForm) {
-      return {
-        statusCode: 404,
-        body: JSON.stringify({
-          error: "Form not found"
-        })
-      };
-    }
-
-    const submissionsResponse = await fetch(
-      `https://api.netlify.com/api/v1/forms/${targetForm.id}/submissions`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
-
-    const submissions = await submissionsResponse.json();
+    const submissions =
+      await store.get(SUBMISSIONS_KEY, { type: "json" }) || [];
 
     return {
       statusCode: 200,
+      headers,
       body: JSON.stringify({
         success: true,
         submissions
@@ -67,14 +29,12 @@ exports.handler = async function () {
     };
 
   } catch (error) {
-
     return {
       statusCode: 500,
+      headers,
       body: JSON.stringify({
         error: error.message
       })
     };
-
   }
-
 };
