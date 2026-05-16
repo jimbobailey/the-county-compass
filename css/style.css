@@ -860,3 +860,23 @@ body {
   }
 
 }
+.logo-text span {
+  font-size: 42px !important;
+  font-weight: 900 !important;
+  letter-spacing: 1.5px !important;
+  color: #f28c00 !important;
+
+  text-shadow:
+    0 2px 0 #111,
+    0 0 8px rgba(255, 140, 0, 0.45),
+    0 0 18px rgba(255, 140, 0, 0.18) !important;
+}
+
+.site-logo {
+  width: 58px !important;
+  height: 58px !important;
+  object-fit: contain;
+
+  filter:
+    drop-shadow(0 0 6px rgba(255, 140, 0, 0.45));
+}
