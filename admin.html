@@ -791,7 +791,17 @@
         document.createElement("a");
 
       downloadLink.href = backupUrl;
-      downloadLink.download = "county-compass-backup.json";
+      const now = new Date();
+
+const timestamp =
+  now.getFullYear() + "-" +
+  String(now.getMonth() + 1).padStart(2, "0") + "-" +
+  String(now.getDate()).padStart(2, "0") + "_" +
+  String(now.getHours()).padStart(2, "0") + "-" +
+  String(now.getMinutes()).padStart(2, "0") + "-" +
+  String(now.getSeconds()).padStart(2, "0");
+
+downloadLink.download = "county-compass-backup_" + timestamp + ".json";
       downloadLink.click();
 
       URL.revokeObjectURL(backupUrl);
