@@ -289,6 +289,53 @@ body {
   margin: 0;
   line-height: 1.45;
 }
+.community-intro-box {
+  max-width: 1000px;
+  margin: 0 auto 40px auto;
+  padding: 28px;
+  background: linear-gradient(145deg, #1e1e1e, #141414);
+  border: 2px solid rgba(255,140,0,0.45);
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 0 22px rgba(255,140,0,0.12);
+}
+
+.community-intro-box h3 {
+  margin-top: 0;
+  margin-bottom: 18px;
+  color: #ff8c00;
+  font-size: 34px;
+}
+
+.community-intro-box p {
+  margin: 0;
+  color: #ddd;
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.submit-feature-wrap {
+  text-align: center;
+  margin: 40px auto 10px auto;
+}
+
+.submit-feature-button {
+  display: inline-block;
+  background: linear-gradient(90deg, #ff8c00, #ffaa33);
+  color: #111;
+  padding: 18px 34px;
+  border-radius: 14px;
+  font-size: 22px;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 0 20px rgba(255,140,0,0.30);
+  transition: 0.2s ease;
+}
+
+.submit-feature-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 26px rgba(255,140,0,0.45);
+}
 
 .ad-preview-grid {
   display: grid;
