@@ -292,13 +292,28 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const type = submissionType ? submissionType.value : "";
-        const days =
-            type === "coupon" ||
-            type === "coupons" ||
-            type === "deal" ||
-            type === "deals"
-                ? amount * 7
-                : amount;
+       let days;
+
+if (
+    type === "coupon" ||
+    type === "coupons" ||
+    type === "deal" ||
+    type === "deals"
+) {
+    days = amount * 7;
+}
+
+else if (
+    type === "event" ||
+    type === "community-event" ||
+    type === "communityEvent"
+) {
+    days = -1;
+}
+
+else {
+    days = amount;
+}
 
         const date = new Date(start + "T00:00:00");
         date.setDate(date.getDate() + days);
