@@ -521,11 +521,10 @@ case "jobs":
             break;
 
         case "sponsor":
-            options = [
-                { value: "30", text: "Monthly" },
-                { value: "365", text: "Yearly" }
-            ];
-            break;
+    options = [
+        { value: "365", text: "Yearly - $299" }
+    ];
+    break;
 
         default:
             options = [
@@ -579,15 +578,33 @@ function updatePricingSummary() {
         }
     }
 
-    if (type === "coupon" || type === "coupons" || type === "deal" || type === "deals") {
-        total = Math.round((duration / 7) * 10);
-        details = "Coupon Listing - " + Math.round(duration / 7) + " Week(s)";
+   if (type === "coupon" || type === "coupons" || type === "deal" || type === "deals") {
+
+    if (duration === 7) {
+        total = 10;
+        details = "Coupon Listing - 1 Week";
     }
 
-    if (type === "hiring" || type === "job" || type === "jobs") {
-        total = Math.round((duration / 30) * 15);
-        details = "Hiring Listing - " + Math.round(duration / 30) + " Month(s)";
+    else if (duration === 30) {
+        total = 40;
+        details = "Coupon Listing - 1 Month";
     }
+
+}
+
+   if (type === "hiring" || type === "job" || type === "jobs") {
+
+    if (duration === 30) {
+        total = 15;
+        details = "Hiring Listing - Monthly";
+    }
+
+    else if (duration === 90) {
+        total = 40;
+        details = "Hiring Listing - Quarterly";
+    }
+
+}
 
     if (type === "event" || type === "community-event" || type === "communityEvent") {
         total = 10;
@@ -595,14 +612,11 @@ function updatePricingSummary() {
     }
 
     if (type === "sponsor") {
-        if (duration === 30) {
-            total = 50;
-            details = "Sponsor Ad - Monthly";
-        } else if (duration === 365) {
-            total = 500;
-            details = "Sponsor Ad - Yearly";
-        }
-    }
+
+    total = 299;
+    details = "Sponsor Ad - Yearly";
+
+}
 
     pricingDetails.textContent = details;
     pricingTotal.textContent = "Total: $" + total;
