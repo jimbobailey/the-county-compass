@@ -613,15 +613,10 @@ if (type === "featured-business" || type === "featured") {
 }
    if (type === "coupon" || type === "coupons" || type === "deal" || type === "deals") {
 
-    if (duration === 7) {
-        total = 10;
-        details = "Coupon Listing - 1 Week";
-    }
+    total = duration * 10;
+    details = "Coupon Listing - " + duration + " Week(s)";
 
-    else if (duration === 30) {
-        total = 40;
-        details = "Coupon Listing - 1 Month";
-    }
+}
 
 }
 
