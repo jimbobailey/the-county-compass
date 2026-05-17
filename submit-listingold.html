@@ -335,7 +335,7 @@
         Total: $0
     </div>
 
-     </div>
+     </div>v
       <label>Start Date</label>
       <input type="date" name="startDate" id="startDate">
       <label id="eventTimeLabel" style="display:none;">Event Time</label>
@@ -469,8 +469,11 @@ if (submissionType) {
 <script>
 function updatePackageOptions() {
 
-    const submissionType = document.getElementById("submissionType");
-    const packageLength = document.getElementById("packageLength");
+    const submissionType =
+        document.getElementById("submissionType");
+
+    const packageLength =
+        document.getElementById("packageLength");
 
     if (!submissionType || !packageLength) {
         return;
@@ -487,56 +490,57 @@ function updatePackageOptions() {
                 { value: "365", text: "Yearly" }
             ];
             break;
+           case "featured-business":
+case "featured":
+    options = [
+        { value: "30", text: "Monthly" },
+        { value: "90", text: "Quarterly" },
+        { value: "365", text: "Yearly" }
+    ];
+    break;
 
-        case "featured-business":
-        case "featured":
-            options = [
-                { value: "30", text: "Monthly" },
-                { value: "90", text: "Quarterly" },
-                { value: "365", text: "Yearly" }
-            ];
-            break;
-
-        case "coupon":
-        case "coupons":
-        case "deal":
-        case "deals":
-            options = [
-                { value: "1", text: "1 Week" },
-                { value: "2", text: "2 Weeks" },
-                { value: "3", text: "3 Weeks" },
-                { value: "4", text: "4 Weeks" },
-                { value: "5", text: "5 Weeks" },
-                { value: "6", text: "6 Weeks" },
-                { value: "7", text: "7 Weeks" },
-                { value: "8", text: "8 Weeks" }
-            ];
-            break;
+       case "coupon":
+case "coupons":
+case "deal":
+case "deals":
+    options = [
+        { value: "1", text: "1 Week" },
+        { value: "2", text: "2 Weeks" },
+        { value: "3", text: "3 Weeks" },
+        { value: "4", text: "4 Weeks" },
+        { value: "5", text: "5 Weeks" },
+        { value: "6", text: "6 Weeks" },
+        { value: "7", text: "7 Weeks" },
+        { value: "8", text: "8 Weeks" }
+    ];
+    break;
 
         case "event":
         case "community-event":
         case "communityEvent":
             options = [
-                { value: "1", text: "Single Event" }
+                { value: "1", text: "Single Event" },
+                { value: "7", text: "1 Week" },
+                { value: "30", text: "1 Month" }
             ];
             break;
 
         case "hiring":
-        case "job":
-        case "jobs":
+case "job":
+case "jobs":
             options = [
                 { value: "30", text: "Monthly" },
                 { value: "90", text: "Quarterly" }
             ];
             break;
 
-        case "sponsor":
-            options = [
-                { value: "30", text: "Monthly" },
-                { value: "90", text: "Quarterly" },
-                { value: "365", text: "Yearly" }
-            ];
-            break;
+       case "sponsor":
+    options = [
+        { value: "30", text: "Monthly" },
+        { value: "90", text: "Quarterly" },
+        { value: "365", text: "Yearly" }
+    ];
+    break;
 
         default:
             options = [
@@ -547,16 +551,19 @@ function updatePackageOptions() {
     packageLength.innerHTML = "";
 
     options.forEach(option => {
-        const opt = document.createElement("option");
+
+        const opt =
+            document.createElement("option");
+
         opt.value = option.value;
         opt.textContent = option.text;
+
         packageLength.appendChild(opt);
+
     });
-
     updatePricingSummary();
-    updateEndDate();
-}
 
+}
 function updatePricingSummary() {
 
     const submissionType = document.getElementById("submissionType");
@@ -637,37 +644,65 @@ function updatePricingSummary() {
     pricingTotal.textContent = "Total: $" + total;
 }
 
-function toggleDealFields() {
+  const type =
+    document.getElementById("submissionType");
 
-    const type = document.getElementById("submissionType");
-    const dealCodeLabel = document.getElementById("dealCodeLabel");
-    const dealCodeField = document.getElementById("dealCodeField");
-    const dealValueLabel = document.getElementById("dealValueLabel");
-    const dealValueField = document.getElementById("dealValueField");
+  const dealCodeLabel =
+    document.getElementById("dealCodeLabel");
 
-    if (!type || !dealCodeLabel || !dealCodeField || !dealValueLabel || !dealValueField) {
-        return;
-    }
+  const dealCodeField =
+    document.getElementById("dealCodeField");
 
-    const showDeals =
-        type.value === "coupon" ||
-        type.value === "deal" ||
-        type.value === "coupons" ||
-        type.value === "deals";
+  const dealValueLabel =
+    document.getElementById("dealValueLabel");
 
-    dealCodeLabel.style.display = showDeals ? "block" : "none";
-    dealCodeField.style.display = showDeals ? "block" : "none";
-    dealValueLabel.style.display = showDeals ? "block" : "none";
-    dealValueField.style.display = showDeals ? "block" : "none";
+  const dealValueField =
+    document.getElementById("dealValueField");
 
-    const eventTimeLabel = document.getElementById("eventTimeLabel");
-    const eventTimeField = document.getElementById("eventTimeField");
-    const showEventTime = type.value === "event";
+  if (
+    !type ||
+    !dealCodeLabel ||
+    !dealCodeField ||
+    !dealValueLabel ||
+    !dealValueField
+  ) {
+    return;
+  }
 
-    if (eventTimeLabel && eventTimeField) {
-        eventTimeLabel.style.display = showEventTime ? "block" : "none";
-        eventTimeField.style.display = showEventTime ? "block" : "none";
-    }
+  const showDeals =
+  type.value === "coupon" ||
+  type.value === "deal";
+
+  dealCodeLabel.style.display =
+    showDeals ? "block" : "none";
+
+  dealCodeField.style.display =
+    showDeals ? "block" : "none";
+
+  dealValueLabel.style.display =
+    showDeals ? "block" : "none";
+
+  dealValueField.style.display =
+    showDeals ? "block" : "none";
+    dealValueField.style.display =
+  showDeals ? "block" : "none";
+
+const eventTimeLabel =
+  document.getElementById("eventTimeLabel");
+
+const eventTimeField =
+  document.getElementById("eventTimeField");
+
+const showEventTime =
+  type.value === "event";
+
+if (eventTimeLabel && eventTimeField) {
+  eventTimeLabel.style.display =
+    showEventTime ? "block" : "none";
+
+  eventTimeField.style.display =
+    showEventTime ? "block" : "none";
+}
 }
 
 if (submissionType) {
@@ -675,24 +710,16 @@ if (submissionType) {
     submissionType.addEventListener(
         "change",
         () => {
-            updateCategoryOptions();
             toggleDealFields();
             updatePackageOptions();
             updatePricingSummary();
         }
     );
 
-    const packageLengthSelect = document.getElementById("packageLength");
-
-    if (packageLengthSelect) {
-        packageLengthSelect.addEventListener(
-            "change",
-            () => {
-                updatePricingSummary();
-                updateEndDate();
-            }
-        );
-    }
+    packageLength.addEventListener(
+        "change",
+        updatePricingSummary
+    );
 
     toggleDealFields();
     updatePackageOptions();
