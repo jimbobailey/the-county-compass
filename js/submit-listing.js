@@ -46,6 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <option>Tattoo & Piercing</option>
         <option>Towing & Recovery</option>
         <option>Weddings & Parties</option>
+        <option>Welding & Fabrication</option>
         <option>Other</option>
     `;
 
