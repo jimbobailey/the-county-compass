@@ -6,7 +6,9 @@
   <title>Submit Listing | The County Compass</title>
 
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -47,7 +49,8 @@
       margin-bottom: 24px;
     }
 
-    h2, h3 {
+    h2,
+    h3 {
       color: orange;
       margin-top: 0;
     }
@@ -94,28 +97,25 @@
       font-weight: bold;
     }
 
-   input, select, textarea {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #444;
-  background: #101010;
-  color: #fff;
-  font-size: 15px;
-  color-scheme: dark;
-}
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #444;
+      background: #101010;
+      color: #fff;
+      font-size: 15px;
+      color-scheme: dark;
+    }
 
     textarea {
       min-height: 115px;
       resize: vertical;
     }
 
-    input[type="date"]::-webkit-calendar-picker-indicator {
-      filter: invert(1);
-      cursor: pointer;
-    }
-
-.small-note {
+    .small-note {
       color: #bbb;
       font-size: 14px;
       margin-top: 6px;
@@ -230,7 +230,7 @@
   <div class="box">
     <h2>Submit Your Listing</h2>
 
- <form id="submissionForm">
+    <form id="submissionForm">
 
       <label>Submission Type</label>
       <select name="submissionType" id="submissionType" required>
@@ -308,10 +308,10 @@
         If your category does not exist, choose "Other" and explain the needed category in the notes section below.
       </div>
       <label id="dealCodeLabel" style="display:none;">Deal Code (Optional)</label>
-<input type="text" name="dealCode" id="dealCodeField" style="display:none;" placeholder="Example: SAVE20">
+      <input type="text" name="dealCode" id="dealCodeField" style="display:none;" placeholder="Example: SAVE20">
 
-<label id="dealValueLabel" style="display:none;">Deal Value / Discount</label>
-<input type="text" name="dealValue" id="dealValueField" style="display:none;" placeholder="Example: 20% Off, Buy One Get One">
+      <label id="dealValueLabel" style="display:none;">Deal Value / Discount</label>
+      <input type="text" name="dealValue" id="dealValueField" style="display:none;" placeholder="Example: 20% Off, Buy One Get One">
 
       <label>Listing Headline / Title</label>
       <input type="text" name="title" placeholder="Example: 20% Off This Month, Now Hiring, Grand Opening">
@@ -349,18 +349,18 @@
       <div class="small-note">End date is automatically calculated from the selected package length.</div>
 
       <label>Upload Logo / Flyer / Ad Graphic</label>
-<input
-  type="file"
-  name="graphicUpload"
-  accept="image/png, image/jpeg, image/jpg, image/webp"
->
+      <input
+        type="file"
+        name="graphicUpload"
+        accept="image/png, image/jpeg, image/jpg, image/webp"
+      >
 
 <div class="small-note">
   Upload a logo, coupon image, flyer, or ad graphic. PNG, JPG, JPEG, or WEBP only.
 </div>
 
-<label>Image Link</label>
-<input type="text" name="imageUrl">
+      <label>Image Link</label>
+      <input type="text" name="imageUrl">
 
 <div class="small-note">
   Optional: If your graphic is already online, paste the image link here instead.
