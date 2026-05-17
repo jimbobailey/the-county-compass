@@ -593,77 +593,56 @@ function updatePricingSummary() {
             details = "Business Listing - Yearly";
         }
     }
-if (type === "featured-business" || type === "featured") {
 
-    if (duration === 30) {
-        total = 25;
-        details = "Featured Business - Monthly";
+    if (type === "featured-business" || type === "featured") {
+        if (duration === 30) {
+            total = 25;
+            details = "Featured Business - Monthly";
+        } else if (duration === 90) {
+            total = 75;
+            details = "Featured Business - Quarterly";
+        } else if (duration === 365) {
+            total = 249;
+            details = "Featured Business - Yearly";
+        }
     }
 
-    else if (duration === 90) {
-        total = 75;
-        details = "Featured Business - Quarterly";
+    if (type === "coupon" || type === "coupons" || type === "deal" || type === "deals") {
+        total = duration * 10;
+        details = "Coupon Listing - " + duration + " Week(s)";
     }
 
-    else if (duration === 365) {
-        total = 249;
-        details = "Featured Business - Yearly";
+    if (type === "hiring" || type === "job" || type === "jobs") {
+        if (duration === 30) {
+            total = 15;
+            details = "Hiring Listing - Monthly";
+        } else if (duration === 90) {
+            total = 40;
+            details = "Hiring Listing - Quarterly";
+        }
     }
-
-}
-   if (type === "coupon" || type === "coupons" || type === "deal" || type === "deals") {
-
-    total = duration * 10;
-    details = "Coupon Listing - " + duration + " Week(s)";
-
-}
-
-}
-
-   if (type === "hiring" || type === "job" || type === "jobs") {
-
-    if (duration === 30) {
-        total = 15;
-        details = "Hiring Listing - Monthly";
-    }
-
-    else if (duration === 90) {
-        total = 40;
-        details = "Hiring Listing - Quarterly";
-    }
-
-}
 
     if (type === "event" || type === "community-event" || type === "communityEvent") {
         total = 10;
         details = "Community Event Listing";
     }
 
-
-
-   if (type === "sponsor") {
-
-    if (duration === 30) {
-        total = 30;
-        details = "Sponsor Ad - Monthly";
+    if (type === "sponsor") {
+        if (duration === 30) {
+            total = 30;
+            details = "Sponsor Ad - Monthly";
+        } else if (duration === 90) {
+            total = 80;
+            details = "Sponsor Ad - Quarterly";
+        } else if (duration === 365) {
+            total = 299;
+            details = "Sponsor Ad - Yearly";
+        }
     }
-
-    else if (duration === 90) {
-        total = 80;
-        details = "Sponsor Ad - Quarterly";
-    }
-
-    else if (duration === 365) {
-        total = 299;
-        details = "Sponsor Ad - Yearly";
-    }
-
-}
 
     pricingDetails.textContent = details;
     pricingTotal.textContent = "Total: $" + total;
-
-function toggleDealFields() {
+}
 
   const type =
     document.getElementById("submissionType");
