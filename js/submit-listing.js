@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <option>Photography & Media</option>
         <option>Pools & Outdoor Living</option>
         <option>Professional Services</option>
-        <option>Real Estate</option>
+        <option>Real Estate & Title Services</option>
         <option>Salon / Barber / Nail Services</option>
         <option>Shopping</option>
         <option>Tattoo & Piercing</option>
