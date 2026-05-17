@@ -249,8 +249,8 @@ async function addBusinessPreview() {
 
   const duplicate = businesses.some(function(business) {
     return (
-      business.name.toLowerCase() === name.toLowerCase() &&
-      business.address.toLowerCase() === address.toLowerCase() &&
+      String(business.name || "").toLowerCase() === name.toLowerCase() &&
+      String(business.address || "").toLowerCase() === address.toLowerCase() &&
       business.id !== editingBusinessId
     );
   });
@@ -260,7 +260,7 @@ async function addBusinessPreview() {
     return;
   }
 
-  if (editingBusinessId) {
+  if (editingBusinessId !== null) {
     businesses = businesses.map(function(business) {
       if (business.id === editingBusinessId) {
         return {
@@ -322,7 +322,7 @@ function renderBusinessPreviews() {
 
   businesses.forEach(function(business) {
     const imagePath =
-      business.image && business.image.trim() !== ""
+      business.image && String(business.image).trim() !== ""
         ? business.image
         : getCategoryImage(business.category);
 
@@ -330,7 +330,7 @@ function renderBusinessPreviews() {
     const expirationText = getExpirationText(business.expiration);
 
     const emailLine =
-      business.email && business.email.trim() !== ""
+      business.email && String(business.email).trim() !== ""
         ? `<p><strong>Email:</strong> ${business.email}</p>`
         : "";
 
@@ -338,15 +338,15 @@ function renderBusinessPreviews() {
       <article class="business-card">
         <img
           src="${imagePath}"
-          alt="${business.name}"
+          alt="${business.name || ""}"
           class="business-card-image"
           onerror="this.onerror=null; this.src='${fallbackImage}';"
         >
 
-        <h2>${business.name}</h2>
+        <h2>${business.name || ""}</h2>
 
-        <p><strong>Category:</strong> ${business.category}</p>
-        <p><strong>Address:</strong> ${business.address}</p>
+        <p><strong>Category:</strong> ${business.category || ""}</p>
+        <p><strong>Address:</strong> ${business.address || ""}</p>
         ${emailLine}
         <p><strong>Phone:</strong> ${formatPhoneNumber(business.phone)}</p>
         <p><strong>Paid:</strong> ${business.paid || "No"}</p>
@@ -355,10 +355,10 @@ function renderBusinessPreviews() {
 
         ${expirationText ? `<p><strong>${expirationText}</strong></p>` : ""}
 
-        <p class="business-description">${business.description}</p>
+        <p class="business-description">${business.description || ""}</p>
 
-        <button type="button" class="edit-button" onclick='editCoupon(${JSON.stringify(coupon.id)})'>Edit</button>
-<button type="button" class="delete-button" onclick='deleteCoupon(${JSON.stringify(coupon.id)})'>Delete</button>
+        <button type="button" class="edit-button" onclick='editBusiness(${JSON.stringify(business.id)})'>Edit</button>
+        <button type="button" class="delete-button" onclick='deleteBusiness(${JSON.stringify(business.id)})'>Delete</button>
       </article>
     `;
   });
@@ -437,7 +437,7 @@ async function addCouponPreview() {
     return;
   }
 
-  if (editingCouponId) {
+  if (editingCouponId !== null) {
     coupons = coupons.map(function(coupon) {
       if (coupon.id === editingCouponId) {
         return {
@@ -486,7 +486,7 @@ function renderCouponPreviews() {
       getCategoryImage(coupon.category) || "images/categories/coupons.jpg";
 
     const imagePath =
-      coupon.image && coupon.image.trim() !== ""
+      coupon.image && String(coupon.image).trim() !== ""
         ? coupon.image
         : fallbackImage;
 
@@ -496,24 +496,24 @@ function renderCouponPreviews() {
       <article class="coupon-card">
         <img
           src="${imagePath}"
-          alt="${coupon.title}"
+          alt="${coupon.title || ""}"
           class="business-card-image"
           onerror="this.onerror=null; this.src='${fallbackImage}';"
         >
 
         <div class="coupon-tag">Local Deal</div>
 
-        <h2>${coupon.title}</h2>
+        <h2>${coupon.title || ""}</h2>
 
-        <p><strong>${coupon.businessName}</strong></p>
-        <p><strong>Category:</strong> ${coupon.category}</p>
+        <p><strong>${coupon.businessName || ""}</strong></p>
+        <p><strong>Category:</strong> ${coupon.category || ""}</p>
 
         ${expirationText ? `<p><strong>${expirationText}</strong></p>` : ""}
 
-        <p class="business-description">${coupon.details}</p>
+        <p class="business-description">${coupon.details || ""}</p>
 
-        <<button type="button" class="edit-button" onclick='editEvent(${JSON.stringify(event.id)})'>Edit</button>
-<button type="button" class="delete-button" onclick='deleteEvent(${JSON.stringify(event.id)})'>Delete</button>
+        <button type="button" class="edit-button" onclick='editCoupon(${JSON.stringify(coupon.id)})'>Edit</button>
+        <button type="button" class="delete-button" onclick='deleteCoupon(${JSON.stringify(coupon.id)})'>Delete</button>
       </article>
     `;
   });
@@ -580,7 +580,7 @@ async function addEventPreview() {
     return;
   }
 
-  if (editingEventId) {
+  if (editingEventId !== null) {
     events = events.map(function(event) {
       if (event.id === editingEventId) {
         return {
@@ -630,7 +630,7 @@ function renderEventPreviews() {
     const fallbackImage = "images/categories/events.jpg";
 
     const imagePath =
-      event.image && event.image.trim() !== ""
+      event.image && String(event.image).trim() !== ""
         ? event.image
         : fallbackImage;
 
@@ -638,22 +638,22 @@ function renderEventPreviews() {
       <article class="business-card">
         <img
           src="${imagePath}"
-          alt="${event.title}"
+          alt="${event.title || ""}"
           class="business-card-image"
           onerror="this.onerror=null; this.src='${fallbackImage}';"
         >
 
-        <h2>${event.title}</h2>
+        <h2>${event.title || ""}</h2>
 
-        <p><strong>Category:</strong> ${event.category}</p>
-        <p><strong>Location:</strong> ${event.location}</p>
-        <p><strong>Date:</strong> ${event.date}</p>
-        <p><strong>Time:</strong> ${event.time}</p>
+        <p><strong>Category:</strong> ${event.category || ""}</p>
+        <p><strong>Location:</strong> ${event.location || ""}</p>
+        <p><strong>Date:</strong> ${event.date || ""}</p>
+        <p><strong>Time:</strong> ${event.time || ""}</p>
 
-        <p class="business-description">${event.description}</p>
+        <p class="business-description">${event.description || ""}</p>
 
         <button type="button" class="edit-button" onclick='editEvent(${JSON.stringify(event.id)})'>Edit</button>
-<button type="button" class="delete-button" onclick='deleteEvent(${JSON.stringify(event.id)})'>Delete</button>
+        <button type="button" class="delete-button" onclick='deleteEvent(${JSON.stringify(event.id)})'>Delete</button>
       </article>
     `;
   });
@@ -720,7 +720,7 @@ async function addAdPreview() {
     return;
   }
 
-  if (editingAdId) {
+  if (editingAdId !== null) {
     ads = ads.map(function(ad) {
       if (ad.id === editingAdId) {
         return {
@@ -773,16 +773,16 @@ function renderAdPreviews() {
     area.innerHTML += `
       <article class="ad-preview-card ad-${shape}">
         <a href="${makeGoodUrl(ad.link) || "#"}" target="_blank">
-          <img src="${ad.image}" alt="${ad.title}" class="ad-preview-image">
+          <img src="${ad.image || ""}" alt="${ad.title || ""}" class="ad-preview-image">
         </a>
 
-        <p><strong>${ad.title}</strong></p>
-        <p>${ad.location} | ${shape} | Active: ${ad.active}</p>
+        <p><strong>${ad.title || ""}</strong></p>
+        <p>${ad.location || ""} | ${shape} | Active: ${ad.active || ""}</p>
 
         ${expirationText ? `<p><strong>${expirationText}</strong></p>` : ""}
 
-      <button type="button" class="edit-button" onclick='editEvent(${JSON.stringify(event.id)})'>Edit</button>
-<button type="button" class="delete-button" onclick='deleteEvent(${JSON.stringify(event.id)})'>Delete</button>
+        <button type="button" class="edit-button" onclick='editAd(${JSON.stringify(ad.id)})'>Edit</button>
+        <button type="button" class="delete-button" onclick='deleteAd(${JSON.stringify(ad.id)})'>Delete</button>
       </article>
     `;
   });
@@ -847,12 +847,12 @@ function filterBusinesses() {
 
   const filteredBusinesses = businesses.filter(function(business) {
     return (
-      business.name.toLowerCase().includes(search) ||
-      business.category.toLowerCase().includes(search) ||
-      business.address.toLowerCase().includes(search) ||
-      business.phone.toLowerCase().includes(search) ||
+      String(business.name || "").toLowerCase().includes(search) ||
+      String(business.category || "").toLowerCase().includes(search) ||
+      String(business.address || "").toLowerCase().includes(search) ||
+      String(business.phone || "").toLowerCase().includes(search) ||
       String(business.email || "").toLowerCase().includes(search) ||
-      business.description.toLowerCase().includes(search)
+      String(business.description || "").toLowerCase().includes(search)
     );
   });
 
@@ -863,7 +863,7 @@ function filterBusinesses() {
 
   filteredBusinesses.forEach(function(business) {
     const imagePath =
-      business.image && business.image.trim() !== ""
+      business.image && String(business.image).trim() !== ""
         ? business.image
         : getCategoryImage(business.category);
 
@@ -871,7 +871,7 @@ function filterBusinesses() {
     const expirationText = getExpirationText(business.expiration);
 
     const emailLine =
-      business.email && business.email.trim() !== ""
+      business.email && String(business.email).trim() !== ""
         ? `<p><strong>Email:</strong> ${business.email}</p>`
         : "";
 
@@ -879,15 +879,15 @@ function filterBusinesses() {
       <article class="business-card">
         <img
           src="${imagePath}"
-          alt="${business.name}"
+          alt="${business.name || ""}"
           class="business-card-image"
           onerror="this.onerror=null; this.src='${fallbackImage}';"
         >
 
-        <h2>${business.name}</h2>
+        <h2>${business.name || ""}</h2>
 
-        <p><strong>Category:</strong> ${business.category}</p>
-        <p><strong>Address:</strong> ${business.address}</p>
+        <p><strong>Category:</strong> ${business.category || ""}</p>
+        <p><strong>Address:</strong> ${business.address || ""}</p>
         ${emailLine}
         <p><strong>Phone:</strong> ${formatPhoneNumber(business.phone)}</p>
         <p><strong>Paid:</strong> ${business.paid || "No"}</p>
@@ -896,10 +896,10 @@ function filterBusinesses() {
 
         ${expirationText ? `<p><strong>${expirationText}</strong></p>` : ""}
 
-        <p class="business-description">${business.description}</p>
+        <p class="business-description">${business.description || ""}</p>
 
-      <button type="button" class="edit-button" onclick='editEvent(${JSON.stringify(event.id)})'>Edit</button>
-<button type="button" class="delete-button" onclick='deleteEvent(${JSON.stringify(event.id)})'>Delete</button>
+        <button type="button" class="edit-button" onclick='editBusiness(${JSON.stringify(business.id)})'>Edit</button>
+        <button type="button" class="delete-button" onclick='deleteBusiness(${JSON.stringify(business.id)})'>Delete</button>
       </article>
     `;
   });
@@ -923,7 +923,7 @@ async function addHiringPreview() {
     return;
   }
 
-  if (editingHiringId) {
+  if (editingHiringId !== null) {
     hiringPosts = hiringPosts.map(function(post) {
       if (post.id === editingHiringId) {
         return {
@@ -975,7 +975,7 @@ function renderHiringPreviews() {
 
   hiringPosts.forEach(function(post) {
     const imagePath =
-      post.image && post.image.trim() !== ""
+      post.image && String(post.image).trim() !== ""
         ? post.image
         : "images/categories/hiring.jpg";
 
@@ -983,21 +983,21 @@ function renderHiringPreviews() {
 
     area.innerHTML += `
       <article class="business-card">
-        <img src="${imagePath}" alt="${post.title}" class="business-card-image">
+        <img src="${imagePath}" alt="${post.title || ""}" class="business-card-image">
 
-        <h2>${post.title}</h2>
+        <h2>${post.title || ""}</h2>
 
-        <p><strong>Business:</strong> ${post.business}</p>
-        <p><strong>Type:</strong> ${post.jobType}</p>
-        <p><strong>Pay:</strong> ${post.pay}</p>
+        <p><strong>Business:</strong> ${post.business || ""}</p>
+        <p><strong>Type:</strong> ${post.jobType || post.type || ""}</p>
+        <p><strong>Pay:</strong> ${post.pay || ""}</p>
         <p><strong>Phone:</strong> ${formatPhoneNumber(post.phone)}</p>
 
         ${expirationText ? `<p><strong>${expirationText}</strong></p>` : ""}
 
-        <p class="business-description">${post.description}</p>
+        <p class="business-description">${post.description || ""}</p>
 
-        <button type="button" class="edit-button" onclick='editEvent(${JSON.stringify(event.id)})'>Edit</button>
-<button type="button" class="delete-button" onclick='deleteEvent(${JSON.stringify(event.id)})'>Delete</button>
+        <button type="button" class="edit-button" onclick='editHiringPost(${JSON.stringify(post.id)})'>Edit</button>
+        <button type="button" class="delete-button" onclick='deleteHiringPost(${JSON.stringify(post.id)})'>Delete</button>
       </article>
     `;
   });
@@ -1014,7 +1014,7 @@ function editHiringPost(id) {
 
   setValue("hiringBusiness", post.business);
   setValue("hiringTitle", post.title);
-  setValue("hiringType", post.jobType);
+  setValue("hiringType", post.jobType || post.type || "");
   setValue("hiringPay", post.pay);
   setValue("hiringPhone", formatPhoneNumber(post.phone));
   setValue("hiringWebsite", post.website);
@@ -1099,138 +1099,68 @@ document.addEventListener("DOMContentLoaded", function() {
     couponDuration.addEventListener("change", updateCouponExpirationDate);
     couponStartDate.addEventListener("change", updateCouponExpirationDate);
   }
-  const hiringDuration =
-  document.getElementById("hiringDuration");
 
-const hiringStartDate =
-  document.getElementById("hiringStartDate");
+  const hiringDuration = document.getElementById("hiringDuration");
+  const hiringStartDate = document.getElementById("hiringStartDate");
+  const hiringExpiration = document.getElementById("hiringExpiration");
 
-const hiringExpiration =
-  document.getElementById("hiringExpiration");
+  function updateHiringExpirationDate() {
+    if (!hiringDuration || !hiringStartDate || !hiringExpiration) {
+      return;
+    }
 
-function updateHiringExpirationDate() {
+    const durationDays = parseInt(hiringDuration.value);
+    const startDate = hiringStartDate.value;
 
-  if (
-    !hiringDuration ||
-    !hiringStartDate ||
-    !hiringExpiration
-  ) {
-    return;
+    if (!durationDays || !startDate) {
+      hiringExpiration.value = "";
+      return;
+    }
+
+    const calculatedDate = new Date(startDate + "T00:00:00");
+    calculatedDate.setDate(calculatedDate.getDate() + durationDays);
+
+    const year = calculatedDate.getFullYear();
+    const month = String(calculatedDate.getMonth() + 1).padStart(2, "0");
+    const day = String(calculatedDate.getDate()).padStart(2, "0");
+
+    hiringExpiration.value = `${year}-${month}-${day}`;
   }
 
-  const durationDays =
-    parseInt(hiringDuration.value);
-
-  const startDate =
-    hiringStartDate.value;
-
-  if (!durationDays || !startDate) {
-    hiringExpiration.value = "";
-    return;
+  if (hiringDuration && hiringStartDate) {
+    hiringDuration.addEventListener("change", updateHiringExpirationDate);
+    hiringStartDate.addEventListener("change", updateHiringExpirationDate);
   }
 
-  const calculatedDate =
-    new Date(startDate + "T00:00:00");
+  const businessDuration = document.getElementById("businessDuration");
+  const businessStartDate = document.getElementById("businessStartDate");
+  const businessExpiration = document.getElementById("businessExpiration");
 
-  calculatedDate.setDate(
-    calculatedDate.getDate() + durationDays
-  );
+  function updateBusinessExpirationDate() {
+    if (!businessDuration || !businessStartDate || !businessExpiration) {
+      return;
+    }
 
-  const year =
-    calculatedDate.getFullYear();
+    const durationDays = parseInt(businessDuration.value);
+    const startDate = businessStartDate.value;
 
-  const month =
-    String(calculatedDate.getMonth() + 1)
-      .padStart(2, "0");
+    if (!durationDays || !startDate) {
+      businessExpiration.value = "";
+      return;
+    }
 
-  const day =
-    String(calculatedDate.getDate())
-      .padStart(2, "0");
+    const calculatedDate = new Date(startDate + "T00:00:00");
+    calculatedDate.setDate(calculatedDate.getDate() + durationDays);
 
-  hiringExpiration.value =
-    `${year}-${month}-${day}`;
-}
+    const year = calculatedDate.getFullYear();
+    const month = String(calculatedDate.getMonth() + 1).padStart(2, "0");
+    const day = String(calculatedDate.getDate()).padStart(2, "0");
 
-if (
-  hiringDuration &&
-  hiringStartDate
-) {
+    businessExpiration.value = `${year}-${month}-${day}`;
+  }
 
-  hiringDuration.addEventListener(
-    "change",
-    updateHiringExpirationDate
-  );
-
-  hiringStartDate.addEventListener(
-    "change",
-    updateHiringExpirationDate
-  );
-}
+  if (businessDuration && businessStartDate) {
+    businessDuration.addEventListener("change", updateBusinessExpirationDate);
+    businessStartDate.addEventListener("change", updateBusinessExpirationDate);
+  }
 });
-const businessDuration =
-  document.getElementById("businessDuration");
-
-const businessStartDate =
-  document.getElementById("businessStartDate");
-
-const businessExpiration =
-  document.getElementById("businessExpiration");
-
-function updateBusinessExpirationDate() {
-
-  if (
-    !businessDuration ||
-    !businessStartDate ||
-    !businessExpiration
-  ) {
-    return;
-  }
-
-  const durationDays =
-    parseInt(businessDuration.value);
-
-  const startDate =
-    businessStartDate.value;
-
-  if (!durationDays || !startDate) {
-    businessExpiration.value = "";
-    return;
-  }
-
-  const calculatedDate =
-    new Date(startDate + "T00:00:00");
-
-  calculatedDate.setDate(
-    calculatedDate.getDate() + durationDays
-  );
-
-  const year =
-    calculatedDate.getFullYear();
-
-  const month =
-    String(calculatedDate.getMonth() + 1)
-      .padStart(2, "0");
-
-  const day =
-    String(calculatedDate.getDate())
-      .padStart(2, "0");
-
-  businessExpiration.value =
-    `${year}-${month}-${day}`;
-}
-
-if (
-  businessDuration &&
-  businessStartDate
-) {
-
-  businessDuration.addEventListener(
-    "change",
-    updateBusinessExpirationDate
-  );
-
-  businessStartDate.addEventListener(
-    "change",
-    updateBusinessExpirationDate
-  );
-}
