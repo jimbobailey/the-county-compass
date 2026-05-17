@@ -277,11 +277,11 @@
       <div class="small-note">
         If your category does not exist, choose "Other" and explain the needed category in the notes section below.
       </div>
-      <label id="dealCodeLabel">Deal Code (Optional)</label>
-<input type="text" name="dealCode" placeholder="Example: SAVE20">
+      <label id="dealCodeLabel" style="display:none;">Deal Code (Optional)</label>
+<input type="text" name="dealCode" id="dealCodeField" style="display:none;" placeholder="Example: SAVE20">
 
-<label id="dealValueLabel">Deal Value / Discount</label>
-<input type="text" name="dealValue" id="dealValueField" placeholder="Example: 20% Off, Buy One Get One">
+<label id="dealValueLabel" style="display:none;">Deal Value / Discount</label>
+<input type="text" name="dealValue" id="dealValueField" style="display:none;" placeholder="Example: 20% Off, Buy One Get One">
 
       <label>Listing Headline / Title</label>
       <input type="text" name="title" placeholder="Example: 20% Off This Month, Now Hiring, Grand Opening">
@@ -457,7 +457,8 @@ function toggleDealFields() {
   }
 
   const showDeals =
-    type.value === "coupon";
+  type.value === "coupon" ||
+  type.value === "deal";
 
   dealCodeLabel.style.display =
     showDeals ? "block" : "none";
