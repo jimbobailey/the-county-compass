@@ -640,8 +640,22 @@ if (type === "featured-business" || type === "featured") {
 
     if (type === "sponsor") {
 
-    total = 299;
-    details = "Sponsor Ad - Yearly";
+   if (type === "sponsor") {
+
+    if (duration === 30) {
+        total = 30;
+        details = "Sponsor Ad - Monthly";
+    }
+
+    else if (duration === 90) {
+        total = 80;
+        details = "Sponsor Ad - Quarterly";
+    }
+
+    else if (duration === 365) {
+        total = 299;
+        details = "Sponsor Ad - Yearly";
+    }
 
 }
 
