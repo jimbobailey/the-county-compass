@@ -194,9 +194,7 @@ exports.default = async function handler(request) {
 
         category:
           submissionData.category || "",
-
-        details:
-          details:
+details:
   (submissionData.dealValue || "") +
   (
     submissionData.description
@@ -243,7 +241,8 @@ exports.default = async function handler(request) {
         date:
           submissionData.startDate || "",
 
-        time: "",
+        time:
+  submissionData.eventTime || "",
 
         image:
           submissionData.imageUrl || "",
