@@ -619,12 +619,13 @@ if (submissionType) {
         () => {
             toggleDealFields();
             updatePackageOptions();
-
-            packageLength.addEventListener(
-    "change",
-    updatePricingSummary
-    );
+            updatePricingSummary();
         }
+    );
+
+    packageLength.addEventListener(
+        "change",
+        updatePricingSummary
     );
 
     toggleDealFields();
