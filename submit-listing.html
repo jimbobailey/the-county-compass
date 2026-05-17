@@ -302,8 +302,8 @@
 
       <label>Start Date</label>
       <input type="date" name="startDate" id="startDate">
-      <label>Event Time</label>
-<input type="time" name="eventTime">
+      <label id="eventTimeLabel" style="display:none;">Event Time</label>
+<input type="time" name="eventTime" id="eventTimeField" style="display:none;">
 
       <label>End Date</label>
       <input type="date" name="endDate" id="endDate" readonly>
@@ -471,6 +471,25 @@ function toggleDealFields() {
 
   dealValueField.style.display =
     showDeals ? "block" : "none";
+    dealValueField.style.display =
+  showDeals ? "block" : "none";
+
+const eventTimeLabel =
+  document.getElementById("eventTimeLabel");
+
+const eventTimeField =
+  document.getElementById("eventTimeField");
+
+const showEventTime =
+  type.value === "event";
+
+if (eventTimeLabel && eventTimeField) {
+  eventTimeLabel.style.display =
+    showEventTime ? "block" : "none";
+
+  eventTimeField.style.display =
+    showEventTime ? "block" : "none";
+}
 }
 
 if (submissionType) {
