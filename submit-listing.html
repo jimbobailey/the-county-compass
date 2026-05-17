@@ -137,6 +137,32 @@
     button:hover {
       background: #ffb84d;
     }
+    .pricing-summary{
+    margin-top:15px;
+    padding:15px;
+    border:1px solid #ff8c00;
+    border-radius:10px;
+    background:#1f1f1f;
+    color:#ffffff;
+}
+
+.pricing-title{
+    font-size:18px;
+    font-weight:bold;
+    color:#ff8c00;
+    margin-bottom:10px;
+}
+
+#pricingDetails{
+    margin-bottom:10px;
+    line-height:1.5;
+}
+
+#pricingTotal{
+    font-size:20px;
+    font-weight:bold;
+    color:#00cc66;
+}
   </style>
 </head>
 
@@ -295,11 +321,25 @@
 
       <label>Package Length</label>
       <select name="packageLength" id="packageLength"></select>
+      <div id="pricingSummary" class="pricing-summary">
 
+    <div class="pricing-title">
+        Estimated Total
+    </div>
+
+    <div id="pricingDetails">
+        Select a listing type
+    </div>
+
+    <div id="pricingTotal">
+        Total: $0
+    </div>
+
+     </div>v
       <label>Start Date</label>
       <input type="date" name="startDate" id="startDate">
       <label id="eventTimeLabel" style="display:none;">Event Time</label>
-<input type="time" name="eventTime" id="eventTimeField" style="display:none;">
+     <input type="time" name="eventTime" id="eventTimeField" style="display:none;">
 
       <label>End Date</label>
       <input type="date" name="endDate" id="endDate" readonly>
@@ -506,6 +546,7 @@ case "jobs":
         packageLength.appendChild(opt);
 
     });
+    updatePricingSummary();
 
 }
 function toggleDealFields() {
@@ -578,6 +619,11 @@ if (submissionType) {
         () => {
             toggleDealFields();
             updatePackageOptions();
+
+            packageLength.addEventListener(
+    "change",
+    updatePricingSummary
+    );
         }
     );
 
