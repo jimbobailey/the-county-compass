@@ -308,7 +308,8 @@ else if (
     type === "community-event" ||
     type === "communityEvent"
 ) {
-    days = -1;
+    endDate.value = start;
+    return;
 }
 
 else {
