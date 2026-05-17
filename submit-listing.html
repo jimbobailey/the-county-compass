@@ -428,6 +428,60 @@ if (submissionType) {
   );
 }
 </script>
+<script>
+function toggleDealFields() {
+
+  const type =
+    document.getElementById("submissionType");
+
+  const dealCodeLabel =
+    document.getElementById("dealCodeLabel");
+
+  const dealCodeField =
+    document.getElementById("dealCodeField");
+
+  const dealValueLabel =
+    document.getElementById("dealValueLabel");
+
+  const dealValueField =
+    document.getElementById("dealValueField");
+
+  if (
+    !type ||
+    !dealCodeLabel ||
+    !dealCodeField ||
+    !dealValueLabel ||
+    !dealValueField
+  ) {
+    return;
+  }
+
+  const showDeals =
+    type.value === "coupon";
+
+  dealCodeLabel.style.display =
+    showDeals ? "block" : "none";
+
+  dealCodeField.style.display =
+    showDeals ? "block" : "none";
+
+  dealValueLabel.style.display =
+    showDeals ? "block" : "none";
+
+  dealValueField.style.display =
+    showDeals ? "block" : "none";
+}
+
+if (submissionType) {
+
+  submissionType.addEventListener(
+    "change",
+    toggleDealFields
+  );
+
+  toggleDealFields();
+}
+</script>
 
 <script>
   const packageLength = document.getElementById("packageLength");
