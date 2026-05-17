@@ -433,6 +433,81 @@ if (submissionType) {
 }
 </script>
 <script>
+function updatePackageOptions() {
+
+    const submissionType =
+        document.getElementById("submissionType");
+
+    const packageLength =
+        document.getElementById("packageLength");
+
+    if (!submissionType || !packageLength) {
+        return;
+    }
+
+    let options = [];
+
+    switch (submissionType.value) {
+
+        case "business":
+            options = [
+                { value: "30", text: "Monthly" },
+                { value: "90", text: "Quarterly" },
+                { value: "365", text: "Yearly" }
+            ];
+            break;
+
+        case "coupon":
+        case "deal":
+            options = [
+                { value: "7", text: "Weekly" },
+                { value: "30", text: "Monthly" }
+            ];
+            break;
+
+        case "event":
+            options = [
+                { value: "1", text: "Single Event" },
+                { value: "7", text: "1 Week" },
+                { value: "30", text: "1 Month" }
+            ];
+            break;
+
+        case "hiring":
+            options = [
+                { value: "30", text: "Monthly" },
+                { value: "90", text: "Quarterly" }
+            ];
+            break;
+
+        case "sponsor":
+            options = [
+                { value: "30", text: "Monthly" },
+                { value: "365", text: "Yearly" }
+            ];
+            break;
+
+        default:
+            options = [
+                { value: "", text: "Select Duration" }
+            ];
+    }
+
+    packageLength.innerHTML = "";
+
+    options.forEach(option => {
+
+        const opt =
+            document.createElement("option");
+
+        opt.value = option.value;
+        opt.textContent = option.text;
+
+        packageLength.appendChild(opt);
+
+    });
+
+}
 function toggleDealFields() {
 
   const type =
@@ -498,12 +573,16 @@ if (eventTimeLabel && eventTimeField) {
 
 if (submissionType) {
 
-  submissionType.addEventListener(
-    "change",
-    toggleDealFields
-  );
+    submissionType.addEventListener(
+        "change",
+        () => {
+            toggleDealFields();
+            updatePackageOptions();
+        }
+    );
 
-  toggleDealFields();
+    toggleDealFields();
+    updatePackageOptions();
 }
 </script>
 
