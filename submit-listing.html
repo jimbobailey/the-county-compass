@@ -452,7 +452,9 @@ function updatePackageOptions() {
             break;
 
         case "coupon":
+        case "coupons":
         case "deal":
+        case "deals":
             options = [
                 { value: "7", text: "Weekly" },
                 { value: "30", text: "Monthly" }
@@ -460,6 +462,8 @@ function updatePackageOptions() {
             break;
 
         case "event":
+        case "community-event":
+        case "communityEvent":
             options = [
                 { value: "1", text: "Single Event" },
                 { value: "7", text: "1 Week" },
@@ -468,6 +472,8 @@ function updatePackageOptions() {
             break;
 
         case "hiring":
+case "job":
+case "jobs":
             options = [
                 { value: "30", text: "Monthly" },
                 { value: "90", text: "Quarterly" }
