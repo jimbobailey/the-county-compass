@@ -38,7 +38,17 @@ function isExpired(dateValue) {
 
 function getActiveHiringPosts() {
   return hiringPosts.filter(function(post) {
-    if ((post.status || "Active") === "Hidden") return false;
+    if ((post.status || "Active") === "Hidden") {
+      return false;
+    }
+
+    if (
+      post.neverExpires === "Yes" ||
+      post.status === "Never Expires"
+    ) {
+      return true;
+    }
+
     return !isExpired(getPostExpiration(post));
   });
 }

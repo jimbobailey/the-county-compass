@@ -27,6 +27,7 @@ async function loadAdminData() {
   renderEventPreviews();
   renderHiringPreviews();
   renderAdPreviews();
+  renderExpirationAlerts();
 }
 
 async function loadBusinessesFromServer() {
@@ -226,6 +227,149 @@ function getCategoryImage(category) {
   return categoryImages[category] || "images/categories/professional-services.jpg";
 }
 
+
+function isNeverExpires(item) {
+  return (
+    item.neverExpires === "Yes" ||
+    item.status === "Never Expires"
+  );
+}
+
+function getDaysUntil(dateValue) {
+  if (!dateValue) return null;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const targetDate = new Date(dateValue + "T00:00:00");
+  targetDate.setHours(0, 0, 0, 0);
+
+  return Math.ceil((targetDate - today) / 86400000);
+}
+
+function getExpirationStatusText(item, expirationField) {
+  if (isNeverExpires(item)) {
+    return "Never Expires";
+  }
+
+  const expiration = item[expirationField];
+
+  if (!expiration) {
+    return "No expiration date";
+  }
+
+  const days = getDaysUntil(expiration);
+
+  if (days === null) {
+    return "No expiration date";
+  }
+
+  if (days < 0) {
+    return "Expired " + Math.abs(days) + " day(s) ago";
+  }
+
+  if (days === 0) {
+    return "Expires today";
+  }
+
+  return "Expires in " + days + " day(s)";
+}
+
+function buildAlertItems(items, typeLabel, expirationField, nameGetter) {
+  return items
+    .filter(function(item) {
+      if ((item.status || "Active") === "Hidden") {
+        return false;
+      }
+
+      if (isNeverExpires(item)) {
+        return false;
+      }
+
+      const days = getDaysUntil(item[expirationField]);
+
+      return days !== null && days <= 14;
+    })
+    .map(function(item) {
+      const days = getDaysUntil(item[expirationField]);
+      let urgency = "soon";
+
+      if (days < 0) {
+        urgency = "expired";
+      } else if (days <= 7) {
+        urgency = "warning";
+      }
+
+      return {
+        type: typeLabel,
+        name: nameGetter(item),
+        expiration: item[expirationField],
+        days,
+        urgency
+      };
+    });
+}
+
+function renderExpirationAlerts() {
+  const area = document.getElementById("expirationAlertArea");
+
+  if (!area) {
+    return;
+  }
+
+  const alerts = []
+    .concat(buildAlertItems(businesses, "Business", "expiration", function(item) {
+      return item.name || "Unnamed business";
+    }))
+    .concat(buildAlertItems(coupons, "Deal", "expiration", function(item) {
+      return item.title || item.businessName || "Unnamed deal";
+    }))
+    .concat(buildAlertItems(hiringPosts, "Hiring", "expiration", function(item) {
+      return item.title || item.business || "Unnamed hiring post";
+    }))
+    .concat(buildAlertItems(ads, "Ad", "expiration", function(item) {
+      return item.title || "Unnamed ad";
+    }));
+
+  alerts.sort(function(a, b) {
+    return a.days - b.days;
+  });
+
+  if (alerts.length === 0) {
+    area.innerHTML = `
+      <p class="expiration-good">
+        Nothing is expiring in the next 14 days.
+      </p>
+    `;
+    return;
+  }
+
+  area.innerHTML = `
+    <div class="expiration-alert-list">
+      ${alerts.map(function(alert) {
+        let message = "";
+
+        if (alert.days < 0) {
+          message = "Expired " + Math.abs(alert.days) + " day(s) ago";
+        } else if (alert.days === 0) {
+          message = "Expires today";
+        } else {
+          message = "Expires in " + alert.days + " day(s)";
+        }
+
+        return `
+          <div class="expiration-alert-card ${alert.urgency}">
+            <strong>${alert.type}: ${alert.name}</strong>
+            <span>${message}</span>
+            <small>${alert.expiration || ""}</small>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
+}
+
+
 /* BUSINESS */
 
 async function addBusinessPreview() {
@@ -238,6 +382,7 @@ async function addBusinessPreview() {
   const image = getValue("businessImage");
   const paid = getValue("businessPaid");
   const expiration = getValue("businessExpiration");
+  const neverExpires = getValue("businessNeverExpires") || "No";
   const featured = getValue("businessFeatured");
   const featuredLocation = getValue("businessFeaturedLocation");
   const description = getValue("businessDescription");
@@ -275,6 +420,7 @@ async function addBusinessPreview() {
           image,
           paid,
           expiration,
+          neverExpires,
           featured,
           featuredLocation,
           status,
@@ -303,6 +449,7 @@ async function addBusinessPreview() {
       image,
       paid,
       expiration,
+      neverExpires,
       featured,
       featuredLocation,
       status,
@@ -314,6 +461,7 @@ async function addBusinessPreview() {
 
   await saveBusinesses();
   renderBusinessPreviews();
+  renderExpirationAlerts();
   clearBusinessForm();
 }
 
@@ -354,10 +502,12 @@ function renderBusinessPreviews() {
         <p><strong>Phone:</strong> ${formatPhoneNumber(business.phone)}</p>
         <p><strong>Paid:</strong> ${business.paid || "No"}</p>
         <p><strong>Status:</strong> ${business.status || "Active"}</p>
+        <p><strong>Expiration:</strong> ${getExpirationStatusText(business, "expiration")}</p>
         <p><strong>Featured:</strong> ${business.featured || "No"}</p>
         <p><strong>Featured Location:</strong> ${business.featuredLocation || "homepage"}</p>
 
         ${expirationText ? `<p><strong>${expirationText}</strong></p>` : ""}
+        <p><strong>Expiration:</strong> ${getExpirationStatusText(ad, "expiration")}</p>
 
         <p class="business-description">${business.description || ""}</p>
 
@@ -386,6 +536,7 @@ function editBusiness(id) {
   setValue("businessImage", business.image);
   setValue("businessPaid", business.paid);
   setValue("businessExpiration", business.expiration || "");
+  setValue("businessNeverExpires", business.neverExpires || (business.status === "Never Expires" ? "Yes" : "No"));
   setValue("businessFeatured", business.featured);
   setValue("businessFeaturedLocation", business.featuredLocation || "homepage");
   setValue("businessStatus", business.status || "Active");
@@ -421,6 +572,7 @@ function clearBusinessForm() {
   setValue("businessImage", "");
   setValue("businessPaid", "No");
   setValue("businessExpiration", "");
+  setValue("businessNeverExpires", "No");
   setValue("businessFeatured", "No");
   setValue("businessFeaturedLocation", "homepage");
   setValue("businessStatus", "Active");
@@ -436,6 +588,7 @@ async function addCouponPreview() {
   const title = getValue("couponTitle");
   const image = getValue("couponImage");
   const expiration = getValue("couponExpiration");
+  const neverExpires = getValue("couponNeverExpires") || "No";
   const website = makeGoodUrl(getValue("couponWebsite"));
   const details = getValue("couponDetails");
   const status = getValue("couponStatus") || "Active";
@@ -455,6 +608,7 @@ async function addCouponPreview() {
           title,
           image,
           expiration,
+          neverExpires,
           website,
           status,
           details
@@ -474,6 +628,7 @@ async function addCouponPreview() {
       title,
       image,
       expiration,
+      neverExpires,
       website,
       status,
       details
@@ -484,6 +639,7 @@ async function addCouponPreview() {
 
   await saveCoupons();
   renderCouponPreviews();
+  renderExpirationAlerts();
   clearCouponForm();
 }
 
@@ -520,6 +676,7 @@ function renderCouponPreviews() {
         <p><strong>${coupon.businessName || ""}</strong></p>
         <p><strong>Category:</strong> ${coupon.category || ""}</p>
         <p><strong>Status:</strong> ${coupon.status || "Active"}</p>
+        <p><strong>Expiration:</strong> ${getExpirationStatusText(coupon, "expiration")}</p>
 
         ${expirationText ? `<p><strong>${expirationText}</strong></p>` : ""}
 
@@ -546,6 +703,7 @@ function editCoupon(id) {
   setValue("couponTitle", coupon.title);
   setValue("couponImage", coupon.image);
   setValue("couponExpiration", coupon.expiration || "");
+  setValue("couponNeverExpires", coupon.neverExpires || (coupon.status === "Never Expires" ? "Yes" : "No"));
   setValue("couponWebsite", coupon.website || "");
   setValue("couponStatus", coupon.status || "Active");
   setValue("couponDetails", coupon.details);
@@ -575,6 +733,7 @@ function clearCouponForm() {
   setValue("couponDuration", "");
   setValue("couponStartDate", "");
   setValue("couponExpiration", "");
+  setValue("couponNeverExpires", "No");
   setValue("couponWebsite", "");
   setValue("couponStatus", "Active");
   setValue("couponDetails", "");
@@ -737,6 +896,7 @@ async function addAdPreview() {
   const link = makeGoodUrl(getValue("adLink"));
   const active = getValue("adActive");
   const expiration = getValue("adExpiration");
+  const neverExpires = getValue("adNeverExpires") || "No";
 
   if (!title || !location || !shape || !image) {
     alert("Please complete all ad fields.");
@@ -754,7 +914,8 @@ async function addAdPreview() {
           image,
           link,
           active,
-          expiration
+          expiration,
+          neverExpires
         };
       }
 
@@ -772,7 +933,8 @@ async function addAdPreview() {
       image,
       link,
       active,
-      expiration
+      expiration,
+      neverExpires
     });
 
     alert("Advertisement added.");
@@ -780,6 +942,7 @@ async function addAdPreview() {
 
   await saveAds();
   renderAdPreviews();
+  renderExpirationAlerts();
   clearAdForm();
 }
 
@@ -827,6 +990,7 @@ function editAd(id) {
   setValue("adLink", ad.link);
   setValue("adActive", ad.active);
   setValue("adExpiration", ad.expiration || "");
+  setValue("adNeverExpires", ad.neverExpires || "No");
 
   setPreviewImage("adImagePreview", ad.image);
 
@@ -853,6 +1017,7 @@ function clearAdForm() {
   setValue("adLink", "");
   setValue("adActive", "Yes");
   setValue("adExpiration", "");
+  setValue("adNeverExpires", "No");
   resetPreviewImage("adImagePreview");
 }
 
@@ -915,6 +1080,7 @@ function filterBusinesses() {
         <p><strong>Phone:</strong> ${formatPhoneNumber(business.phone)}</p>
         <p><strong>Paid:</strong> ${business.paid || "No"}</p>
         <p><strong>Status:</strong> ${business.status || "Active"}</p>
+        <p><strong>Expiration:</strong> ${getExpirationStatusText(business, "expiration")}</p>
         <p><strong>Featured:</strong> ${business.featured || "No"}</p>
         <p><strong>Featured Location:</strong> ${business.featuredLocation || "homepage"}</p>
 
@@ -940,6 +1106,7 @@ async function addHiringPreview() {
   const website = makeGoodUrl(getValue("hiringWebsite"));
   const image = getValue("hiringImage");
   const expiration = getValue("hiringExpiration");
+  const neverExpires = getValue("hiringNeverExpires") || "No";
   const description = getValue("hiringDescription");
   const status = getValue("hiringStatus") || "Active";
 
@@ -961,6 +1128,7 @@ async function addHiringPreview() {
           website,
           image,
           expiration,
+          neverExpires,
           status,
           description
         };
@@ -982,6 +1150,7 @@ async function addHiringPreview() {
       website,
       image,
       expiration,
+      neverExpires,
       status,
       description
     });
@@ -991,6 +1160,7 @@ async function addHiringPreview() {
 
   await saveHiringPosts();
   renderHiringPreviews();
+  renderExpirationAlerts();
   clearHiringForm();
 }
 
@@ -1019,6 +1189,7 @@ function renderHiringPreviews() {
         <p><strong>Pay:</strong> ${post.pay || ""}</p>
         <p><strong>Phone:</strong> ${formatPhoneNumber(post.phone)}</p>
         <p><strong>Status:</strong> ${post.status || "Active"}</p>
+        <p><strong>Expiration:</strong> ${getExpirationStatusText(post, "expiration")}</p>
 
         ${expirationText ? `<p><strong>${expirationText}</strong></p>` : ""}
 
@@ -1048,6 +1219,7 @@ function editHiringPost(id) {
   setValue("hiringWebsite", post.website);
   setValue("hiringImage", post.image);
   setValue("hiringExpiration", post.expiration || "");
+  setValue("hiringNeverExpires", post.neverExpires || (post.status === "Never Expires" ? "Yes" : "No"));
   setValue("hiringStatus", post.status || "Active");
   setValue("hiringDescription", post.description);
 
@@ -1077,6 +1249,7 @@ function clearHiringForm() {
   setValue("hiringWebsite", "");
   setValue("hiringImage", "");
   setValue("hiringExpiration", "");
+  setValue("hiringNeverExpires", "No");
   setValue("hiringStatus", "Active");
   setValue("hiringDescription", "");
   resetPreviewImage("hiringImagePreview");

@@ -57,6 +57,13 @@ function getActiveAds(locationName) {
       return false;
     }
 
+    if (
+      ad.neverExpires === "Yes" ||
+      ad.status === "Never Expires"
+    ) {
+      return true;
+    }
+
     if (!ad.expiration) {
       return true;
     }
@@ -94,8 +101,7 @@ function renderAds(locationName, containerId) {
 
     if (adUrl) {
       container.innerHTML += `
-        <a href="${adUrl}" target="_blank" class="site-ad site-ad-link site-ad-${shapeClass}">
-          <span class="card-link-badge">Take Me There ↗</span>
+        <a href="${adUrl}" target="_blank" class="site-ad site-ad-${shapeClass}">
           ${adImage}
         </a>
       `;

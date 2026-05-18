@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Admin | The County Compass</title>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <section id="adminLogin" class="page-section">
+
+    <h1>Admin Login</h1>
+
+    <p class="page-intro">
+      Enter the admin password to manage The County Compass.
+    </p>
+
+    <div class="admin-card">
+
+      <input
+        type="password"
+        id="adminPasswordInput"
+        placeholder="Enter admin password"
+      >
+
+      <button
+        type="button"
+        onclick="checkAdminPassword()"
+      >
+        Enter Admin
+      </button>
+
+    </div>
+
+  </section>
+
+  <div id="adminContent" style="display: none;">
+
+    <header class="site-header">
+
+      <div class="logo">
+
+        <img
+          src="images/site/county-compass-logo.png"
+          alt="The County Compass"
+          class="site-logo"
+        >
+
+        <div class="logo-text">
+          <span>The County Compass Admin</span>
+        </div>
+
+      </div>
+
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="businesses.html">Businesses</a>
+        <a href="deals.html">Deals</a>
+        <a href="events.html">Events</a>
+        <a href="hiring.html">Hiring</a>
+        <a href="advertise.html">Advertise</a>
+        <a href="contact.html">Contact</a>
+        <a href="admin-submissions.html">Submissions</a>
+      </nav>
+
+    </header>
+
+    <main class="page-section">
+
+      <h1>Admin Dashboard</h1>
+
+      <section class="admin-card">
+
+        <h2>Backup / Restore Site Data</h2>
+
+        <p class="page-intro">
+          Use this before clearing cache, moving to Netlify, or changing domains.
+        </p>
+
+        <button
+          type="button"
+          onclick="exportCountyCompassBackup()"
+        >
+          Export Backup
+        </button>
+
+        <input
+          type="file"
+          id="backupImportFile"
+          accept=".json"
+          onchange="importCountyCompassBackup(event)"
+        >
+
+      </section>
+
+      <p class="page-intro">
+        Manage businesses, deals, events, hiring posts, advertisements, and featured listings.
+      </p>
+
+      <section class="admin-card expiration-dashboard">
+        <h2>Needs Attention</h2>
+        <p class="expiration-dashboard-note">
+          These are internal reminders only. Customers are not emailed automatically.
+        </p>
+        <div id="expirationAlertArea">
+          Loading expiration alerts...
+        </div>
+      </section>
+
+      <section class="admin-grid">
+
+        <article class="admin-card">
+
+          <h2>Add Business</h2>
+
+          <input type="text" id="businessName" placeholder="Business Name">
+
+          <select id="businessCategory">
+            <option value="">Select Category</option>
+<option>Agriculture & Farm Services</option>
+<option>Animals & Pet Services</option>
+<option>Automotive Repair</option>
+<option>Automotive Services</option>
+<option>Catering & Event Services</option>
+<option>Churches</option>
+<option>Clothing & Apparel / Boutique</option>
+<option>Construction</option>
+<option>Custom Crafts & Fabrication</option>
+<option>Education & Training</option>
+<option>Entertainment</option>
+<option>Financial Services</option>
+<option>Fitness</option>
+<option>Food & Dining</option>
+<option>Government & Community</option>
+<option>Gravel, Rock & Fill Dirt</option>
+<option>Handyman Services</option>
+<option>Health & Beauty</option>
+<option>Home Improvement</option>
+<option>Insurance</option>
+<option>IT & Computer Repair</option>
+<option>Land Clearing & Tractor Services</option>
+<option>Landscaping</option>
+<option>Legal Services</option>
+<option>Locksmithing</option>
+<option>Lodging & Travel</option>
+<option>Massage & Spa Services</option>
+<option>Medical & Dental</option>
+<option>Mobile Home Sales & Services</option>
+<option>Moving & Hauling</option>
+<option>Photography & Media</option>
+<option>Pools & Outdoor Living</option>
+<option>Professional Services</option>
+<option>Real Estate & Title Services</option>
+<option>Salon / Barber / Nail Services</option>
+<option>Shopping</option>
+<option>Tattoo & Piercing</option>
+<option>Towing & Recovery</option>
+<option>Weddings & Parties</option>
+<option>Welding & Fabrication</option>
+<option>Other</option>
+          </select>
+
+          <input type="text" id="businessAddress" placeholder="Business Address">
+          <input type="text" id="businessPhone" placeholder="Phone Number">
+
+         <input
+         type="email"
+         id="businessEmail"
+         placeholder="Business Email"
+>
+
+<input type="text" id="businessWebsite" placeholder="Website or Facebook Link">
+
+          <label class="image-upload-label">Business Image</label>
+
+          <input
+            type="file"
+            id="businessImageUpload"
+            accept="image/*"
+            onchange="handleImageUpload(event, 'businessImage', 'businessImagePreview', 'images/businesses/', 'business')"
+          >
+
+          <input
+            type="text"
+            id="businessImage"
+            placeholder="Type image path, example: images/businesses/example.jpg"
+          >
+
+          <img
+            id="businessImagePreview"
+            class="business-image-preview"
+            style="display: none;"
+          >
+
+          <select id="businessPaid">
+            <option value="No">Paid Listing: No</option>
+            <option value="Yes">Paid Listing: Yes</option>
+          </select>
+
+          <label class="image-upload-label">
+  Business Listing Duration
+</label>
+
+<select id="businessDuration">
+  <option value="">Select Duration</option>
+  <option value="365">Yearly</option>
+</select>
+
+<label class="image-upload-label">
+  Business Start Date
+</label>
+
+<input
+  type="date"
+  id="businessStartDate"
+>
+
+
+<select id="businessNeverExpires">
+  <option value="No">Expiration: Uses Date</option>
+  <option value="Yes">Expiration: Never Expires</option>
+</select>
+
+<label class="image-upload-label">
+  Business Paid-Through Date
+</label>
+
+<input
+  type="date"
+  id="businessExpiration"
+  readonly
+>
+
+          <select id="businessFeatured">
+            <option value="No">Featured Business: No</option>
+            <option value="Yes">Featured Business: Yes</option>
+          </select>
+
+          <select id="businessFeaturedLocation">
+            <option value="homepage">Featured Location: Homepage</option>
+            <option value="deals">Featured Location: Deals Page</option>
+            <option value="events">Featured Location: Events Page</option>
+            <option value="hiring">Featured Location: Hiring Page</option>
+            <option value="all">Featured Location: All Pages</option>
+          </select>
+
+          
+<select id="businessStatus">
+  <option value="Active">Status: Active</option>
+  <option value="Never Expires">Status: Never Expires</option>
+  <option value="Pending">Status: Pending</option>
+  <option value="Expired">Status: Expired</option>
+  <option value="Free Extension">Status: Free Extension</option>
+  <option value="Hidden">Status: Hidden</option>
+</select>
+
+<textarea
+            id="businessDescription"
+            placeholder="Business Description"
+            maxlength="170"
+          ></textarea>
+
+          <button
+            type="button"
+            id="businessSubmitButton"
+            onclick="addBusinessPreview()"
+          >
+            Add Business
+          </button>
+
+        </article>
+
+        <article class="admin-card">
+
+          <h2>Add Coupon</h2>
+
+          <input type="text" id="couponBusinessName" placeholder="Business Name">
+
+          <select id="couponCategory">
+            <option value="">Select Category</option>
+<option>Agriculture & Farm Services</option>
+<option>Animals & Pet Services</option>
+<option>Automotive Repair</option>
+<option>Automotive Services</option>
+<option>Catering & Event Services</option>
+<option>Churches</option>
+<option>Clothing & Apparel / Boutique</option>
+<option>Construction</option>
+<option>Custom Crafts & Fabrication</option>
+<option>Education & Training</option>
+<option>Entertainment</option>
+<option>Financial Services</option>
+<option>Fitness</option>
+<option>Food & Dining</option>
+<option>Government & Community</option>
+<option>Gravel, Rock & Fill Dirt</option>
+<option>Handyman Services</option>
+<option>Health & Beauty</option>
+<option>Home Improvement</option>
+<option>Insurance</option>
+<option>IT & Computer Repair</option>
+<option>Land Clearing & Tractor Services</option>
+<option>Landscaping</option>
+<option>Legal Services</option>
+<option>Locksmithing</option>
+<option>Lodging & Travel</option>
+<option>Massage & Spa Services</option>
+<option>Medical & Dental</option>
+<option>Mobile Home Sales & Services</option>
+<option>Moving & Hauling</option>
+<option>Photography & Media</option>
+<option>Pools & Outdoor Living</option>
+<option>Professional Services</option>
+<option>Real Estate & Title Services</option>
+<option>Salon / Barber / Nail Services</option>
+<option>Shopping</option>
+<option>Tattoo & Piercing</option>
+<option>Towing & Recovery</option>
+<option>Weddings & Parties</option>
+<option>Welding & Fabrication</option>
+<option>Other</option>
+</select>
+
+          <input type="text" id="couponTitle" placeholder="Coupon Title">
+
+          <label class="image-upload-label">Coupon Image</label>
+
+          <input
+            type="file"
+            id="couponImageUpload"
+            accept="image/*"
+            onchange="handleImageUpload(event, 'couponImage', 'couponImagePreview', 'images/deals/', 'coupon')"
+          >
+
+          <input
+            type="text"
+            id="couponImage"
+            placeholder="Type image path, example: images/deals/example.jpg"
+          >
+
+          <img
+            id="couponImagePreview"
+            class="business-image-preview"
+            style="display: none;"
+          >
+
+          <label class="image-upload-label">
+  Coupon Duration
+</label>
+
+<select id="couponDuration">
+  <option value="">Select Duration</option>
+  <option value="7">Weekly</option>
+  <option value="30">Monthly</option>
+</select>
+
+<label class="image-upload-label">
+  Coupon Start Date
+</label>
+
+<input
+  type="date"
+  id="couponStartDate"
+>
+
+
+<select id="couponNeverExpires">
+  <option value="No">Expiration: Uses Date</option>
+  <option value="Yes">Expiration: Never Expires</option>
+</select>
+
+<label class="image-upload-label">
+  Coupon Expiration Date
+</label>
+
+<input
+  type="date"
+  id="couponExpiration"
+  readonly
+>
+<input
+  type="text"
+  id="couponWebsite"
+  placeholder="Deal Website or Facebook Link"
+>
+          
+<select id="couponStatus">
+  <option value="Active">Status: Active</option>
+  <option value="Never Expires">Status: Never Expires</option>
+  <option value="Pending">Status: Pending</option>
+  <option value="Expired">Status: Expired</option>
+  <option value="Free Extension">Status: Free Extension</option>
+  <option value="Hidden">Status: Hidden</option>
+</select>
+
+<textarea
+            id="couponDetails"
+            placeholder="Coupon Details"
+            maxlength="90"
+          ></textarea>
+
+          <button
+            type="button"
+            onclick="addCouponPreview()"
+          >
+            Add Coupon
+          </button>
+
+        </article>
+
+        <article class="admin-card">
+
+          <h2>Add Event</h2>
+
+          <input type="text" id="eventTitle" placeholder="Event Title">
+          <input type="text" id="eventLocation" placeholder="Event Location">
+
+          <select id="eventCategory">
+            <option value="">Select Category</option>
+<option>Arts & Crafts</option>
+<option>Car Shows</option>
+<option>Church Events</option>
+<option>Community Events</option>
+<option>Family & Kids</option>
+<option>Festivals & Fairs</option>
+<option>Food & Dining Events</option>
+<option>Fundraisers</option>
+<option>Holiday Events</option>
+<option>Live Music</option>
+<option>Markets & Vendors</option>
+<option>Outdoor Recreation</option>
+<option>School Events</option>
+<option>Sports & Fitness</option>
+<option>Workshops & Classes</option>
+<option>Other</option>
+          </select>
+
+          <input type="date" id="eventDate">
+          <input type="time" id="eventTime">
+
+          <label class="image-upload-label">Event Image</label>
+
+          <input
+            type="file"
+            id="eventImageUpload"
+            accept="image/*"
+            onchange="handleImageUpload(event, 'eventImage', 'eventImagePreview', 'images/events/', 'event')"
+          >
+
+          <input
+            type="text"
+            id="eventImage"
+            placeholder="Type image path, example: images/events/example.jpg"
+          >
+
+          <img
+            id="eventImagePreview"
+            class="business-image-preview"
+            style="display: none;"
+          >
+
+          
+<select id="eventStatus">
+  <option value="Active">Status: Active</option>
+  <option value="Never Expires">Status: Never Expires</option>
+  <option value="Pending">Status: Pending</option>
+  <option value="Expired">Status: Expired</option>
+  <option value="Free Extension">Status: Free Extension</option>
+  <option value="Hidden">Status: Hidden</option>
+</select>
+
+<textarea
+            id="eventDescription"
+            placeholder="Event Description"
+            maxlength="150"
+          ></textarea>
+
+          <button
+            type="button"
+            onclick="addEventPreview()"
+          >
+            Add Event
+          </button>
+
+        </article>
+
+        <article class="admin-card">
+
+          <h2>Add Hiring Post</h2>
+
+          <input
+            type="text"
+            id="hiringBusiness"
+            placeholder="Business Name"
+          >
+
+          <input
+            type="text"
+            id="hiringTitle"
+            placeholder="Job Title"
+          >
+
+          <select id="hiringType">
+            <option value="">Select Job Type</option>
+            <option value="Full Time">Full Time</option>
+            <option value="Part Time">Part Time</option>
+            <option value="Temporary">Temporary</option>
+            <option value="Contract">Contract</option>
+          </select>
+
+          <input
+            type="text"
+            id="hiringPay"
+            placeholder="Pay / Salary"
+          >
+
+          <input
+            type="text"
+            id="hiringPhone"
+            placeholder="Contact Phone"
+          >
+
+          <input
+            type="text"
+            id="hiringWebsite"
+            placeholder="Apply Link or Website"
+          >
+
+          <label class="image-upload-label">
+            Hiring Image
+          </label>
+
+          <input
+            type="file"
+            id="hiringImageUpload"
+            accept="image/*"
+            onchange="handleImageUpload(event, 'hiringImage', 'hiringImagePreview', 'images/hiring/', 'hiring')"
+          >
+
+          <input
+            type="text"
+            id="hiringImage"
+            placeholder="Type image path, example: images/hiring/example.jpg"
+          >
+
+          <img
+            id="hiringImagePreview"
+            class="business-image-preview"
+            style="display: none;"
+          >
+
+          <label class="image-upload-label">
+  Hiring Duration
+</label>
+
+<select id="hiringDuration">
+  <option value="">Select Duration</option>
+  <option value="30">Monthly</option>
+</select>
+
+<label class="image-upload-label">
+  Hiring Start Date
+</label>
+
+<input
+  type="date"
+  id="hiringStartDate"
+>
+
+
+<select id="hiringNeverExpires">
+  <option value="No">Expiration: Uses Date</option>
+  <option value="Yes">Expiration: Never Expires</option>
+</select>
+
+<label class="image-upload-label">
+  Hiring Expiration Date
+</label>
+
+<input
+  type="date"
+  id="hiringExpiration"
+  readonly
+>
+
+          
+<select id="hiringStatus">
+  <option value="Active">Status: Active</option>
+  <option value="Never Expires">Status: Never Expires</option>
+  <option value="Pending">Status: Pending</option>
+  <option value="Expired">Status: Expired</option>
+  <option value="Free Extension">Status: Free Extension</option>
+  <option value="Hidden">Status: Hidden</option>
+</select>
+
+<textarea
+            id="hiringDescription"
+            placeholder="Job Description"
+            maxlength="170"
+          ></textarea>
+
+          <button
+            type="button"
+            onclick="addHiringPreview()"
+          >
+            Add Hiring Post
+          </button>
+
+        </article>
+
+        <article class="admin-card">
+
+          <h2>Add Advertisement</h2>
+
+          <input type="text" id="adTitle" placeholder="Ad Title">
+
+          <select id="adLocation">
+            <option value="">Select Ad Location</option>
+            <option value="all">All Pages</option>
+            <option value="homepage">Homepage</option>
+            <option value="businesses">Businesses Page</option>
+            <option value="deals">Deals Page</option>
+            <option value="events">Events Page</option>
+            <option value="hiring">Hiring Page</option>
+          </select>
+
+          <select id="adShape">
+            <option value="">Select Ad Shape</option>
+            <option value="square">Square</option>
+            <option value="banner">Banner</option>
+            <option value="tall">Tall</option>
+          </select>
+
+          <label class="image-upload-label">Advertisement Image</label>
+
+          <input
+            type="file"
+            id="adImageUpload"
+            accept="image/*"
+            onchange="handleImageUpload(event, 'adImage', 'adImagePreview', 'images/ads/', 'ad')"
+          >
+
+          <input
+            type="text"
+            id="adImage"
+            placeholder="Type image path, example: images/ads/example.jpg"
+          >
+
+          <img
+            id="adImagePreview"
+            class="business-image-preview"
+            style="display: none;"
+          >
+
+          <input type="text" id="adLink" placeholder="Ad URL">
+
+          <select id="adActive">
+            <option value="Yes">Active: Yes</option>
+            <option value="No">Active: No</option>
+          </select>
+
+
+<select id="adNeverExpires">
+  <option value="No">Expiration: Uses Date</option>
+  <option value="Yes">Expiration: Never Expires</option>
+</select>
+
+          <label class="image-upload-label">
+            Advertisement Expiration Date
+          </label>
+
+          <input
+            type="date"
+            id="adExpiration"
+          >
+
+          <button
+            type="button"
+            onclick="addAdPreview()"
+          >
+            Add Advertisement
+          </button>
+
+        </article>
+
+      </section>
+
+      <section class="admin-preview-section">
+
+        <h2>Business Preview</h2>
+
+        <input
+          type="text"
+          id="adminBusinessSearch"
+          placeholder="Search businesses..."
+          onkeyup="filterBusinesses()"
+        >
+
+        <div id="businessPreviewArea" class="business-grid"></div>
+
+      </section>
+
+      <section class="admin-preview-section">
+
+        <h2>Coupon Preview</h2>
+
+        <div id="couponPreviewArea" class="coupon-grid"></div>
+
+      </section>
+
+      <section class="admin-preview-section">
+
+        <h2>Event Preview</h2>
+
+        <div id="eventPreviewArea" class="business-grid"></div>
+
+      </section>
+
+      <section class="admin-preview-section">
+
+        <h2>Hiring Preview</h2>
+
+        <div
+          id="hiringPreviewArea"
+          class="business-grid"
+        >
+        </div>
+
+      </section>
+
+      <section class="admin-preview-section">
+
+        <h2>Advertisement Preview</h2>
+
+        <div id="adPreviewArea" class="ad-preview-grid"></div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script>
+
+    function checkAdminPassword() {
+      const passwordInput =
+        document.getElementById("adminPasswordInput").value;
+
+      const correctPassword =
+        "9300";
+
+      if (passwordInput === correctPassword) {
+        document.getElementById("adminLogin").style.display = "none";
+        document.getElementById("adminContent").style.display = "block";
+
+        sessionStorage.setItem(
+          "countyCompassAdminUnlocked",
+          "yes"
+        );
+      } else {
+        alert("Incorrect password.");
+      }
+    }
+
+    if (
+      sessionStorage.getItem("countyCompassAdminUnlocked") === "yes"
+    ) {
+      document.getElementById("adminLogin").style.display = "none";
+      document.getElementById("adminContent").style.display = "block";
+    }
+
+    function makeSafeFileName(fileName, imageType) {
+      const extension =
+        fileName
+          .split(".")
+          .pop()
+          .toLowerCase();
+
+      const baseName =
+        fileName
+          .replace(/\.[^/.]+$/, "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+
+      return imageType + "-" + baseName + "." + extension;
+    }
+
+    function handleImageUpload(event, pathInputId, previewId, folderPath, imageType) {
+      const file =
+        event.target.files[0];
+
+      if (!file) {
+        return;
+      }
+
+      const correctedFileName =
+        makeSafeFileName(file.name, imageType);
+
+      const savedPath =
+        folderPath + correctedFileName;
+
+      const reader =
+        new FileReader();
+
+      reader.onload = function(loadEvent) {
+        const pathInput =
+          document.getElementById(pathInputId);
+
+        if (pathInput) {
+          pathInput.value = savedPath;
+        }
+
+        const preview =
+          document.getElementById(previewId);
+
+        if (preview) {
+          preview.src = loadEvent.target.result;
+          preview.style.display = "block";
+        }
+
+        const downloadLink =
+          document.createElement("a");
+
+        downloadLink.href = loadEvent.target.result;
+        downloadLink.download = correctedFileName;
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+
+        alert(
+          "Image downloaded. Save it in: " +
+          folderPath +
+          "\n\nThe image path has been filled in automatically."
+        );
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    function exportCountyCompassBackup() {
+      const backupData = {
+        countyCompassBusinesses:
+          JSON.parse(localStorage.getItem("countyCompassBusinesses")) || [],
+
+        countyCompassCoupons:
+          JSON.parse(localStorage.getItem("countyCompassCoupons")) || [],
+
+        countyCompassEvents:
+          JSON.parse(localStorage.getItem("countyCompassEvents")) || [],
+
+        countyCompassHiring:
+          JSON.parse(localStorage.getItem("countyCompassHiring")) || [],
+
+        countyCompassAds:
+          JSON.parse(localStorage.getItem("countyCompassAds")) || []
+      };
+
+      const backupBlob =
+        new Blob(
+          [JSON.stringify(backupData, null, 2)],
+          { type: "application/json" }
+        );
+
+      const backupUrl =
+        URL.createObjectURL(backupBlob);
+
+      const downloadLink =
+        document.createElement("a");
+
+      downloadLink.href = backupUrl;
+      const now = new Date();
+
+const timestamp =
+  now.getFullYear() + "-" +
+  String(now.getMonth() + 1).padStart(2, "0") + "-" +
+  String(now.getDate()).padStart(2, "0") + "_" +
+  String(now.getHours()).padStart(2, "0") + "-" +
+  String(now.getMinutes()).padStart(2, "0") + "-" +
+  String(now.getSeconds()).padStart(2, "0");
+
+downloadLink.download = "county-compass-backup_" + timestamp + ".json";
+      downloadLink.click();
+
+      URL.revokeObjectURL(backupUrl);
+    }
+
+    function importCountyCompassBackup(event) {
+      const confirmImport =
+        confirm(
+          "Importing a backup will REPLACE all current businesses, deals, events, hiring posts, and ads.\n\nContinue?"
+        );
+
+      if (!confirmImport) {
+        event.target.value = "";
+        return;
+      }
+
+      const file =
+        event.target.files[0];
+
+      if (!file) {
+        return;
+      }
+
+      const reader =
+        new FileReader();
+
+      reader.onload = function(e) {
+        const backupData =
+          JSON.parse(e.target.result);
+
+        localStorage.setItem(
+          "countyCompassBusinesses",
+          JSON.stringify(
+            backupData.countyCompassBusinesses || []
+          )
+        );
+
+        localStorage.setItem(
+          "countyCompassCoupons",
+          JSON.stringify(
+            backupData.countyCompassCoupons || []
+          )
+        );
+
+        localStorage.setItem(
+          "countyCompassEvents",
+          JSON.stringify(
+            backupData.countyCompassEvents || []
+          )
+        );
+
+        localStorage.setItem(
+          "countyCompassHiring",
+          JSON.stringify(
+            backupData.countyCompassHiring || []
+          )
+        );
+
+        localStorage.setItem(
+          "countyCompassAds",
+          JSON.stringify(
+            backupData.countyCompassAds || []
+          )
+        );
+
+        alert(
+          "Backup imported successfully.\n\nRefreshing admin page now."
+        );
+
+        window.location.reload();
+      };
+
+      reader.readAsText(file);
+    }
+
+  </script>
+
+  <script>
+    function updateManualImagePreview(pathInputId, previewId) {
+      const pathInput =
+        document.getElementById(pathInputId);
+
+      const preview =
+        document.getElementById(previewId);
+
+      if (!pathInput || !preview) {
+        return;
+      }
+
+      const imagePath =
+        pathInput.value.trim();
+
+      if (!imagePath) {
+        preview.src = "";
+        preview.style.display = "none";
+        return;
+      }
+
+      preview.src = imagePath;
+      preview.style.display = "block";
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const manualImageFields = [
+        ["businessImage", "businessImagePreview"],
+        ["couponImage", "couponImagePreview"],
+        ["eventImage", "eventImagePreview"],
+        ["hiringImage", "hiringImagePreview"],
+        ["adImage", "adImagePreview"]
+      ];
+
+      manualImageFields.forEach(function(fieldSet) {
+        const input =
+          document.getElementById(fieldSet[0]);
+
+        if (!input) {
+          return;
+        }
+
+        input.addEventListener("input", function() {
+          updateManualImagePreview(fieldSet[0], fieldSet[1]);
+        });
+      });
+    });
+  </script>
+
+  <script src="js/admin.js"></script>
+
+</body>
+
+</html>

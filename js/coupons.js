@@ -25,7 +25,17 @@ function getActiveCoupons() {
   today.setHours(0, 0, 0, 0);
 
   return savedCoupons.filter(function(coupon) {
-    if ((coupon.status || "Active") === "Hidden") return false;
+    if ((coupon.status || "Active") === "Hidden") {
+      return false;
+    }
+
+    if (
+      coupon.neverExpires === "Yes" ||
+      coupon.status === "Never Expires"
+    ) {
+      return true;
+    }
+
     if (!coupon.expiration) {
       return true;
     }
