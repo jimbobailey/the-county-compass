@@ -327,46 +327,14 @@ else {
 
         endDate.value = `${yyyy}-${mm}-${dd}`;
     }
-     function toggleAddressFields() {
-
-    const type = submissionType.value;
-
-    const businessLabel = document.getElementById("businessAddressLabel");
-    const businessField = document.getElementById("businessAddressField");
-
-    const eventLabel = document.getElementById("eventAddressLabel");
-    const eventField = document.getElementById("eventAddressField");
-
-    if (
-        type === "event" ||
-        type === "community-event" ||
-        type === "communityEvent"
-    ) {
-
-        businessLabel.style.display = "none";
-        businessField.style.display = "none";
-
-        eventLabel.style.display = "block";
-        eventField.style.display = "block";
-
-    } else {
-
-        businessLabel.style.display = "block";
-        businessField.style.display = "block";
-
-        eventLabel.style.display = "none";
-        eventField.style.display = "none";
-    }
-}
+     
   if (submissionType) {
 
     submissionType.addEventListener("change", function () {
         updateCategoryOptions();
         toggleDealFields();
         updatePackageOptions();
-        });
-
-    toggleAddressFields();
+    });
 }
 
     if (packageLength) {
@@ -425,7 +393,7 @@ else {
         });
     }
     updateCategoryOptions();
-toggleDealFields();
-updatePackageOptions();
-updatePricingSummary();
+    toggleDealFields();
+    updatePackageOptions();
+    updatePricingSummary();
 });

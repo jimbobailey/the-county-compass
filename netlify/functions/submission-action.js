@@ -142,9 +142,7 @@ exports.default = async function handler(request) {
           submissionData.category || "",
 
         address:
-    submissionData.eventAddress ||
-    submissionData.address ||
-    "",
+          submissionData.address || "",
 
         phone:
           submissionData.phone || "",
@@ -235,7 +233,9 @@ details:
           submissionData.title || "",
 
         location:
-          submissionData.address || "",
+          submissionData.eventAddress ||
+          submissionData.address ||
+          "",
 
         category:
           submissionData.category || "",
