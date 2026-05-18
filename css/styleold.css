@@ -210,34 +210,6 @@ body {
   border-radius: 14px;
 }
 
-
-.site-ad-link {
-  position: relative;
-  display: block;
-  cursor: pointer;
-}
-
-.site-ad-link:hover .site-ad-image {
-  transform: translateY(-2px);
-  border-color: #ff8c00;
-  box-shadow:
-    0 0 12px rgba(255,140,0,0.55),
-    0 8px 18px rgba(0,0,0,0.45);
-}
-
-.site-ad-image {
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease,
-    border-color 0.18s ease;
-}
-
-.site-ad-link:hover .card-link-badge {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-
 /* FEATURED BUSINESS IMAGE-ONLY ROW */
 .featured-heading-wrap {
   width: 100%;

@@ -94,8 +94,7 @@ function renderAds(locationName, containerId) {
 
     if (adUrl) {
       container.innerHTML += `
-        <a href="${adUrl}" target="_blank" class="site-ad site-ad-link site-ad-${shapeClass}">
-          <span class="card-link-badge">Take Me There ↗</span>
+        <a href="${adUrl}" target="_blank" class="site-ad site-ad-${shapeClass}">
           ${adImage}
         </a>
       `;
