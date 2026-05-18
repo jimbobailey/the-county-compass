@@ -279,6 +279,29 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+
+    function toggleEventAddressField() {
+
+        const eventAddressLabel = document.getElementById("eventAddressLabel");
+        const eventAddressField = document.getElementById("eventAddressField");
+
+        if (!submissionType || !eventAddressLabel || !eventAddressField) {
+            return;
+        }
+
+        const showEventAddress =
+            submissionType.value === "event" ||
+            submissionType.value === "community-event" ||
+            submissionType.value === "communityEvent";
+
+        eventAddressLabel.style.display = showEventAddress ? "block" : "none";
+        eventAddressField.style.display = showEventAddress ? "block" : "none";
+
+        if (!showEventAddress) {
+            eventAddressField.value = "";
+        }
+    }
+
     function updateEndDate() {
 
         if (!packageLength || !startDate || !endDate) {
@@ -294,29 +317,29 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const type = submissionType ? submissionType.value : "";
-       let days;
+        let days;
 
-if (
-    type === "coupon" ||
-    type === "coupons" ||
-    type === "deal" ||
-    type === "deals"
-) {
-    days = amount * 7;
-}
+        if (
+            type === "coupon" ||
+            type === "coupons" ||
+            type === "deal" ||
+            type === "deals"
+        ) {
+            days = amount * 7;
+        }
 
-else if (
-    type === "event" ||
-    type === "community-event" ||
-    type === "communityEvent"
-) {
-    endDate.value = start;
-    return;
-}
+        else if (
+            type === "event" ||
+            type === "community-event" ||
+            type === "communityEvent"
+        ) {
+            endDate.value = start;
+            return;
+        }
 
-else {
-    days = amount;
-}
+        else {
+            days = amount;
+        }
 
         const date = new Date(start + "T00:00:00");
         date.setDate(date.getDate() + days);
@@ -334,6 +357,7 @@ else {
         updateCategoryOptions();
         toggleDealFields();
         updatePackageOptions();
+        toggleEventAddressField();
     });
 }
 
@@ -381,6 +405,7 @@ else {
                     updateCategoryOptions();
                     toggleDealFields();
                     updatePackageOptions();
+                    toggleEventAddressField();
                 } else {
                     alert("Submission failed.");
                 }
@@ -395,5 +420,6 @@ else {
     updateCategoryOptions();
     toggleDealFields();
     updatePackageOptions();
+    toggleEventAddressField();
     updatePricingSummary();
 });
