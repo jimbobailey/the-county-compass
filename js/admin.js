@@ -27,6 +27,7 @@ async function loadAdminData() {
   renderEventPreviews();
   renderHiringPreviews();
   renderAdPreviews();
+  renderNeedsAttentionDashboard();
 }
 
 async function loadBusinessesFromServer() {
@@ -314,6 +315,7 @@ async function addBusinessPreview() {
 
   await saveBusinesses();
   renderBusinessPreviews();
+  renderNeedsAttentionDashboard();
   clearBusinessForm();
 }
 
@@ -484,6 +486,7 @@ async function addCouponPreview() {
 
   await saveCoupons();
   renderCouponPreviews();
+  renderNeedsAttentionDashboard();
   clearCouponForm();
 }
 
@@ -780,6 +783,7 @@ async function addAdPreview() {
 
   await saveAds();
   renderAdPreviews();
+  renderNeedsAttentionDashboard();
   clearAdForm();
 }
 
@@ -991,6 +995,7 @@ async function addHiringPreview() {
 
   await saveHiringPosts();
   renderHiringPreviews();
+  renderNeedsAttentionDashboard();
   clearHiringForm();
 }
 
@@ -1081,6 +1086,144 @@ function clearHiringForm() {
   setValue("hiringDescription", "");
   resetPreviewImage("hiringImagePreview");
 }
+
+
+/* NEEDS ATTENTION DASHBOARD */
+
+function getDaysUntilExpiration(dateValue) {
+  if (!dateValue) {
+    return null;
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const expirationDate = new Date(dateValue + "T00:00:00");
+  expirationDate.setHours(0, 0, 0, 0);
+
+  return Math.ceil((expirationDate - today) / 86400000);
+}
+
+function isMarkedNeverExpires(item) {
+  return (
+    item &&
+    (
+      item.neverExpires === "Yes" ||
+      item.status === "Never Expires"
+    )
+  );
+}
+
+function addAttentionItems(sourceArray, typeLabel, nameGetter, attentionItems) {
+  if (!Array.isArray(sourceArray)) {
+    return;
+  }
+
+  sourceArray.forEach(function(item) {
+    if (!item || isMarkedNeverExpires(item)) {
+      return;
+    }
+
+    const expiration = item.expiration;
+
+    if (!expiration) {
+      return;
+    }
+
+    const days = getDaysUntilExpiration(expiration);
+
+    if (days === null || days > 14) {
+      return;
+    }
+
+    attentionItems.push({
+      type: typeLabel,
+      name: nameGetter(item),
+      expiration: expiration,
+      days: days
+    });
+  });
+}
+
+function renderNeedsAttentionDashboard() {
+  const area = document.getElementById("needsAttentionBox");
+
+  if (!area) {
+    return;
+  }
+
+  const attentionItems = [];
+
+  addAttentionItems(
+    businesses,
+    "Business",
+    function(item) {
+      return item.name || "Unnamed business";
+    },
+    attentionItems
+  );
+
+  addAttentionItems(
+    coupons,
+    "Deal",
+    function(item) {
+      return item.title || item.businessName || "Unnamed deal";
+    },
+    attentionItems
+  );
+
+  addAttentionItems(
+    hiringPosts,
+    "Hiring",
+    function(item) {
+      return item.title || item.business || "Unnamed hiring post";
+    },
+    attentionItems
+  );
+
+  addAttentionItems(
+    ads,
+    "Ad",
+    function(item) {
+      return item.title || "Unnamed ad";
+    },
+    attentionItems
+  );
+
+  attentionItems.sort(function(a, b) {
+    return a.days - b.days;
+  });
+
+  if (attentionItems.length === 0) {
+    area.innerHTML = `
+      <p class="needs-attention-good">
+        Nothing expires within the next 14 days.
+      </p>
+    `;
+    return;
+  }
+
+  area.innerHTML = attentionItems.map(function(item) {
+    let message = "";
+
+    if (item.days < 0) {
+      message = "Expired " + Math.abs(item.days) + " day(s) ago";
+    } else if (item.days === 0) {
+      message = "Expires today";
+    } else {
+      message = "Expires in " + item.days + " day(s)";
+    }
+
+    return `
+      <div class="needs-attention-item">
+        <strong>${item.type}: ${item.name}</strong>
+        <span>${message}</span>
+        <small>${item.expiration}</small>
+      </div>
+    `;
+  }).join("");
+}
+
 
 /* PAGE SETUP */
 

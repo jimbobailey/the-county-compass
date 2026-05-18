@@ -1012,3 +1012,45 @@ body {
   object-fit: contain;
   filter: drop-shadow(0 0 5px rgba(255, 140, 0, 0.35));
 }
+
+/* NEEDS ATTENTION DASHBOARD */
+.needs-attention-card {
+  margin-bottom: 24px;
+  border-color: rgba(255, 140, 0, 0.55);
+}
+
+.needs-attention-note {
+  color: #ccc;
+  margin-top: -6px;
+}
+
+.needs-attention-good {
+  color: #8cff8c;
+  font-weight: bold;
+}
+
+.needs-attention-item {
+  background: #181818;
+  border: 1px solid #444;
+  border-left: 6px solid #ff8c00;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.needs-attention-item strong,
+.needs-attention-item span,
+.needs-attention-item small {
+  display: block;
+}
+
+.needs-attention-item span {
+  color: #f5f5f5;
+  margin-top: 5px;
+}
+
+.needs-attention-item small {
+  color: #aaa;
+  margin-top: 3px;
+}
+
