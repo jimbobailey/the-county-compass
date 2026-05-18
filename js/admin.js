@@ -229,7 +229,7 @@ function getCategoryImage(category) {
 
 
 function isNeverExpires(item) {
-  return item && (
+  return (
     item.neverExpires === "Yes" ||
     item.status === "Never Expires"
   );
@@ -239,73 +239,134 @@ function getDaysUntil(dateValue) {
   if (!dateValue) return null;
 
   const today = new Date();
-  today.setHours(0,0,0,0);
+  today.setHours(0, 0, 0, 0);
 
-  const target = new Date(dateValue + "T00:00:00");
-  target.setHours(0,0,0,0);
+  const targetDate = new Date(dateValue + "T00:00:00");
+  targetDate.setHours(0, 0, 0, 0);
 
-  return Math.ceil((target - today) / 86400000);
+  return Math.ceil((targetDate - today) / 86400000);
+}
+
+function getExpirationStatusText(item, expirationField) {
+  if (isNeverExpires(item)) {
+    return "Never Expires";
+  }
+
+  const expiration = item[expirationField];
+
+  if (!expiration) {
+    return "No expiration date";
+  }
+
+  const days = getDaysUntil(expiration);
+
+  if (days === null) {
+    return "No expiration date";
+  }
+
+  if (days < 0) {
+    return "Expired " + Math.abs(days) + " day(s) ago";
+  }
+
+  if (days === 0) {
+    return "Expires today";
+  }
+
+  return "Expires in " + days + " day(s)";
+}
+
+function buildAlertItems(items, typeLabel, expirationField, nameGetter) {
+  return items
+    .filter(function(item) {
+      if ((item.status || "Active") === "Hidden") {
+        return false;
+      }
+
+      if (isNeverExpires(item)) {
+        return false;
+      }
+
+      const days = getDaysUntil(item[expirationField]);
+
+      return days !== null && days <= 14;
+    })
+    .map(function(item) {
+      const days = getDaysUntil(item[expirationField]);
+      let urgency = "soon";
+
+      if (days < 0) {
+        urgency = "expired";
+      } else if (days <= 7) {
+        urgency = "warning";
+      }
+
+      return {
+        type: typeLabel,
+        name: nameGetter(item),
+        expiration: item[expirationField],
+        days,
+        urgency
+      };
+    });
 }
 
 function renderExpirationAlerts() {
   const area = document.getElementById("expirationAlertArea");
 
-  if (!area) return;
-
-  const allItems = [];
-
-  function addItems(items, type, nameField) {
-    items.forEach(function(item) {
-      if (!item || isNeverExpires(item)) return;
-
-      const expiration = item.expiration;
-      if (!expiration) return;
-
-      const days = getDaysUntil(expiration);
-
-      if (days === null || days > 14) return;
-
-      allItems.push({
-        type,
-        name: item[nameField] || "Unnamed",
-        expiration,
-        days
-      });
-    });
-  }
-
-  addItems(businesses, "Business", "name");
-  addItems(coupons, "Deal", "title");
-  addItems(hiringPosts, "Hiring", "title");
-  addItems(ads, "Ad", "title");
-
-  if (allItems.length === 0) {
-    area.innerHTML = '<p class="expiration-good">Nothing expires within 14 days.</p>';
+  if (!area) {
     return;
   }
 
-  allItems.sort(function(a,b) {
+  const alerts = []
+    .concat(buildAlertItems(businesses, "Business", "expiration", function(item) {
+      return item.name || "Unnamed business";
+    }))
+    .concat(buildAlertItems(coupons, "Deal", "expiration", function(item) {
+      return item.title || item.businessName || "Unnamed deal";
+    }))
+    .concat(buildAlertItems(hiringPosts, "Hiring", "expiration", function(item) {
+      return item.title || item.business || "Unnamed hiring post";
+    }))
+    .concat(buildAlertItems(ads, "Ad", "expiration", function(item) {
+      return item.title || "Unnamed ad";
+    }));
+
+  alerts.sort(function(a, b) {
     return a.days - b.days;
   });
 
-  area.innerHTML = allItems.map(function(item) {
-    let message = "";
-
-    if (item.days < 0) {
-      message = "Expired " + Math.abs(item.days) + " day(s) ago";
-    } else if (item.days === 0) {
-      message = "Expires today";
-    } else {
-      message = "Expires in " + item.days + " day(s)";
-    }
-
-    return `
-      <div class="expiration-alert-card">
-        <strong>${item.type}: ${item.name}</strong>
-        <span>${message}</span>
-      </div>
+  if (alerts.length === 0) {
+    area.innerHTML = `
+      <p class="expiration-good">
+        Nothing is expiring in the next 14 days.
+      </p>
     `;
-  }).join("");
+    return;
+  }
+
+  area.innerHTML = `
+    <div class="expiration-alert-list">
+      ${alerts.map(function(alert) {
+        let message = "";
+
+        if (alert.days < 0) {
+          message = "Expired " + Math.abs(alert.days) + " day(s) ago";
+        } else if (alert.days === 0) {
+          message = "Expires today";
+        } else {
+          message = "Expires in " + alert.days + " day(s)";
+        }
+
+        return `
+          <div class="expiration-alert-card ${alert.urgency}">
+            <strong>${alert.type}: ${alert.name}</strong>
+            <span>${message}</span>
+            <small>${alert.expiration || ""}</small>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
 }
 
 
@@ -441,10 +502,12 @@ function renderBusinessPreviews() {
         <p><strong>Phone:</strong> ${formatPhoneNumber(business.phone)}</p>
         <p><strong>Paid:</strong> ${business.paid || "No"}</p>
         <p><strong>Status:</strong> ${business.status || "Active"}</p>
+        <p><strong>Expiration:</strong> ${getExpirationStatusText(business, "expiration")}</p>
         <p><strong>Featured:</strong> ${business.featured || "No"}</p>
         <p><strong>Featured Location:</strong> ${business.featuredLocation || "homepage"}</p>
 
         ${expirationText ? `<p><strong>${expirationText}</strong></p>` : ""}
+        <p><strong>Expiration:</strong> ${getExpirationStatusText(ad, "expiration")}</p>
 
         <p class="business-description">${business.description || ""}</p>
 
@@ -473,7 +536,7 @@ function editBusiness(id) {
   setValue("businessImage", business.image);
   setValue("businessPaid", business.paid);
   setValue("businessExpiration", business.expiration || "");
-  setValue("businessNeverExpires", business.neverExpires || "No");
+  setValue("businessNeverExpires", business.neverExpires || (business.status === "Never Expires" ? "Yes" : "No"));
   setValue("businessFeatured", business.featured);
   setValue("businessFeaturedLocation", business.featuredLocation || "homepage");
   setValue("businessStatus", business.status || "Active");
@@ -613,6 +676,7 @@ function renderCouponPreviews() {
         <p><strong>${coupon.businessName || ""}</strong></p>
         <p><strong>Category:</strong> ${coupon.category || ""}</p>
         <p><strong>Status:</strong> ${coupon.status || "Active"}</p>
+        <p><strong>Expiration:</strong> ${getExpirationStatusText(coupon, "expiration")}</p>
 
         ${expirationText ? `<p><strong>${expirationText}</strong></p>` : ""}
 
@@ -639,7 +703,7 @@ function editCoupon(id) {
   setValue("couponTitle", coupon.title);
   setValue("couponImage", coupon.image);
   setValue("couponExpiration", coupon.expiration || "");
-  setValue("couponNeverExpires", coupon.neverExpires || "No");
+  setValue("couponNeverExpires", coupon.neverExpires || (coupon.status === "Never Expires" ? "Yes" : "No"));
   setValue("couponWebsite", coupon.website || "");
   setValue("couponStatus", coupon.status || "Active");
   setValue("couponDetails", coupon.details);
@@ -1016,6 +1080,7 @@ function filterBusinesses() {
         <p><strong>Phone:</strong> ${formatPhoneNumber(business.phone)}</p>
         <p><strong>Paid:</strong> ${business.paid || "No"}</p>
         <p><strong>Status:</strong> ${business.status || "Active"}</p>
+        <p><strong>Expiration:</strong> ${getExpirationStatusText(business, "expiration")}</p>
         <p><strong>Featured:</strong> ${business.featured || "No"}</p>
         <p><strong>Featured Location:</strong> ${business.featuredLocation || "homepage"}</p>
 
@@ -1124,6 +1189,7 @@ function renderHiringPreviews() {
         <p><strong>Pay:</strong> ${post.pay || ""}</p>
         <p><strong>Phone:</strong> ${formatPhoneNumber(post.phone)}</p>
         <p><strong>Status:</strong> ${post.status || "Active"}</p>
+        <p><strong>Expiration:</strong> ${getExpirationStatusText(post, "expiration")}</p>
 
         ${expirationText ? `<p><strong>${expirationText}</strong></p>` : ""}
 
@@ -1153,7 +1219,7 @@ function editHiringPost(id) {
   setValue("hiringWebsite", post.website);
   setValue("hiringImage", post.image);
   setValue("hiringExpiration", post.expiration || "");
-  setValue("hiringNeverExpires", post.neverExpires || "No");
+  setValue("hiringNeverExpires", post.neverExpires || (post.status === "Never Expires" ? "Yes" : "No"));
   setValue("hiringStatus", post.status || "Active");
   setValue("hiringDescription", post.description);
 
