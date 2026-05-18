@@ -363,8 +363,7 @@ else {
         updateCategoryOptions();
         toggleDealFields();
         updatePackageOptions();
-        toggleAddressFields();
-    });
+        });
 
     toggleAddressFields();
 }
