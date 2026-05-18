@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <option>Locksmithing</option>
         <option>Lodging & Travel</option>
         <option>Medical & Dental</option>
+        <option>Mobile Home Sales & Services</option>
         <option>Moving & Hauling</option>
         <option>Photography & Media</option>
         <option>Pools & Outdoor Living</option>
