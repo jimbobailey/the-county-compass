@@ -106,7 +106,13 @@
         Manage businesses, deals, events, hiring posts, advertisements, and featured listings.
       </p>
 
-      <section class="admin-grid">
+      
+<section class="admin-card expiration-dashboard">
+  <h2>Needs Attention</h2>
+  <div id="expirationAlertArea"></div>
+</section>
+
+<section class="admin-grid">
 
         <article class="admin-card">
 
@@ -213,6 +219,11 @@
   type="date"
   id="businessStartDate"
 >
+
+<select id="businessNeverExpires">
+  <option value="No">Expiration: Uses Date</option>
+  <option value="Yes">Expiration: Never Expires</option>
+</select>
 
 <label class="image-upload-label">
   Business Paid-Through Date
@@ -354,6 +365,11 @@
   type="date"
   id="couponStartDate"
 >
+
+<select id="couponNeverExpires">
+  <option value="No">Expiration: Uses Date</option>
+  <option value="Yes">Expiration: Never Expires</option>
+</select>
 
 <label class="image-upload-label">
   Coupon Expiration Date
@@ -551,6 +567,11 @@
   id="hiringStartDate"
 >
 
+<select id="hiringNeverExpires">
+  <option value="No">Expiration: Uses Date</option>
+  <option value="Yes">Expiration: Never Expires</option>
+</select>
+
 <label class="image-upload-label">
   Hiring Expiration Date
 </label>
@@ -636,7 +657,12 @@
             <option value="No">Active: No</option>
           </select>
 
-          <label class="image-upload-label">
+          <select id="adNeverExpires">
+  <option value="No">Expiration: Uses Date</option>
+  <option value="Yes">Expiration: Never Expires</option>
+</select>
+
+<label class="image-upload-label">
             Advertisement Expiration Date
           </label>
 
