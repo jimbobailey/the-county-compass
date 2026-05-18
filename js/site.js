@@ -151,8 +151,10 @@ function renderFeaturedBusinesses() {
         <a
           href="${businessLink}"
           target="_blank"
-          class="site-ad ad-square"
+          class="site-ad site-ad-link ad-square"
         >
+          <span class="card-link-badge">Take Me There ↗</span>
+
           <img
             src="${getBusinessImage(business)}"
             alt="${business.name}"
