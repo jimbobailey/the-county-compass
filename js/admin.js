@@ -448,6 +448,7 @@ async function addCouponPreview() {
           title,
           image,
           expiration,
+          website,
           details
         };
       }
@@ -534,6 +535,7 @@ function editCoupon(id) {
   setValue("couponTitle", coupon.title);
   setValue("couponImage", coupon.image);
   setValue("couponExpiration", coupon.expiration || "");
+  setValue("couponWebsite", coupon.website || "");
   setValue("couponDetails", coupon.details);
 
   setPreviewImage("couponImagePreview", coupon.image);
@@ -561,6 +563,7 @@ function clearCouponForm() {
   setValue("couponDuration", "");
   setValue("couponStartDate", "");
   setValue("couponExpiration", "");
+  setValue("couponWebsite", "");
   setValue("couponDetails", "");
   resetPreviewImage("couponImagePreview");
 }
