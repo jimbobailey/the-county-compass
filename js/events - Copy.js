@@ -57,7 +57,6 @@ function getActiveEvents() {
   today.setHours(0,0,0,0);
 
   return savedEvents.filter(function(event) {
-    if ((event.status || "Active") === "Hidden") return false;
 
     if (!event.date) {
       return true;

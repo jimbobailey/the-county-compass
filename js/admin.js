@@ -241,6 +241,7 @@ async function addBusinessPreview() {
   const featured = getValue("businessFeatured");
   const featuredLocation = getValue("businessFeaturedLocation");
   const description = getValue("businessDescription");
+  const status = getValue("businessStatus") || "Active";
 
   if (!name || !category || !address || !phone || !description) {
     alert("Please complete all required business fields.");
@@ -276,6 +277,7 @@ async function addBusinessPreview() {
           expiration,
           featured,
           featuredLocation,
+          status,
           description
         };
       }
@@ -303,6 +305,7 @@ async function addBusinessPreview() {
       expiration,
       featured,
       featuredLocation,
+      status,
       description
     });
 
@@ -350,6 +353,7 @@ function renderBusinessPreviews() {
         ${emailLine}
         <p><strong>Phone:</strong> ${formatPhoneNumber(business.phone)}</p>
         <p><strong>Paid:</strong> ${business.paid || "No"}</p>
+        <p><strong>Status:</strong> ${business.status || "Active"}</p>
         <p><strong>Featured:</strong> ${business.featured || "No"}</p>
         <p><strong>Featured Location:</strong> ${business.featuredLocation || "homepage"}</p>
 
@@ -384,6 +388,7 @@ function editBusiness(id) {
   setValue("businessExpiration", business.expiration || "");
   setValue("businessFeatured", business.featured);
   setValue("businessFeaturedLocation", business.featuredLocation || "homepage");
+  setValue("businessStatus", business.status || "Active");
   setValue("businessDescription", business.description);
 
   setPreviewImage("businessImagePreview", business.image);
@@ -418,6 +423,7 @@ function clearBusinessForm() {
   setValue("businessExpiration", "");
   setValue("businessFeatured", "No");
   setValue("businessFeaturedLocation", "homepage");
+  setValue("businessStatus", "Active");
   setValue("businessDescription", "");
   resetPreviewImage("businessImagePreview");
 }
@@ -432,6 +438,7 @@ async function addCouponPreview() {
   const expiration = getValue("couponExpiration");
   const website = makeGoodUrl(getValue("couponWebsite"));
   const details = getValue("couponDetails");
+  const status = getValue("couponStatus") || "Active";
 
   if (!businessName || !category || !title || !details) {
     alert("Please complete all coupon fields.");
@@ -449,6 +456,7 @@ async function addCouponPreview() {
           image,
           expiration,
           website,
+          status,
           details
         };
       }
@@ -467,6 +475,7 @@ async function addCouponPreview() {
       image,
       expiration,
       website,
+      status,
       details
     });
 
@@ -510,6 +519,7 @@ function renderCouponPreviews() {
 
         <p><strong>${coupon.businessName || ""}</strong></p>
         <p><strong>Category:</strong> ${coupon.category || ""}</p>
+        <p><strong>Status:</strong> ${coupon.status || "Active"}</p>
 
         ${expirationText ? `<p><strong>${expirationText}</strong></p>` : ""}
 
@@ -537,6 +547,7 @@ function editCoupon(id) {
   setValue("couponImage", coupon.image);
   setValue("couponExpiration", coupon.expiration || "");
   setValue("couponWebsite", coupon.website || "");
+  setValue("couponStatus", coupon.status || "Active");
   setValue("couponDetails", coupon.details);
 
   setPreviewImage("couponImagePreview", coupon.image);
@@ -565,6 +576,7 @@ function clearCouponForm() {
   setValue("couponStartDate", "");
   setValue("couponExpiration", "");
   setValue("couponWebsite", "");
+  setValue("couponStatus", "Active");
   setValue("couponDetails", "");
   resetPreviewImage("couponImagePreview");
 }
@@ -579,6 +591,7 @@ async function addEventPreview() {
   const time = getValue("eventTime");
   const image = getValue("eventImage");
   const description = getValue("eventDescription");
+  const status = getValue("eventStatus") || "Active";
 
   if (!title || !location || !category || !date || !time || !description) {
     alert("Please complete all event fields.");
@@ -596,6 +609,7 @@ async function addEventPreview() {
           date,
           time,
           image,
+          status,
           description
         };
       }
@@ -614,6 +628,7 @@ async function addEventPreview() {
       date,
       time,
       image,
+      status,
       description
     });
 
@@ -654,6 +669,7 @@ function renderEventPreviews() {
         <p><strong>Location:</strong> ${event.location || ""}</p>
         <p><strong>Date:</strong> ${event.date || ""}</p>
         <p><strong>Time:</strong> ${event.time || ""}</p>
+        <p><strong>Status:</strong> ${event.status || "Active"}</p>
 
         <p class="business-description">${event.description || ""}</p>
 
@@ -679,6 +695,7 @@ function editEvent(id) {
   setValue("eventDate", event.date);
   setValue("eventTime", event.time);
   setValue("eventImage", event.image);
+  setValue("eventStatus", event.status || "Active");
   setValue("eventDescription", event.description);
 
   setPreviewImage("eventImagePreview", event.image);
@@ -705,6 +722,7 @@ function clearEventForm() {
   setValue("eventDate", "");
   setValue("eventTime", "");
   setValue("eventImage", "");
+  setValue("eventStatus", "Active");
   setValue("eventDescription", "");
   resetPreviewImage("eventImagePreview");
 }
@@ -896,6 +914,7 @@ function filterBusinesses() {
         ${emailLine}
         <p><strong>Phone:</strong> ${formatPhoneNumber(business.phone)}</p>
         <p><strong>Paid:</strong> ${business.paid || "No"}</p>
+        <p><strong>Status:</strong> ${business.status || "Active"}</p>
         <p><strong>Featured:</strong> ${business.featured || "No"}</p>
         <p><strong>Featured Location:</strong> ${business.featuredLocation || "homepage"}</p>
 
@@ -922,6 +941,7 @@ async function addHiringPreview() {
   const image = getValue("hiringImage");
   const expiration = getValue("hiringExpiration");
   const description = getValue("hiringDescription");
+  const status = getValue("hiringStatus") || "Active";
 
   if (!business || !title || !jobType || !phone || !description) {
     alert("Please complete all hiring fields.");
@@ -941,6 +961,7 @@ async function addHiringPreview() {
           website,
           image,
           expiration,
+          status,
           description
         };
       }
@@ -961,6 +982,7 @@ async function addHiringPreview() {
       website,
       image,
       expiration,
+      status,
       description
     });
 
@@ -996,6 +1018,7 @@ function renderHiringPreviews() {
         <p><strong>Type:</strong> ${post.jobType || post.type || ""}</p>
         <p><strong>Pay:</strong> ${post.pay || ""}</p>
         <p><strong>Phone:</strong> ${formatPhoneNumber(post.phone)}</p>
+        <p><strong>Status:</strong> ${post.status || "Active"}</p>
 
         ${expirationText ? `<p><strong>${expirationText}</strong></p>` : ""}
 
@@ -1025,6 +1048,7 @@ function editHiringPost(id) {
   setValue("hiringWebsite", post.website);
   setValue("hiringImage", post.image);
   setValue("hiringExpiration", post.expiration || "");
+  setValue("hiringStatus", post.status || "Active");
   setValue("hiringDescription", post.description);
 
   setPreviewImage("hiringImagePreview", post.image);
@@ -1053,6 +1077,7 @@ function clearHiringForm() {
   setValue("hiringWebsite", "");
   setValue("hiringImage", "");
   setValue("hiringExpiration", "");
+  setValue("hiringStatus", "Active");
   setValue("hiringDescription", "");
   resetPreviewImage("hiringImagePreview");
 }

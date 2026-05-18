@@ -74,7 +74,6 @@ function getActiveBusinesses(businesses) {
   today.setHours(0, 0, 0, 0);
 
   return businesses.filter(function(business) {
-    if ((business.status || "Active") === "Hidden") return false;
     if (business.paid !== "Yes") {
       return true;
     }
