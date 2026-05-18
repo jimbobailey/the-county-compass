@@ -425,6 +425,7 @@ body {
 
 
 .card-image-link {
+  position: relative;
   display: block !important;
   background: transparent !important;
   padding: 0 !important;
@@ -433,6 +434,7 @@ body {
   text-decoration: none !important;
   border: none !important;
   box-shadow: none !important;
+  cursor: pointer;
 }
 
 .card-image-link:hover {
@@ -443,6 +445,32 @@ body {
 
 .card-image-link img {
   margin-bottom: 0 !important;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.card-image-link:hover img {
+  transform: translateY(-2px);
+  border-color: #ff8c00;
+  box-shadow:
+    0 0 12px rgba(255,140,0,0.55),
+    0 8px 18px rgba(0,0,0,0.45);
+}
+
+.card-link-badge {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  z-index: 2;
+  background: rgba(17, 17, 17, 0.88);
+  color: #ff8c00;
+  border: 1px solid rgba(255,140,0,0.8);
+  border-radius: 999px;
+  padding: 5px 8px;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 1;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.35);
+  pointer-events: none;
 }
 
 

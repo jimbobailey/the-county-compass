@@ -283,34 +283,13 @@ function renderBusinesses(businessesToShow) {
       businessList.innerHTML += `
         <article class="business-card compact-business-card">
 
-          ${
-            websiteUrl
-              ? `
-                <a
-                  href="${websiteUrl}"
-                  target="_blank"
-                  class="card-image-link"
-                  aria-label="Visit ${business.name || "business"} website"
-                >
-                  <img
-                    src="${getBusinessImage(business)}"
-                    alt="${business.category || "Business"}"
-                    class="business-card-image compact-business-image"
-                    loading="lazy"
-                    onerror="this.onerror=null; this.src='${fallbackImage}';"
-                  >
-                </a>
-              `
-              : `
-                <img
-                  src="${getBusinessImage(business)}"
-                  alt="${business.category || "Business"}"
-                  class="business-card-image compact-business-image"
-                  loading="lazy"
-                  onerror="this.onerror=null; this.src='${fallbackImage}';"
-                >
-              `
-          }
+          <img
+            src="${getBusinessImage(business)}"
+            alt="${business.category || "Business"}"
+            class="business-card-image compact-business-image"
+            loading="lazy"
+            onerror="this.onerror=null; this.src='${fallbackImage}';"
+          >
 
           <h2>
             ${business.name || ""}

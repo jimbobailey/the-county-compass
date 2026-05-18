@@ -105,22 +105,6 @@ function getEventImage(event) {
   return "images/categories/events.jpg";
 }
 
-function makeGoodUrl(link) {
-
-  if (!link || link.trim() === "") {
-    return "";
-  }
-
-  if (
-    link.startsWith("http://") ||
-    link.startsWith("https://")
-  ) {
-    return link;
-  }
-
-  return "https://" + link;
-}
-
 function renderEvents(eventsToShow) {
 
   if (!eventsList) {
@@ -151,45 +135,17 @@ function renderEvents(eventsToShow) {
     .slice(0, visibleEventCount)
     .forEach(function(event) {
 
-      const eventLink =
-        makeGoodUrl(
-          event.website ||
-          event.link ||
-          ""
-        );
-
       eventsList.innerHTML += `
 
         <article class="business-card compact-business-card">
 
-          ${
-            eventLink
-              ? `
-                <a
-                  href="${eventLink}"
-                  target="_blank"
-                  class="card-image-link"
-                  aria-label="Open event link"
-                >
-                  <img
-                    src="${getEventImage(event)}"
-                    alt="${event.title}"
-                    class="business-card-image compact-business-image"
-                    loading="lazy"
-                    onerror="this.onerror=null; this.src='images/categories/events.jpg';"
-                  >
-                </a>
-              `
-              : `
-                <img
-                  src="${getEventImage(event)}"
-                  alt="${event.title}"
-                  class="business-card-image compact-business-image"
-                  loading="lazy"
-                  onerror="this.onerror=null; this.src='images/categories/events.jpg';"
-                >
-              `
-          }
+          <img
+            src="${getEventImage(event)}"
+            alt="${event.title}"
+            class="business-card-image compact-business-image"
+            loading="lazy"
+            onerror="this.onerror=null; this.src='images/categories/events.jpg';"
+          >
 
           <h2>
             ${event.title}
