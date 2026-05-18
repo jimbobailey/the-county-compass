@@ -430,6 +430,7 @@ async function addCouponPreview() {
   const title = getValue("couponTitle");
   const image = getValue("couponImage");
   const expiration = getValue("couponExpiration");
+  const website = makeGoodUrl(getValue("couponWebsite"));
   const details = getValue("couponDetails");
 
   if (!businessName || !category || !title || !details) {
