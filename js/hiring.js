@@ -126,11 +126,18 @@ function renderHiringPosts() {
       `
       : "";
 
+    const postLink =
+      makeGoodUrl(
+        post.website ||
+        post.link ||
+        ""
+      );
+
     const websiteButton =
-      post.website && post.website.trim() !== ""
+      postLink
         ? `
           <a
-            href="${makeGoodUrl(post.website)}"
+            href="${postLink}"
             target="_blank"
             class="compact-button"
           >
@@ -142,13 +149,35 @@ function renderHiringPosts() {
     hiringList.innerHTML += `
       <article class="business-card compact-business-card">
 
-        <img
-          src="${imagePath}"
-          alt="${post.title || "Hiring opportunity"}"
-          class="business-card-image compact-business-image"
-          loading="lazy"
-          onerror="this.onerror=null; this.src='images/categories/hiring.jpg';"
-        >
+        ${
+          postLink
+            ? `
+              <a
+                href="${postLink}"
+                target="_blank"
+                class="card-image-link"
+                aria-label="Open hiring link"
+              >
+                <span class="card-link-badge">Take Me There ↗</span>
+                <img
+                  src="${imagePath}"
+                  alt="${post.title || "Hiring opportunity"}"
+                  class="business-card-image compact-business-image"
+                  loading="lazy"
+                  onerror="this.onerror=null; this.src='images/categories/hiring.jpg';"
+                >
+              </a>
+            `
+            : `
+              <img
+                src="${imagePath}"
+                alt="${post.title || "Hiring opportunity"}"
+                class="business-card-image compact-business-image"
+                loading="lazy"
+                onerror="this.onerror=null; this.src='images/categories/hiring.jpg';"
+              >
+            `
+        }
 
         <h2>${post.title || ""}</h2>
 

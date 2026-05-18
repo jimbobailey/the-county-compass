@@ -466,6 +466,7 @@ async function addCouponPreview() {
       title,
       image,
       expiration,
+      website,
       details
     });
 
