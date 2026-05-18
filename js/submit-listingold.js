@@ -252,22 +252,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const dealCodeLabel = document.getElementById("dealCodeLabel");
         const dealCodeField = document.getElementById("dealCodeField");
-
         const dealValueLabel = document.getElementById("dealValueLabel");
         const dealValueField = document.getElementById("dealValueField");
 
-        const dealLinkLabel = document.getElementById("dealLinkLabel");
-        const dealLinkField = document.getElementById("dealLinkField");
-
-        if (
-            !submissionType ||
-            !dealCodeLabel ||
-            !dealCodeField ||
-            !dealValueLabel ||
-            !dealValueField ||
-            !dealLinkLabel ||
-            !dealLinkField
-        ) {
+        if (!submissionType || !dealCodeLabel || !dealCodeField || !dealValueLabel || !dealValueField) {
             return;
         }
 
@@ -279,12 +267,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         dealCodeLabel.style.display = showDeals ? "block" : "none";
         dealCodeField.style.display = showDeals ? "block" : "none";
-
         dealValueLabel.style.display = showDeals ? "block" : "none";
         dealValueField.style.display = showDeals ? "block" : "none";
-
-        dealLinkLabel.style.display = showDeals ? "block" : "none";
-        dealLinkField.style.display = showDeals ? "block" : "none";
 
         const eventTimeLabel = document.getElementById("eventTimeLabel");
         const eventTimeField = document.getElementById("eventTimeField");
