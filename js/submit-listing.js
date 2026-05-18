@@ -54,6 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <option value="">Select Event Type</option>
         <option>Church Event</option>
         <option>Community Gathering</option>
+        <option>Event Promotion</option>
         <option>Festival</option>
         <option>Fundraiser</option>
         <option>Live Music</option>
