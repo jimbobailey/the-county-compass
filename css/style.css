@@ -423,6 +423,29 @@ body {
   border-color: #ff8c00;
 }
 
+
+.card-image-link {
+  display: block !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 auto 10px auto !important;
+  border-radius: 14px !important;
+  text-decoration: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.card-image-link:hover {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.card-image-link img {
+  margin-bottom: 0 !important;
+}
+
+
 .business-card-image,
 .business-image-preview {
   display: block;

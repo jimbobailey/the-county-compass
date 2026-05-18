@@ -59,8 +59,8 @@ body {
 }
 
 .main-nav a:hover {
-  background: #ff8c00;
-  color: #000;
+  background: #3a3f46;
+  color: #ff8c00;
 }
 
 .hero-section {
@@ -87,30 +87,6 @@ body {
   width: 100%;
   height: auto;
   display: block;
-}
-
-.businesses-banner {
-  background-image:
-    linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.25)),
-    url("../images/site/businesses-banner.png");
-}
-
-.coupons-banner {
-  background-image:
-    linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.25)),
-    url("../images/site/coupons-banner.png");
-}
-
-.events-banner {
-  background-image:
-    linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.25)),
-    url("../images/site/events.png");
-}
-
-.advertise-banner {
-  background-image:
-    linear-gradient(rgba(0,0,0,0.18), rgba(0,0,0,0.28)),
-    url("../images/site/advertise-banner.png");
 }
 
 .page-section,
@@ -146,30 +122,53 @@ body {
 }
 
 .page-intro {
-  font-size: 18px;
-  color: #ddd;
-  margin-bottom: 30px;
+  max-width: 950px;
+  margin: 0 auto 40px auto;
+  padding: 22px 28px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.8;
+  color: #f5f5f5;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(34,34,34,0.96),
+      rgba(18,18,18,0.98)
+    );
+  border: 2px solid rgba(255,140,0,0.55);
+  border-radius: 18px;
+  box-shadow:
+    0 0 18px rgba(255,140,0,0.22),
+    0 0 30px rgba(0,217,255,0.08);
+  letter-spacing: 0.2px;
 }
 
+/* SPONSOR ADS - HORIZONTAL SCROLL */
 #homepageAds,
 #businessesAds,
 #couponsAds,
-#eventsAds {
+#eventsAds,
+#hiringAds {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 14px;
+  flex-wrap: nowrap;
+  gap: 18px;
   margin: 30px 0 45px;
-  padding-bottom: 35px;
+  padding: 0 0 35px;
   border-bottom: 2px solid rgba(0, 200, 255, 0.35);
   position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
 }
 
 #homepageAds::after,
 #businessesAds::after,
 #couponsAds::after,
-#eventsAds::after {
+#eventsAds::after,
+#hiringAds::after {
   content: "";
   position: absolute;
   bottom: -2px;
@@ -188,41 +187,172 @@ body {
 
 .site-ad {
   display: block;
+  flex: 0 0 auto;
   width: 220px;
   max-width: 220px;
-  overflow: hidden;
+  overflow: visible;
   border-radius: 18px;
   border: 2px solid #3a3a3a;
   background: #111;
   text-decoration: none;
   box-shadow: 0 8px 22px rgba(0,0,0,0.45);
+  scroll-snap-align: start;
+  padding: 6px;
 }
 
 .site-ad-image {
   display: block;
   width: 100%;
   height: auto;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
   background: #111;
   border-radius: 14px;
 }
 
+/* FEATURED BUSINESS IMAGE-ONLY ROW */
+.featured-heading-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0 20px;
+}
+
+.featured-heading-img {
+  width: 640px;
+  max-width: 80%;
+  height: auto;
+  display: block;
+}
+
+#featuredBusinesses {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 22px;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px 0 30px;
+  margin-bottom: 45px;
+}
+
+#featuredBusinesses .site-ad {
+  flex: 0 0 180px;
+  width: 180px;
+  max-width: 180px;
+  overflow: visible;
+  padding: 8px;
+}
+
+/* HOME PAGE LINK CARDS */
+.home-info-section {
+  margin-top: 50px;
+}
+
+.home-link-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.home-link-card {
+  width: 240px;
+  min-height: 160px;
+}
+
+.home-link-card {
+  display: block;
+  background: #1e1e1e;
+  border: 2px solid #333;
+  border-radius: 16px;
+  padding: 22px;
+  text-decoration: none;
+  color: #f5f5f5;
+}
+
+.home-link-card:hover {
+  border-color: #ff8c00;
+}
+
+.home-link-card h3 {
+  color: #ff8c00;
+  margin: 0 0 12px;
+  font-size: 22px;
+}
+
+.home-link-card p {
+  color: #ddd;
+  margin: 0;
+  line-height: 1.45;
+}
+.community-intro-box {
+  max-width: 1000px;
+  margin: 0 auto 40px auto;
+  padding: 28px;
+  background: linear-gradient(145deg, #1e1e1e, #141414);
+  border: 2px solid rgba(255,140,0,0.45);
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 0 22px rgba(255,140,0,0.12);
+}
+
+.community-intro-box h3 {
+  margin-top: 0;
+  margin-bottom: 18px;
+  color: #ff8c00;
+  font-size: 34px;
+}
+
+.community-intro-box p {
+  margin: 0;
+  color: #ddd;
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.submit-feature-wrap {
+  text-align: center;
+  margin: 40px auto 10px auto;
+}
+
+.submit-feature-button {
+  display: inline-block;
+  background: linear-gradient(90deg, #ff8c00, #ffaa33);
+  color: #111;
+  padding: 18px 34px;
+  border-radius: 14px;
+  font-size: 22px;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 0 20px rgba(255,140,0,0.30);
+  transition: 0.2s ease;
+}
+
+.submit-feature-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 26px rgba(255,140,0,0.45);
+}
+
 .ad-preview-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 28px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
   align-items: start;
   justify-items: center;
 }
 
 .ad-preview-card {
   width: 100%;
-  max-width: 340px;
+  max-width: 250px;
   background: #1e1e1e;
   border: 2px solid #333;
-  border-radius: 16px;
-  padding: 16px;
+  border-radius: 14px;
+  padding: 8px;
+  overflow: visible;
 }
 
 .ad-preview-card a {
@@ -264,23 +394,24 @@ body {
 }
 
 .business-grid,
-.coupon-grid {
+.coupon-grid,
+.ad-preview-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px;
-  align-items: stretch;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  width: 100%;
 }
 
 .business-card,
 .coupon-card {
   width: 100%;
-  max-width: 340px;
+  max-width: 250px;
   justify-self: center;
   background: #1e1e1e;
   border: 2px solid #333;
   border-radius: 14px;
-  padding: 16px;
-  overflow: hidden;
+  padding: 8px;
+  overflow: visible;
 }
 
 .coupon-card {
@@ -310,15 +441,17 @@ body {
 .business-card h2,
 .coupon-card h2 {
   color: #ff8c00;
-  margin: 0 0 10px;
-  font-size: 22px;
+  margin: 0 0 6px;
+  font-size: 18px;
+  line-height: 1.1;
 }
 
 .business-card p,
 .coupon-card p {
   color: #ddd;
-  margin: 0 0 8px;
-  line-height: 1.45;
+  margin: 0 0 4px;
+  line-height: 1.25;
+  font-size: 14px;
 }
 
 .business-description {
@@ -354,6 +487,66 @@ body {
   background: #ffaa33;
 }
 
+/* COMPACT BUSINESS CARDS */
+.compact-business-card {
+  max-width: 250px;
+  padding: 10px;
+}
+
+.compact-business-image {
+  aspect-ratio: 1 / 1;
+  margin-bottom: 10px;
+}
+
+.compact-business-card h2 {
+  font-size: 19px;
+  margin-bottom: 8px;
+}
+
+.business-category,
+.business-address,
+.business-phone {
+  font-size: 14px;
+  color: #ccc;
+  margin-bottom: 6px;
+}
+
+.compact-description {
+  font-size: 13px;
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+
+.business-button-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.compact-button {
+  display: inline-block;
+  text-decoration: none;
+  background: #2b2b2b !important;
+  color: #fff !important;
+  padding: 7px 11px !important;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: bold;
+  border: 1px solid #444;
+  transition: all 0.2s ease;
+  margin-top: 4px !important;
+  margin-right: 0 !important;
+}
+
+.compact-button:hover {
+  background: #ff8c00 !important;
+  color: #000 !important;
+  border-color: #ffb347;
+  box-shadow:
+    0 0 10px rgba(255,140,0,0.7),
+    0 0 18px rgba(255,140,0,0.35);
+}
+
 .search-box {
   display: flex;
   gap: 14px;
@@ -371,21 +564,6 @@ body {
   border-radius: 10px;
   background: #2b2b2b;
   color: #fff;
-}
-
-.featured-heading-wrap {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 10px 0 20px;
-}
-
-.featured-heading-img {
-  width: 640px;
-  max-width: 80%;
-  height: auto;
-  display: block;
 }
 
 .load-more-wrap {
@@ -414,18 +592,212 @@ body {
   font-size: 18px;
 }
 
-@media (max-width: 1100px) {
+/* ADMIN */
+#adminLogin {
+  max-width: 760px;
+  margin: 0 auto;
+}
 
+#adminContent .page-section {
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.admin-card {
+  background: #1e1e1e;
+  border: 2px solid #333;
+  border-radius: 14px;
+  padding: 24px;
+}
+
+.admin-card h2 {
+  color: #ff8c00;
+  margin-top: 0;
+}
+
+.admin-card input,
+.admin-card textarea,
+.admin-card select,
+#adminBusinessSearch {
+  width: 100%;
+  display: block;
+  margin-bottom: 14px;
+  padding: 12px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  background: #2b2b2b;
+  color: #fff;
+  font-size: 15px;
+}
+
+.admin-card textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.admin-card button,
+#adminLogin button {
+  display: inline-block;
+  background: #ff8c00;
+  color: #000;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.edit-button {
+  background: #444 !important;
+  color: #fff !important;
+}
+
+.delete-button {
+  background: #b00020 !important;
+  color: #fff !important;
+}
+
+.admin-preview-section {
+  margin-top: 42px;
+}
+
+.admin-preview-section h2,
+.admin-preview-section > h2 {
+  color: #ff8c00;
+}
+
+.image-upload-label {
+  display: block;
+  margin: 12px 0 8px;
+  color: #ff8c00;
+  font-weight: bold;
+}
+
+/* ADVERTISE PAGE */
+.ad-options {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+  margin: 34px 0 50px;
+}
+
+.ad-card {
+  background: #1e1e1e;
+  border: 2px solid #333;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.35);
+}
+
+.ad-card:hover {
+  border-color: #ff8c00;
+}
+
+.ad-card h2 {
+  color: #ff8c00;
+  margin: 0 0 14px;
+  font-size: 24px;
+}
+
+.ad-card p {
+  color: #ddd;
+  line-height: 1.45;
+  margin: 0 0 12px;
+}
+
+.ad-card button {
+  background: #ff8c00;
+  color: #000;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.ad-card button:hover {
+  background: #ffaa33;
+}
+
+.ad-request-section {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #1a1a1a;
+  border: 2px solid #333;
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+.ad-request-section h2 {
+  color: #ff8c00;
+  margin-top: 0;
+  text-align: center;
+  font-size: 34px;
+}
+
+.ad-request-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.ad-request-form input,
+.ad-request-form textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #444;
+  border-radius: 10px;
+  background: #2b2b2b;
+  color: #fff;
+  font-size: 15px;
+}
+
+.ad-request-form textarea {
+  grid-column: 1 / -1;
+  min-height: 130px;
+  resize: vertical;
+}
+
+.ad-request-form button {
+  grid-column: 1 / -1;
+  justify-self: center;
+  background: #ff8c00;
+  color: #000;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.ad-request-form button:hover {
+  background: #ffaa33;
+}
+
+@media (max-width: 1100px) {
   .business-grid,
   .coupon-grid,
-  .ad-preview-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .ad-preview-grid,
+  .ad-options {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 
+  .home-link-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 768px) {
-
   .site-header {
     flex-direction: column;
     align-items: flex-start;
@@ -448,14 +820,23 @@ body {
     font-size: 32px;
   }
 
-  .logo-text span {
-    font-size: 24px;
-  }
+ .logo-text span {
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: #f28c00;
+  text-shadow:
+    0 2px 0 #111,
+    0 0 8px rgba(255, 140, 0, 0.45),
+    0 0 18px rgba(255, 140, 0, 0.18);
+}
 
   .site-logo {
-    width: 52px;
-    height: 52px;
-  }
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 6px rgba(255, 140, 0, 0.45));
+}
 
   .hero-section {
     height: auto;
@@ -481,18 +862,91 @@ body {
     display: block;
   }
 
+ .business-grid,
+.coupon-grid,
+.ad-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+  .home-link-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ad-request-form {
+    grid-template-columns: 1fr;
+  }
+
+  #featuredBusinesses .site-ad {
+    flex-basis: 150px;
+    width: 150px;
+    max-width: 150px;
+  }
+
+  .compact-business-card {
+    max-width: 100%;
+  }
+
+  .page-intro {
+    font-size: 18px;
+    padding: 18px 16px;
+  }
+}
+@media (max-width: 768px) {
+
   .business-grid,
   .coupon-grid,
-  .ad-preview-grid {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
+  .ad-preview-grid,
+  .home-link-grid {
+    grid-template-columns: 1fr !important;
   }
 
-  #homepageAds,
-  #businessesAds,
-  #couponsAds,
-  #eventsAds {
-    flex-direction: column;
-    align-items: center;
+  .business-card,
+  .coupon-card,
+  .event-card,
+  .hiring-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
   }
 
+}
+.logo-text span {
+  font-size: 42px !important;
+  font-weight: 900 !important;
+  letter-spacing: 1.5px !important;
+  color: #f28c00 !important;
+
+  text-shadow:
+    0 2px 0 #111,
+    0 0 8px rgba(255, 140, 0, 0.45),
+    0 0 18px rgba(255, 140, 0, 0.18) !important;
+}
+
+.site-logo {
+  width: 58px !important;
+  height: 58px !important;
+  object-fit: contain;
+
+  filter:
+    drop-shadow(0 0 6px rgba(255, 140, 0, 0.45));
+}
+.logo-text span {
+  font-size: 36px !important;
+  font-weight: 900 !important;
+  letter-spacing: 1px !important;
+  color: #cfd3d8 !important;
+  -webkit-text-stroke: 0.45px #ff8c00;
+  text-shadow:
+    0 2px 2px #000,
+    0 0 5px rgba(255, 140, 0, 0.28);
+}
+
+.site-logo {
+  width: 54px !important;
+  height: 54px !important;
+  object-fit: contain;
+  filter: drop-shadow(0 0 5px rgba(255, 140, 0, 0.35));
 }
