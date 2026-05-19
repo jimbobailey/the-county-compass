@@ -294,13 +294,39 @@ function renderBusinesses(businessesToShow) {
       businessList.innerHTML += `
         <article class="business-card compact-business-card">
 
-          <img
-            src="${getBusinessImage(business)}"
-            alt="${business.category || "Business"}"
-            class="business-card-image compact-business-image"
-            loading="lazy"
-            onerror="this.onerror=null; this.src='${fallbackImage}';"
-          >
+          ${
+            websiteUrl
+              ? `
+                <a
+                  href="${websiteUrl}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="card-image-link"
+                  title="Take Me There"
+                >
+                  <span class="card-link-badge">
+                    Take Me There ↗
+                  </span>
+
+                  <img
+                    src="${getBusinessImage(business)}"
+                    alt="${business.category || "Business"}"
+                    class="business-card-image compact-business-image"
+                    loading="lazy"
+                    onerror="this.onerror=null; this.src='${fallbackImage}';"
+                  >
+                </a>
+              `
+              : `
+                <img
+                  src="${getBusinessImage(business)}"
+                  alt="${business.category || "Business"}"
+                  class="business-card-image compact-business-image"
+                  loading="lazy"
+                  onerror="this.onerror=null; this.src='${fallbackImage}';"
+                >
+              `
+          }
 
           <h2>
             ${business.name || ""}
