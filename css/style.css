@@ -1056,43 +1056,149 @@ body {
 
 
 
-/* FREE TESTING BANNER */
+
+
+/* FREE TESTING BANNER - HIGH VISIBILITY */
 .free-now-banner {
-  background: linear-gradient(145deg, #ff8c00, #ffb347);
-  border: 3px solid #ffd27a;
-  border-radius: 18px;
-  padding: 26px;
-  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top, rgba(255,255,255,0.28), transparent 28%),
+    linear-gradient(135deg, #ffcc00 0%, #ff8c00 45%, #ff3b00 100%);
+  border: 5px solid #fff200;
+  border-radius: 24px;
+  padding: 34px 24px;
+  margin: 0 auto 32px auto;
   text-align: center;
+  color: #111;
   box-shadow:
-    0 0 24px rgba(255,140,0,0.45),
-    0 0 50px rgba(255,140,0,0.18);
+    0 0 0 4px rgba(0,0,0,0.85),
+    0 0 26px rgba(255,140,0,0.95),
+    0 0 60px rgba(255,60,0,0.55);
+  animation: freeBannerGlow 1.35s ease-in-out infinite alternate;
+}
+
+.free-now-banner::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background:
+    linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(255,255,255,0.0) 35%,
+      rgba(255,255,255,0.38) 50%,
+      rgba(255,255,255,0.0) 65%,
+      transparent 100%
+    );
+  transform: translateX(-45%);
+  animation: freeBannerSweep 2.8s linear infinite;
+  pointer-events: none;
+}
+
+.free-now-alert {
+  position: relative;
+  display: inline-block;
+  background: #111;
+  color: #fff200;
+  border: 2px solid #fff200;
+  border-radius: 999px;
+  padding: 8px 16px;
+  margin-bottom: 14px;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  z-index: 1;
 }
 
 .free-now-big {
+  position: relative;
   color: #111;
-  font-size: 42px;
-  font-weight: 900;
-  letter-spacing: 1px;
-  line-height: 1.1;
+  font-size: 68px;
+  font-weight: 1000;
+  line-height: 0.95;
+  letter-spacing: 2px;
   text-transform: uppercase;
+  text-shadow:
+    0 3px 0 #fff200,
+    0 6px 0 rgba(0,0,0,0.18),
+    0 0 16px rgba(255,255,255,0.75);
+  z-index: 1;
 }
 
 .free-now-small {
-  color: #1a1a1a;
+  position: relative;
+  max-width: 850px;
+  margin: 18px auto 0 auto;
+  color: #111;
+  font-size: 23px;
+  font-weight: 900;
+  line-height: 1.45;
+  z-index: 1;
+}
+
+.free-now-bottom {
+  position: relative;
+  display: inline-block;
+  margin-top: 18px;
+  padding: 10px 16px;
+  background: rgba(17,17,17,0.92);
+  color: #fff;
+  border-radius: 12px;
   font-size: 18px;
-  font-weight: 700;
-  margin-top: 14px;
-  line-height: 1.5;
+  font-weight: 800;
+  z-index: 1;
+}
+
+@keyframes freeBannerGlow {
+  from {
+    box-shadow:
+      0 0 0 4px rgba(0,0,0,0.85),
+      0 0 20px rgba(255,140,0,0.72),
+      0 0 42px rgba(255,60,0,0.35);
+    transform: scale(1);
+  }
+
+  to {
+    box-shadow:
+      0 0 0 4px rgba(0,0,0,0.9),
+      0 0 34px rgba(255,242,0,0.95),
+      0 0 76px rgba(255,60,0,0.62);
+    transform: scale(1.012);
+  }
+}
+
+@keyframes freeBannerSweep {
+  from {
+    transform: translateX(-52%) rotate(8deg);
+  }
+
+  to {
+    transform: translateX(52%) rotate(8deg);
+  }
 }
 
 @media (max-width: 768px) {
+  .free-now-banner {
+    padding: 26px 16px;
+    border-radius: 18px;
+  }
+
+  .free-now-alert {
+    font-size: 14px;
+  }
+
   .free-now-big {
-    font-size: 28px;
+    font-size: 42px;
   }
 
   .free-now-small {
-    font-size: 16px;
+    font-size: 18px;
+  }
+
+  .free-now-bottom {
+    font-size: 15px;
   }
 }
 
