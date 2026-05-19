@@ -1205,3 +1205,59 @@ body {
   }
 }
 
+
+
+/* RESTORE TAKE ME THERE LINKS */
+.site-ad {
+  position: relative;
+}
+
+.site-ad::after {
+  content: "Take Me There ↗";
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 30;
+  background: rgba(17,17,17,0.92);
+  color: #ff8c00;
+  border: 1px solid rgba(255,140,0,0.85);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.45);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.site-ad:hover::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-link-badge {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+.card-image-link:hover .card-link-badge {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .site-ad::after {
+    opacity: 1;
+    transform: none;
+  }
+
+  .card-link-badge {
+    opacity: 1;
+    transform: none;
+  }
+}
+
