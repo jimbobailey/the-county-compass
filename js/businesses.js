@@ -350,15 +350,18 @@ function renderBusinesses(businessesToShow) {
             ${business.description || ""}
           </p>
 
-          <div class="business-button-row">
-
-            <a
-              href="${mapsLink}"
-              target="_blank"
-              class="compact-button"
-            >
-              Directions
-            </a>
+          ${
+  business.phone
+    ? `
+      <a
+        href="tel:${business.phone.replace(/\D/g, "")}"
+        class="compact-button"
+      >
+        Call Now
+      </a>
+    `
+    : ""
+}
 
             ${
               websiteUrl
