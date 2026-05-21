@@ -374,6 +374,19 @@ function renderBusinesses(businessesToShow) {
             }
 
             ${
+              business.email
+                ? `
+                  <a
+                    href="mailto:${business.email}"
+                    class="compact-button"
+                  >
+                    Email
+                  </a>
+                `
+                : ""
+            }
+
+            ${
               websiteUrl
                 ? `
                   <a
