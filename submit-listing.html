@@ -407,25 +407,25 @@
       </select>
 
       <label>Business / Organization Name</label>
-      <input type="text" name="businessName" required>
+      <input type="text" name="businessName" required maxlength="60">
 
       <label>Contact Name</label>
-      <input type="text" name="contactName" required>
+      <input type="text" name="contactName" required maxlength="50">
 
       <label>Email Address</label>
-      <input type="email" name="email" required>
+      <input type="email" name="email" required maxlength="80">
 
       <label>Phone Number</label>
-      <input type="text" name="phone">
+      <input type="text" name="phone" maxlength="20">
 
       <label>Business Address</label>
-      <input type="text" name="address" id="businessAddressField">
+      <input type="text" name="address" id="businessAddressField" maxlength="120">
 
       <label id="eventAddressLabel" style="display:none;">Event Address / Location</label>
-      <input type="text" name="eventAddress" id="eventAddressField" style="display:none;">
+      <input type="text" name="eventAddress" id="eventAddressField" style="display:none;" maxlength="120">
 
       <label>Website or Facebook Link</label>
-      <input type="text" name="website">
+      <input type="text" name="website" maxlength="120">
 
       <label>Category</label>
       <select name="category" id="categorySelect" required>
@@ -476,20 +476,20 @@
         If your category does not exist, choose "Other" and explain the needed category in the notes section below.
       </div>
       <label id="dealCodeLabel" style="display:none;">Deal Code (Optional)</label>
-      <input type="text" name="dealCode" id="dealCodeField" style="display:none;" placeholder="Example: SAVE20">
+      <input type="text" name="dealCode" id="dealCodeField" style="display:none;" maxlength="30" placeholder="Example: SAVE20">
 
       <label id="dealValueLabel" style="display:none;">Deal Value / Discount</label>
-      <input type="text" name="dealValue" id="dealValueField" style="display:none;" placeholder="Example: 20% Off, Buy One Get One">
+      <input type="text" name="dealValue" id="dealValueField" style="display:none;" maxlength="50" placeholder="Example: 20% Off, Buy One Get One">
       <label id="dealLinkLabel" style="display:none;">Deal Website / Facebook Link</label>
-<input type="text" name="dealLink" id="dealLinkField" style="display:none;" placeholder="Example: https://facebook.com/yourdeal">
+<input type="text" name="dealLink" id="dealLinkField" style="display:none;" maxlength="120" placeholder="Example: https://facebook.com/yourdeal">
 
       <label>Listing Headline / Title</label>
-      <input type="text" name="title" placeholder="Example: 20% Off This Month, Now Hiring, Grand Opening">
+      <input type="text" name="title" placeholder="Example: 20% Off This Month, Now Hiring, Grand Opening" maxlength="80">
 
       <div class="small-note">This is the main title people will see publicly.</div>
 
       <label>Description</label>
-      <textarea name="description" required></textarea>
+      <textarea name="description" required maxlength="200"></textarea>
 
       <label>Package Length</label>
       <select name="packageLength" id="packageLength"></select>
@@ -530,14 +530,14 @@
 </div>
 
       <label>Image Link</label>
-      <input type="text" name="imageUrl">
+      <input type="text" name="imageUrl" maxlength="250">
 
 <div class="small-note">
   Optional: If your graphic is already online, paste the image link here instead.
 </div>
 
       <label>Additional Notes</label>
-      <textarea name="notes"></textarea>
+      <textarea name="notes" maxlength="250"></textarea>
 
       <button type="submit">Submit For Review</button>
 
