@@ -50,226 +50,50 @@
     >
   </section>
 
-  <main class="page-section">
+  
+<main class="page-section">
 
-  <h1>Advertise With The County Compass</h1>
+  <section class="admin-preview-section">
 
-<p class="page-intro">
-  The County Compass helps connect local businesses, events, promotions,
-  and sponsored advertising with the community.
-</p>
+    <h1>Promote Your Business With The County Compass</h1>
 
-<p class="page-intro">
-  This page is for requesting information and asking questions about our
-  available advertising and listing options. Submitting this form does
-  not automatically publish your business or create a paid order.
-</p>
+    <p class="page-intro">
+      Submit your business, deals, events, hiring listings, or sponsored ads
+      using our official submission system.
+    </p>
 
-<p class="page-intro">
-  After submitting your request, we will contact you directly to discuss
-  pricing, availability, placement options, and additional details.
-</p>
+    <p class="page-intro">
+      During the current testing phase, submissions are being accepted free of charge.
+    </p>
 
-    <section class="ad-options">
+    <div style="text-align:center; margin-top:40px;">
 
-      <article class="ad-card">
-        <h2>Business Listing</h2>
-
-        <p>
-          Add your business to the local business directory so people can find
-          your name, category, contact information, location, and details.
-        </p>
-
-        <p>
-          Best for businesses that want to be listed on the Businesses page.
-        </p>
-
-        <button
-          type="button"
-          onclick="selectAdOption('Business Listing')"
-        >
-          Request Business Listing
-        </button>
-      </article>
-
-      <article class="ad-card">
-        <h2>Featured Placement</h2>
-
-        <p>
-          Upgrade your business listing to be featured near the top of selected
-          pages for extra visibility.
-        </p>
-
-        <p>
-          Best for businesses that want more attention across the site.
-        </p>
-
-        <button
-          type="button"
-          onclick="selectAdOption('Featured Placement')"
-        >
-          Request Featured Placement
-        </button>
-      </article>
-
-      <article class="ad-card">
-        <h2>Coupon Promotion</h2>
-
-        <p>
-          Share a sale, discount, special offer, or limited-time deal on the
-          Deals page.
-        </p>
-
-        <p>
-          Best for restaurants, shops, services, and local deals.
-        </p>
-
-        <button
-          type="button"
-          onclick="selectAdOption('Coupon Promotion')"
-        >
-          Request Coupon Promotion
-        </button>
-      </article>
-
-      <article class="ad-card">
-        <h2>Event Promotion</h2>
-
-        <p>
-          Promote a local event such as a fundraiser, church event, school event,
-          concert, festival, sale, or community gathering.
-        </p>
-
-        <p>
-          Best for upcoming events that need local attention.
-        </p>
-
-        <button
-          type="button"
-          onclick="selectAdOption('Event Promotion')"
-        >
-          Request Event Promotion
-        </button>
-      </article>
-
-      <article class="ad-card">
-        <h2>Sponsored Ad</h2>
-
-        <p>
-          Place a sponsored ad that can appear across site pages in sponsored
-          advertising areas.
-        </p>
-
-        <p>
-          Best for businesses that want their ad image shown around the site.
-        </p>
-
-        <button
-          type="button"
-          onclick="selectAdOption('Sponsored Ad')"
-        >
-          Request Sponsored Ad
-        </button>
-      </article>
-
-    </section>
-
-    <section class="admin-preview-section">
-
-      <h2>
-        Get Started
-      </h2>
-
-      <p class="page-intro">
-        Choose an option above, then fill out the request below. We will contact
-        you about your listing, coupon, event, featured placement, or sponsored ad.
-      </p>
-
-      <form
-        name="advertising-request"
-        method="POST"
-        data-netlify="true"
-        class="admin-card"
+      <a
+        href="submit-listing.html"
+        style="
+          display:inline-block;
+          background:#ff8c00;
+          color:#111;
+          padding:22px 40px;
+          border-radius:18px;
+          font-size:28px;
+          font-weight:900;
+          text-decoration:none;
+          box-shadow:0 0 25px rgba(255,140,0,0.55);
+          border:3px solid #ffb84d;
+        "
       >
+        SUBMIT YOUR LISTING
+      </a>
 
-        <input
-          type="hidden"
-          name="form-name"
-          value="advertising-request"
-        >
+    </div>
 
-        <input
-         type="text"
-         id="selectedAdOption"
-         name="selectedAdOption"
-         placeholder="Select an advertising option by clicking one of the orange buttons above"
-         readonly
-         >
+  </section>
 
-        <input
-          type="text"
-          name="businessName"
-          placeholder="Business Name"
-          required
-        >
+</main>
 
-        <input
-          type="text"
-          name="contactName"
-          placeholder="Contact Name"
-          required
-        >
 
-        <input
-          type="tel"
-          name="phone"
-          placeholder="Phone Number"
-          required
-        >
-
-        <input
-          type="email"
-          name="email"
-          placeholder="Email Address"
-        >
-
-        <input
-          type="text"
-          name="website"
-          placeholder="Website or Facebook Link"
-        >
-
-        <textarea
-          name="message"
-          placeholder="Tell us what you want to advertise, list, promote, or submit"
-          maxlength="250"
-          required
-        ></textarea>
-
-        <button type="submit">
-          Send Advertising Request
-        </button>
-
-      </form>
-
-    </section>
-
-  </main>
-
-  <script>
-    function selectAdOption(optionName) {
-      const selectedAdOption =
-        document.getElementById("selectedAdOption");
-
-      if (selectedAdOption) {
-        selectedAdOption.value = optionName;
-        selectedAdOption.scrollIntoView({
-          behavior: "smooth",
-          block: "center"
-        });
-      }
-    }
-  </script>
+  
 
 </body>
 
