@@ -9,6 +9,7 @@ const categoryImages = {
   "Automotive Repair": "images/categories/automotive.jpg",
   "Automotive Services": "images/categories/automotive.jpg",
   "Churches": "images/categories/churches.jpg",
+  "Cleaning Services": "images/categories/home-services.jpg",
   "Custom Crafts & Fabrication": "images/categories/shopping.jpg",
   "Catering & Event Services": "images/categories/catering-event-services.jpg",
   "Entertainment": "images/categories/entertainment.jpg",

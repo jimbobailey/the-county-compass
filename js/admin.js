@@ -192,6 +192,7 @@ function getCategoryImage(category) {
     "Automotive Services": "images/categories/automotive.jpg",
     "Catering & Event Services": "images/categories/catering-event-services.jpg",
     "Churches": "images/categories/churches.jpg",
+    "Cleaning Services": "images/categories/home-services.jpg",
     "Construction": "images/categories/home-services.jpg",
     "Custom Crafts & Fabrication": "images/categories/shopping.jpg",
     "Education & Training": "images/categories/professional-services.jpg",
