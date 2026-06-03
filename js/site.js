@@ -26,6 +26,7 @@ const categoryImages = {
   "Medical & Dental": "images/categories/health-beauty.jpg",
   "Professional Services": "images/categories/professional-services.jpg",
   "Real Estate": "images/categories/real-estate.jpg",
+  "RV Sales & Service": "images/categories/automotive.jpg",
   "Shopping": "images/categories/shopping.jpg",
   "Other": "images/categories/professional-services.jpg"
 };
