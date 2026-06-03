@@ -218,6 +218,7 @@ function getCategoryImage(category) {
     "Pools & Outdoor Living": "images/categories/home-services.jpg",
     "Professional Services": "images/categories/professional-services.jpg",
     "Real Estate": "images/categories/real-estate.jpg",
+    "RV Sales & Service": "images/categories/rv.jpg",
     "Shopping": "images/categories/shopping.jpg",
     "Towing & Recovery": "images/categories/automotive.jpg",
     "Weddings & Parties": "images/categories/catering-event-services.jpg",
