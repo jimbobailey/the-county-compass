@@ -9,7 +9,7 @@ const categoryImages = {
   "Automotive Repair": "images/categories/automotive.jpg",
   "Automotive Services": "images/categories/automotive.jpg",
   "Churches": "images/categories/churches.jpg",
-  "Cleaning Services": "images/categories/home-services.jpg",
+  "Cleaning Services": "images/categories/cleaning-services.jpg",
   "Custom Crafts & Fabrication": "images/categories/shopping.jpg",
   "Catering & Event Services": "images/categories/catering-event-services.jpg",
   "Entertainment": "images/categories/entertainment.jpg",
@@ -29,6 +29,7 @@ const categoryImages = {
   "Real Estate": "images/categories/real-estate.jpg",
   "RV Sales & Service": "images/categories/automotive.jpg",
   "Shopping": "images/categories/shopping.jpg",
+  "Vacation Rentals & Lodging": "images/categories/vacation-rentals.jpg",
   "Other": "images/categories/professional-services.jpg"
 };
 
