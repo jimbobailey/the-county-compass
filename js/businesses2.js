@@ -102,11 +102,6 @@ function getActiveBusinesses(businesses) {
   });
 }
 
-
-function makeGoodEmail(email) {
-  return String(email || "").trim();
-}
-
 function makeGoodUrl(link) {
   if (!link || link.trim() === "") {
     return "";
@@ -276,11 +271,6 @@ function renderBusinesses(businessesToShow) {
           business.website || ""
         );
 
-      const emailUrl =
-        makeGoodEmail(
-          business.email || ""
-        );
-
       const fallbackImage =
         getCategoryImage(
           business.category
@@ -292,10 +282,11 @@ function renderBusinesses(businessesToShow) {
         );
 
       const emailLine =
-        emailUrl !== ""
+        business.email &&
+        business.email.trim() !== ""
           ? `
             <p class="business-phone">
-              ${emailUrl}
+              ${business.email}
             </p>
           `
           : "";
@@ -383,10 +374,10 @@ function renderBusinesses(businessesToShow) {
             }
 
             ${
-              emailUrl
+              business.email
                 ? `
                   <a
-                    href="mailto:${emailUrl}"
+                    href="mailto:${business.email}"
                     class="compact-button"
                   >
                     Email
