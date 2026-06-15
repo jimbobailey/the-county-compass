@@ -104,7 +104,9 @@ function getActiveBusinesses(businesses) {
 
 
 function makeGoodEmail(email) {
-  return String(email || "").trim();
+  return String(email || "")
+    .replace("mailto:", "")
+    .trim();
 }
 
 function makeGoodUrl(link) {
@@ -295,7 +297,12 @@ function renderBusinesses(businessesToShow) {
         emailUrl !== ""
           ? `
             <p class="business-phone">
-              ${emailUrl}
+              <a
+                href="mailto:${emailUrl}"
+                class="business-email-link"
+              >
+                ${emailUrl}
+              </a>
             </p>
           `
           : "";
@@ -388,6 +395,7 @@ function renderBusinesses(businessesToShow) {
                   <a
                     href="mailto:${emailUrl}"
                     class="compact-button"
+                    title="Email ${emailUrl}"
                   >
                     Email
                   </a>
