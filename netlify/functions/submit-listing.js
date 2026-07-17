@@ -3,6 +3,33 @@ const nodemailer = require("nodemailer");
 
 const STORE_NAME = "county-compass-data";
 const SUBMISSIONS_KEY = "pending-submissions";
+const IMAGE_STORE_NAME = "county-compass-submission-images";
+const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
+
+function decodeSubmittedImage(image) {
+  if (!image || !image.dataUrl) {
+    return null;
+  }
+
+  const match = String(image.dataUrl).match(
+    /^data:(image\/(?:webp|png|jpeg));base64,([A-Za-z0-9+/=]+)$/
+  );
+
+  if (!match) {
+    throw new Error("The uploaded image format is invalid.");
+  }
+
+  const buffer = Buffer.from(match[2], "base64");
+
+  if (!buffer.length || buffer.length > MAX_IMAGE_BYTES) {
+    throw new Error("The prepared image must be smaller than 2 MB.");
+  }
+
+  return {
+    buffer,
+    contentType: match[1]
+  };
+}
 
 exports.default = async function handler(request) {
   const headers = {
@@ -27,12 +54,40 @@ exports.default = async function handler(request) {
     const body = await request.json();
 
     const store = getStore(STORE_NAME);
+    const submissionId = "submission-" + Date.now();
+    const decodedImage = decodeSubmittedImage(body.graphicUpload);
+    let uploadedImageUrl = String(body.imageLink || "").trim();
+
+    if (decodedImage) {
+      const imageStore = getStore(IMAGE_STORE_NAME);
+      const imageKey = submissionId + ".webp";
+
+      const imageBytes = decodedImage.buffer.buffer.slice(
+        decodedImage.buffer.byteOffset,
+        decodedImage.buffer.byteOffset + decodedImage.buffer.byteLength
+      );
+
+      await imageStore.set(imageKey, imageBytes, {
+        metadata: {
+          contentType: decodedImage.contentType,
+          originalName: body.graphicUpload.name || "listing-image"
+        }
+      });
+
+      const origin = new URL(request.url).origin;
+      uploadedImageUrl =
+        origin + "/.netlify/functions/submission-image?id=" +
+        encodeURIComponent(imageKey);
+    }
+
+    delete body.graphicUpload;
+    body.imageUrl = uploadedImageUrl;
 
     const submissions =
       await store.get(SUBMISSIONS_KEY, { type: "json" }) || [];
 
     const newSubmission = {
-      id: "submission-" + Date.now(),
+      id: submissionId,
       status: "pending",
       createdAt: new Date().toISOString(),
       data: body

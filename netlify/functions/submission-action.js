@@ -1,4 +1,5 @@
 const { getStore } = require("@netlify/blobs");
+const { isAdminRequest, unauthorizedResponse } = require("./_admin-auth");
 
 const STORE_NAME = "county-compass-data";
 const HANDLED_KEY = "handled-submissions";
@@ -15,6 +16,10 @@ exports.default = async function handler(request) {
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS"
   };
+
+  if (!isAdminRequest(request)) {
+    return unauthorizedResponse(headers);
+  }
 
   if (request.method === "OPTIONS") {
     return new Response("", {

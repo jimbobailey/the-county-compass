@@ -7,6 +7,70 @@ document.addEventListener("DOMContentLoaded", function () {
     const endDate = document.getElementById("endDate");
     const submissionForm = document.getElementById("submissionForm");
 
+    const MAX_SOURCE_IMAGE_BYTES = 10 * 1024 * 1024;
+    const OUTPUT_IMAGE_WIDTH = 1200;
+    const OUTPUT_IMAGE_HEIGHT = 675;
+
+    async function prepareSubmissionImage(file) {
+        if (!file || file.size === 0) {
+            return null;
+        }
+
+        const allowedTypes = ["image/png", "image/jpeg", "image/webp"];
+
+        if (!allowedTypes.includes(file.type)) {
+            throw new Error("Please choose a PNG, JPG, JPEG, or WEBP image.");
+        }
+
+        if (file.size > MAX_SOURCE_IMAGE_BYTES) {
+            throw new Error("The selected image must be smaller than 10 MB.");
+        }
+
+        const bitmap = await createImageBitmap(file);
+        const canvas = document.createElement("canvas");
+        canvas.width = OUTPUT_IMAGE_WIDTH;
+        canvas.height = OUTPUT_IMAGE_HEIGHT;
+
+        const context = canvas.getContext("2d");
+        context.fillStyle = "#f3f4f6";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        const scale = Math.min(
+            canvas.width / bitmap.width,
+            canvas.height / bitmap.height
+        );
+        const width = Math.round(bitmap.width * scale);
+        const height = Math.round(bitmap.height * scale);
+        const x = Math.round((canvas.width - width) / 2);
+        const y = Math.round((canvas.height - height) / 2);
+
+        context.drawImage(bitmap, x, y, width, height);
+        bitmap.close();
+
+        const blob = await new Promise(function (resolve, reject) {
+            canvas.toBlob(function (result) {
+                if (result) {
+                    resolve(result);
+                } else {
+                    reject(new Error("The image could not be prepared."));
+                }
+            }, "image/webp", 0.84);
+        });
+
+        const dataUrl = await new Promise(function (resolve, reject) {
+            const reader = new FileReader();
+            reader.onload = function () { resolve(reader.result); };
+            reader.onerror = function () { reject(new Error("The image could not be read.")); };
+            reader.readAsDataURL(blob);
+        });
+
+        return {
+            name: String(file.name || "listing-image").replace(/[^a-zA-Z0-9._-]/g, "-"),
+            type: "image/webp",
+            dataUrl: dataUrl
+        };
+    }
+
     const businessCategories = `
         <option value="">Select Category</option>
         <option>Agriculture & Farm Services</option>
@@ -398,10 +462,19 @@ document.addEventListener("DOMContentLoaded", function () {
             const data = {};
 
             formData.forEach(function (value, key) {
-                data[key] = value;
+                if (!(value instanceof File)) {
+                    data[key] = value;
+                }
             });
 
             try {
+
+                const imageInput = submissionForm.querySelector('input[name="graphicUpload"]');
+                const selectedImage = imageInput && imageInput.files
+                    ? imageInput.files[0]
+                    : null;
+
+                data.graphicUpload = await prepareSubmissionImage(selectedImage);
 
                 const response = await fetch(
                     "/.netlify/functions/submit-listing",
@@ -416,7 +489,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const result = await response.json();
 
-                if (result.success) {
+                if (response.ok && result.success) {
                     alert("Submission sent successfully for review.");
                     submissionForm.reset();
                     updateCategoryOptions();
@@ -424,13 +497,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     updatePackageOptions();
                     toggleEventAddressField();
                 } else {
-                    alert("Submission failed.");
+                    alert(result.error || "Submission failed.");
                 }
 
             } catch (error) {
 
                 console.error(error);
-                alert("There was a problem submitting the form.");
+                alert(error.message || "There was a problem submitting the form.");
             }
         });
     }

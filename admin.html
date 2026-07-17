@@ -733,28 +733,32 @@
 
   <script>
 
-    function checkAdminPassword() {
+    async function checkAdminPassword() {
       const passwordInput =
         document.getElementById("adminPasswordInput").value;
 
-      const correctPassword =
-        "9300";
+      const response = await fetch("/.netlify/functions/admin-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: passwordInput })
+      });
+      const result = await response.json();
 
-      if (passwordInput === correctPassword) {
+      if (response.ok && result.token) {
         document.getElementById("adminLogin").style.display = "none";
         document.getElementById("adminContent").style.display = "block";
 
         sessionStorage.setItem(
-          "countyCompassAdminUnlocked",
-          "yes"
+          "countyCompassAdminToken",
+          result.token
         );
       } else {
-        alert("Incorrect password.");
+        alert(result.error || "Incorrect password.");
       }
     }
 
     if (
-      sessionStorage.getItem("countyCompassAdminUnlocked") === "yes"
+      sessionStorage.getItem("countyCompassAdminToken")
     ) {
       document.getElementById("adminLogin").style.display = "none";
       document.getElementById("adminContent").style.display = "block";
