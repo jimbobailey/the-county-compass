@@ -94,7 +94,19 @@ async function markSubmissionHandled(submissionId, action, approvedAs, submissio
     return;
   }
 
-  loadSubmissions();
+  const card = document.getElementById("submission-card-" + submissionId);
+  if(card){
+    card.remove();
+  }
+
+  const container = document.getElementById("submissions");
+  if(container && !container.querySelector(".submission-card")){
+    container.innerHTML = `
+      <div class="submission-card">
+        <h2>No pending submissions.</h2>
+      </div>
+    `;
+  }
 }
 
 async function loadSubmissions(){
@@ -146,6 +158,7 @@ async function loadSubmissions(){
       const payload = sub.data || {};
       const card = document.createElement("div");
       card.className = "submission-card";
+      card.id = "submission-card-" + sub.id;
 
       card.innerHTML = `
         <h2>${clean(payload.businessName) || "Unnamed Submission"}</h2>

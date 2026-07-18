@@ -325,7 +325,7 @@ details:
           submissionData.businessName || "",
 
         image:
-          submissionData.imageUrl || "",
+          submissionData.adImageUrl || submissionData.imageUrl || "",
 
         link:
           submissionData.website || "",
