@@ -1,2 +1,10 @@
 # Local Netlify folder
 .netlify
+
+# Credentials must only exist in Netlify environment variables or Windows
+# Credential Manager. Never commit local copies to this repository.
+netlify token/
+google app pswd/
+.env
+.env.*
+!.env.example

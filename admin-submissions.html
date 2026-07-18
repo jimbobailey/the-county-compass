@@ -37,6 +37,20 @@
 </div>
 
 <script>
+const adminToken = sessionStorage.getItem("countyCompassAdminToken") || "";
+
+if (!adminToken) {
+  window.location.href = "admin.html";
+}
+
+function adminHeaders(includeJson){
+  const headers = { "Authorization": "Bearer " + adminToken };
+  if(includeJson){
+    headers["Content-Type"] = "application/json";
+  }
+  return headers;
+}
+
 function clean(value){
   return value ? String(value) : "";
 }
@@ -64,7 +78,7 @@ async function markSubmissionHandled(submissionId, action, approvedAs, submissio
 
   const response = await fetch("/.netlify/functions/submission-action", {
     method:"POST",
-    headers:{ "Content-Type":"application/json" },
+    headers:adminHeaders(true),
     body:JSON.stringify({
       submissionId,
       action,
@@ -86,8 +100,8 @@ async function markSubmissionHandled(submissionId, action, approvedAs, submissio
 async function loadSubmissions(){
   try{
     const [submissionsResponse, handledResponse] = await Promise.all([
-      fetch("/.netlify/functions/get-submissions"),
-      fetch("/.netlify/functions/submission-action")
+      fetch("/.netlify/functions/get-submissions", { headers: adminHeaders(false) }),
+      fetch("/.netlify/functions/submission-action", { headers: adminHeaders(false) })
     ]);
 
     const data = await submissionsResponse.json();

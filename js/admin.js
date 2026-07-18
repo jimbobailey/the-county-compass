@@ -13,6 +13,10 @@ let editingAdId = null;
 let hiringPosts = [];
 let editingHiringId = null;
 
+function getAdminToken() {
+  return sessionStorage.getItem("countyCompassAdminToken") || "";
+}
+
 loadAdminData();
 
 async function loadAdminData() {
@@ -110,7 +114,8 @@ async function saveToServer(url, data, label) {
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + getAdminToken()
       },
       body: JSON.stringify(data)
     });

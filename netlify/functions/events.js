@@ -1,4 +1,5 @@
 const { getStore } = require("@netlify/blobs");
+const { isAdminRequest, unauthorizedResponse } = require("./_admin-auth");
 
 const STORE_NAME = "county-compass-data";
 const DATA_KEY = "events";
@@ -30,6 +31,10 @@ exports.default = async function handler(request) {
   }
 
   if (request.method === "POST") {
+    if (!isAdminRequest(request)) {
+      return unauthorizedResponse(headers);
+    }
+
     let incomingData = [];
 
     try {
