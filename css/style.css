@@ -735,6 +735,32 @@ body {
   color: #ff8c00;
 }
 
+/* Keep every admin advertisement preview uniform, regardless of its saved shape. */
+#adminContent .ad-preview-card,
+#adminContent .ad-preview-card.ad-banner,
+#adminContent .ad-preview-card.ad-tall,
+#adminContent .ad-preview-card.ad-square {
+  grid-column: auto;
+  width: 100%;
+  max-width: 250px;
+  min-width: 0;
+}
+
+#adminContent .ad-preview-card a,
+#adminContent .ad-preview-card.ad-banner a,
+#adminContent .ad-preview-card.ad-tall a,
+#adminContent .ad-preview-card.ad-square a {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+#adminContent .ad-preview-image {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  object-fit: cover;
+}
+
 .image-upload-label {
   display: block;
   margin: 12px 0 8px;
@@ -1260,4 +1286,3 @@ body {
     transform: none;
   }
 }
-
