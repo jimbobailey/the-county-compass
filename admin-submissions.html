@@ -16,6 +16,8 @@
     .field{background:#222;border-radius:8px;padding:10px;}
     .label{color:orange;font-size:13px;margin-bottom:4px;}
     .value{word-break:break-word;}
+    .submission-image{display:block;width:100%;max-width:220px;aspect-ratio:1/1;object-fit:contain;background:#f3f4f6;border-radius:8px;margin-bottom:8px;}
+    .image-link{color:#66b3ff;font-weight:bold;}
     .loading{text-align:center;margin-top:50px;color:#bbb;font-size:20px;}
     .action-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;}
     .approve-btn,.deny-btn,.delete-btn{border:none;padding:12px 18px;border-radius:8px;font-weight:bold;cursor:pointer;}
@@ -60,6 +62,32 @@ function makeField(label, value){
     <div class="field">
       <div class="label">${label}</div>
       <div class="value">${clean(value)}</div>
+    </div>
+  `;
+}
+
+function makeImageField(value){
+  const url = clean(value);
+
+  if(!/^https?:\/\//i.test(url)){
+    return makeField("Image", "No uploaded image");
+  }
+
+  const safeUrl = url
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+
+  return `
+    <div class="field">
+      <div class="label">Uploaded Image</div>
+      <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">
+        <img class="submission-image" src="${safeUrl}" alt="Uploaded submission image">
+      </a>
+      <a class="image-link" href="${safeUrl}" target="_blank" rel="noopener noreferrer">
+        Open full-size image
+      </a>
     </div>
   `;
 }
@@ -174,7 +202,7 @@ async function loadSubmissions(){
           ${makeField("Start Date", payload.startDate)}
           ${makeField("End Date", payload.endDate)}
           ${makeField("Website", payload.website)}
-          ${makeField("Image Link", payload.imageUrl)}
+          ${makeImageField(payload.imageUrl)}
         </div>
 
         <div class="field" style="margin-top:15px;">
