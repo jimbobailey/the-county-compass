@@ -203,6 +203,9 @@ async function loadSubmissions(){
           ${makeField("End Date", payload.endDate)}
           ${makeField("Website", payload.website)}
           ${makeImageField(payload.imageUrl)}
+          ${makeField("Image Processor", payload.resizeBuildMarker)}
+          ${makeField("Source Dimensions", payload.resizeSourceDimensions)}
+          ${makeField("Output Dimensions", payload.resizeOutputDimensions)}
         </div>
 
         <div class="field" style="margin-top:15px;">

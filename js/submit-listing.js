@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const MAX_SOURCE_IMAGE_BYTES = 10 * 1024 * 1024;
     const OUTPUT_IMAGE_WIDTH = 1254;
     const OUTPUT_IMAGE_HEIGHT = 1254;
+    const IMAGE_BUILD_MARKER = "square-source-crop-v4-20260717";
 
     async function prepareSubmissionImage(file) {
         if (!file || file.size === 0) {
@@ -26,24 +27,44 @@ document.addEventListener("DOMContentLoaded", function () {
             throw new Error("The selected image must be smaller than 10 MB.");
         }
 
-        const bitmap = await createImageBitmap(file);
+        const bitmap = await createImageBitmap(file, {
+            imageOrientation: "from-image"
+        });
         const canvas = document.createElement("canvas");
         canvas.width = OUTPUT_IMAGE_WIDTH;
         canvas.height = OUTPUT_IMAGE_HEIGHT;
 
         const context = canvas.getContext("2d");
-        const scale = Math.max(
-            canvas.width / bitmap.width,
-            canvas.height / bitmap.height
-        );
-        const width = Math.round(bitmap.width * scale);
-        const height = Math.round(bitmap.height * scale);
-        const x = Math.round((canvas.width - width) / 2);
-        const y = Math.round((canvas.height - height) / 2);
+        const sourceAspect = bitmap.width / bitmap.height;
+        const targetAspect = canvas.width / canvas.height;
+        let sourceX = 0;
+        let sourceY = 0;
+        let sourceWidth = bitmap.width;
+        let sourceHeight = bitmap.height;
+
+        if (sourceAspect > targetAspect) {
+            sourceWidth = bitmap.height * targetAspect;
+            sourceX = (bitmap.width - sourceWidth) / 2;
+        } else if (sourceAspect < targetAspect) {
+            sourceHeight = bitmap.width / targetAspect;
+            sourceY = (bitmap.height - sourceHeight) / 2;
+        }
 
         context.imageSmoothingEnabled = true;
         context.imageSmoothingQuality = "high";
-        context.drawImage(bitmap, x, y, width, height);
+        context.drawImage(
+            bitmap,
+            sourceX,
+            sourceY,
+            sourceWidth,
+            sourceHeight,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+        const sourceDimensions = bitmap.width + "x" + bitmap.height;
         bitmap.close();
 
         const blob = await new Promise(function (resolve, reject) {
@@ -63,10 +84,21 @@ document.addEventListener("DOMContentLoaded", function () {
             reader.readAsDataURL(blob);
         });
 
+        const verificationBitmap = await createImageBitmap(blob);
+        const outputDimensions = verificationBitmap.width + "x" + verificationBitmap.height;
+        verificationBitmap.close();
+
+        if (outputDimensions !== OUTPUT_IMAGE_WIDTH + "x" + OUTPUT_IMAGE_HEIGHT) {
+            throw new Error("Prepared image dimensions are " + outputDimensions + ", not 1254x1254.");
+        }
+
         return {
             name: String(file.name || "listing-image").replace(/[^a-zA-Z0-9._-]/g, "-"),
             type: "image/webp",
-            dataUrl: dataUrl
+            dataUrl: dataUrl,
+            buildMarker: IMAGE_BUILD_MARKER,
+            sourceDimensions: sourceDimensions,
+            outputDimensions: outputDimensions
         };
     }
 
@@ -474,6 +506,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     : null;
 
                 data.graphicUpload = await prepareSubmissionImage(selectedImage);
+
+                if (data.graphicUpload) {
+                    data.resizeBuildMarker = data.graphicUpload.buildMarker;
+                    data.resizeSourceDimensions = data.graphicUpload.sourceDimensions;
+                    data.resizeOutputDimensions = data.graphicUpload.outputDimensions;
+                }
 
                 const response = await fetch(
                     "/.netlify/functions/submit-listing",
