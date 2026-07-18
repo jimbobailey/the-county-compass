@@ -107,6 +107,14 @@ async function loadSubmissions(){
     const data = await submissionsResponse.json();
     const handledData = await handledResponse.json();
 
+    if(!submissionsResponse.ok){
+      throw new Error(data.error || "Pending submissions could not be loaded.");
+    }
+
+    if(!handledResponse.ok){
+      throw new Error(handledData.error || "Submission history could not be loaded.");
+    }
+
     const handledIds = Array.isArray(handledData)
       ? handledData.map(item => item.submissionId)
       : [];
