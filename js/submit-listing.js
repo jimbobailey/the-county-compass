@@ -8,8 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const submissionForm = document.getElementById("submissionForm");
 
     const MAX_SOURCE_IMAGE_BYTES = 10 * 1024 * 1024;
-    const OUTPUT_IMAGE_WIDTH = 1200;
-    const OUTPUT_IMAGE_HEIGHT = 675;
+    const OUTPUT_IMAGE_WIDTH = 1000;
+    const OUTPUT_IMAGE_HEIGHT = 1000;
 
     async function prepareSubmissionImage(file) {
         if (!file || file.size === 0) {
