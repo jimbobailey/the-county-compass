@@ -32,10 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
         canvas.height = OUTPUT_IMAGE_HEIGHT;
 
         const context = canvas.getContext("2d");
-        context.fillStyle = "#f3f4f6";
-        context.fillRect(0, 0, canvas.width, canvas.height);
-
-        const scale = Math.min(
+        const scale = Math.max(
             canvas.width / bitmap.width,
             canvas.height / bitmap.height
         );
@@ -44,6 +41,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const x = Math.round((canvas.width - width) / 2);
         const y = Math.round((canvas.height - height) / 2);
 
+        context.imageSmoothingEnabled = true;
+        context.imageSmoothingQuality = "high";
         context.drawImage(bitmap, x, y, width, height);
         bitmap.close();
 
