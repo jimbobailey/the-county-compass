@@ -8,3 +8,7 @@ google app pswd/
 .env
 .env.*
 !.env.example
+
+# Windows Explorer thumbnail cache files
+Thumbs.db
+**/Thumbs.db
