@@ -9,7 +9,10 @@ exports.default = async function handler(request) {
 
   const imageKey = new URL(request.url).searchParams.get("id");
 
-  if (!imageKey || !/^submission-[0-9]+\.webp$/.test(imageKey)) {
+  if (
+    !imageKey ||
+    !/^(?:businesses|ads)\/submission-[0-9]+\.webp$/.test(imageKey)
+  ) {
     return new Response("Invalid image.", { status: 400 });
   }
 

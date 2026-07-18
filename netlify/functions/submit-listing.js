@@ -60,24 +60,33 @@ exports.default = async function handler(request) {
 
     if (decodedImage) {
       const imageStore = getStore(IMAGE_STORE_NAME);
-      const imageKey = submissionId + ".webp";
+      const businessImageKey = "businesses/" + submissionId + ".webp";
+      const adImageKey = "ads/" + submissionId + ".webp";
 
       const imageBytes = decodedImage.buffer.buffer.slice(
         decodedImage.buffer.byteOffset,
         decodedImage.buffer.byteOffset + decodedImage.buffer.byteLength
       );
 
-      await imageStore.set(imageKey, imageBytes, {
+      const imageOptions = {
         metadata: {
           contentType: decodedImage.contentType,
           originalName: body.graphicUpload.name || "listing-image"
         }
-      });
+      };
+
+      await Promise.all([
+        imageStore.set(businessImageKey, imageBytes, imageOptions),
+        imageStore.set(adImageKey, imageBytes, imageOptions)
+      ]);
 
       const origin = new URL(request.url).origin;
       uploadedImageUrl =
         origin + "/.netlify/functions/submission-image?id=" +
-        encodeURIComponent(imageKey);
+        encodeURIComponent(businessImageKey);
+      body.adImageUrl =
+        origin + "/.netlify/functions/submission-image?id=" +
+        encodeURIComponent(adImageKey);
     }
 
     delete body.graphicUpload;
