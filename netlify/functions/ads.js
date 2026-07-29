@@ -6,6 +6,16 @@ const DATA_KEY = "ads";
 
 exports.default = async function handler(request) {
 
+  console.log("========== ADS REQUEST ==========");
+  console.log("Time:", new Date().toISOString());
+  console.log("Method:", request.method);
+  console.log("URL:", request.url);
+  console.log("User-Agent:", request.headers.get("user-agent"));
+  console.log("Referer:", request.headers.get("referer"));
+  console.log("CF-Connecting-IP:", request.headers.get("cf-connecting-ip"));
+  console.log("X-Forwarded-For:", request.headers.get("x-forwarded-for"));
+  console.log("=================================");
+
   const headers = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
