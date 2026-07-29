@@ -5,6 +5,17 @@ const STORE_NAME = "county-compass-data";
 const DATA_KEY = "businesses";
 
 exports.default = async function handler(request) {
+
+  console.log("====== BUSINESSES REQUEST ======");
+  console.log("Time:", new Date().toISOString());
+  console.log("Method:", request.method);
+  console.log("URL:", request.url);
+  console.log("User-Agent:", request.headers.get("user-agent"));
+  console.log("Referer:", request.headers.get("referer"));
+  console.log("CF-Connecting-IP:", request.headers.get("cf-connecting-ip"));
+  console.log("X-Forwarded-For:", request.headers.get("x-forwarded-for"));
+  console.log("================================");
+
   const headers = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
@@ -74,7 +85,9 @@ exports.default = async function handler(request) {
   }
 
   return new Response(
-    JSON.stringify({ error: "Method not allowed." }),
+    JSON.stringify({
+      error: "Method not allowed."
+    }),
     {
       status: 405,
       headers
