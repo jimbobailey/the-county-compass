@@ -70,6 +70,14 @@ exports.default = async function handler(request) {
       return json({ error: "Invalid request" }, 400);
     }
 
+    if (body.action === "suggestion") {
+      const text = String(body.suggestion || "").trim();
+      if (!text || text.length > 1000) return json({ error: "Invalid suggestion" }, 400);
+      const suggestionKey = `poll-suggestion-${Date.now()}-${crypto.randomBytes(6).toString("hex")}`;
+      await store.setJSON(suggestionKey, { text, submittedAt: new Date().toISOString() });
+      return json({ ok: true });
+    }
+
     const { race, candidate } = body;
     if (!VALID[race] || !VALID[race].has(candidate)) {
       return json({ error: "Invalid vote" }, 400);

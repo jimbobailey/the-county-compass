@@ -61,7 +61,7 @@ button{border:0;border-radius:12px;padding:16px 18px;font-size:16px;font-weight:
 
 <section class="panel thanks"><div class="stars">★ ★ ★ ★ ★</div><h2>THANK YOU FOR PARTICIPATING!</h2><p>Your participation helps give our community a voice.</p><p><strong>Thank you for being part of The County Compass community.</strong></p></section>
 
-<section class="panel suggest"><h2>What Would You Like to See Next?</h2><p>Have an idea for another community poll, local feature, or topic you'd like The County Compass to cover? Tell us below.</p><textarea id="suggestion" maxlength="1000" placeholder="Share your suggestion here..."></textarea><br><button class="send" id="sendSuggestion">SUBMIT SUGGESTION</button><div class="success" id="suggestSuccess">✓ Thank you! Your suggestion has been submitted.</div><p class="small">Suggestions are anonymous. Please do not include personal information.</p></section>
+<section class="panel suggest"><h2>What Would You Like to See Next?</h2><p>Have an idea for another community poll, local feature, or topic you'd like The County Compass to cover? Tell us below.</p><form id="suggestionForm" name="community-poll-suggestions" method="POST" data-netlify="true" data-netlify-honeypot="bot-field"><input type="hidden" name="form-name" value="community-poll-suggestions"><input type="hidden" name="subject" value="New County Compass Community Poll Suggestion"><p style="position:absolute;overflow:hidden;clip:rect(0 0 0 0);height:1px;width:1px;margin:-1px;padding:0;border:0"><label>Do not fill this out: <input name="bot-field"></label></p><textarea id="suggestion" name="suggestion" maxlength="1000" required placeholder="Share your suggestion here..."></textarea><br><button type="submit" class="send" id="sendSuggestion">SUBMIT SUGGESTION</button><div class="success" id="suggestSuccess">✓ Thank you! Your suggestion has been submitted.</div></form><p class="small">Suggestions are anonymous. Please do not include personal information.</p></section>
 <div style="text-align:center"><a class="return-home" href="index.html">← RETURN TO THE COUNTY COMPASS</a></div>
 <div class="notice">This poll is independently conducted by The County Compass. It is not affiliated with or administered by any government agency, election office, political party, candidate, or campaign. Results represent only responses submitted through this poll and are not official election results or a scientific survey.</div>
 </main>
@@ -126,15 +126,29 @@ document.querySelectorAll('form[data-race]').forEach(f=>f.addEventListener('subm
   }
 }));
 
-document.getElementById('sendSuggestion').onclick=()=>{
-  const t=document.getElementById('suggestion');
-  if(!t.value.trim()){alert('Please enter a suggestion first.');return}
-  const a=JSON.parse(localStorage.getItem('cc_suggestions')||'[]');
-  a.push(t.value.trim());
-  localStorage.setItem('cc_suggestions',JSON.stringify(a));
-  t.value='';
-  document.getElementById('suggestSuccess').style.display='block'
-};
+document.getElementById('suggestionForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const form=e.currentTarget;
+  const button=document.getElementById('sendSuggestion');
+  const success=document.getElementById('suggestSuccess');
+  button.disabled=true;
+  success.style.display='none';
+  try{
+    const body=new URLSearchParams(new FormData(form)).toString();
+    const res=await fetch('/',{
+      method:'POST',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body
+    });
+    if(!res.ok) throw new Error('Suggestion failed');
+    form.reset();
+    success.style.display='block';
+  }catch(error){
+    alert('Your suggestion could not be submitted. Please try again.');
+  }finally{
+    button.disabled=false;
+  }
+});
 
 render('governor');render('cd2');
 </script></body></html>
