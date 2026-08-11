@@ -22,6 +22,41 @@ button{border:0;border-radius:12px;padding:16px 18px;font-size:16px;font-weight:
 .cc-nav{display:flex;gap:15px;flex-wrap:wrap}.cc-nav a{color:#eee;text-decoration:none;font-weight:700;font-size:14px}.cc-nav a:hover{color:#ffaa33}
 .return-home{display:inline-block;margin-top:20px;background:linear-gradient(90deg,#ff8c00,#ffaa33);color:#111;text-decoration:none;font-weight:900;padding:14px 24px;border-radius:12px}
 .cc-footer{background:#141414;border-top:2px solid #ff8c00;text-align:center;padding:28px 18px 36px;margin-top:35px}.cc-footer a{color:#eee;text-decoration:none;margin:0 8px;line-height:2}.cc-footer a:hover{color:#ffaa33}
+
+.us-flag{
+  position:relative;
+  display:inline-block;
+  width:28px;
+  height:18px;
+  margin:0 7px -3px;
+  border-radius:2px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.55);
+  background:repeating-linear-gradient(
+    to bottom,
+    #b22234 0 1.385px,
+    #fff 1.385px 2.77px
+  );
+  overflow:hidden;
+}
+.us-flag::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  width:12px;
+  height:9.7px;
+  background:#3c3b6e;
+}
+.flag-stars{
+  position:absolute;
+  z-index:1;
+  left:2px;
+  top:-2px;
+  color:#fff;
+  font-size:7px;
+  line-height:10px;
+}
+
 </style></head><body>
 <div class="cc-sitebar">
   <a class="cc-brand" href="index.html">THE <span>COUNTY COMPASS</span></a>
@@ -36,7 +71,7 @@ button{border:0;border-radius:12px;padding:16px 18px;font-size:16px;font-weight:
     <a href="contact.html">Contact</a>
   </nav>
 </div>
-<header class="hero"><div class="flagline"></div><h1>COUNTY COMPASS<br>COMMUNITY POLL</h1><div class="voice">🇺🇸 Make Your Voice Heard 🇺🇸</div><div class="date">Unofficial Community Poll • August 2026</div></header>
+<header class="hero"><div class="flagline"></div><h1>COUNTY COMPASS<br>COMMUNITY POLL</h1><div class="voice"><span class="us-flag" aria-label="American flag"><span class="flag-stars">★</span></span> Make Your Voice Heard <span class="us-flag" aria-label="American flag"><span class="flag-stars">★</span></span></div><div class="date">Unofficial Community Poll • August 2026</div></header>
 <main class="wrap">
 <section class="panel privacy"><div class="lock">🔒</div><h2>Your Vote Is Private</h2><p>The County Compass does <strong>not</strong> ask for your name, email address, phone number, or an account to vote.</p><p><strong>Your vote is recorded anonymously.</strong> Limited technical information is processed automatically and converted into a one-way anonymous identifier solely to help prevent duplicate voting. The raw technical information is not stored with your vote.</p></section>
 
