@@ -1,6 +1,8 @@
 const crypto = require("crypto");
 const { getStore } = require("@netlify/blobs");
 
+const STORE_NAME = "county-compass-data";
+
 const VALID = {
   governor: new Set([
     "Charles Burkett","Jay Collins","Shea Cruel","Jenny Patricia Curtman","Byron Donalds",
@@ -14,67 +16,81 @@ const VALID = {
   ])
 };
 
-function reply(statusCode, body) {
-  return {
-    statusCode,
+function json(body, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
     headers: {
       "Content-Type": "application/json",
       "Cache-Control": "no-store",
-      "Access-Control-Allow-Origin": "https://thecountycompass.com"
-    },
-    body: JSON.stringify(body)
-  };
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS"
+    }
+  });
 }
 
-function clientFingerprint(event, race) {
-  const h = event.headers || {};
-  const ip = (h["x-nf-client-connection-ip"] || h["x-forwarded-for"] || "").split(",")[0].trim();
-  const ua = h["user-agent"] || "";
-  const lang = h["accept-language"] || "";
+function fingerprint(request, race) {
+  const ip =
+    request.headers.get("cf-connecting-ip") ||
+    (request.headers.get("x-forwarded-for") || "").split(",")[0].trim() ||
+    "";
+  const ua = request.headers.get("user-agent") || "";
+  const lang = request.headers.get("accept-language") || "";
   const salt = process.env.POLL_FINGERPRINT_SALT;
   if (!salt) throw new Error("POLL_FINGERPRINT_SALT is not configured");
-  return crypto.createHmac("sha256", salt).update(`${race}|${ip}|${ua}|${lang}`).digest("hex");
+  return crypto.createHmac("sha256", salt)
+    .update(`${race}|${ip}|${ua}|${lang}`)
+    .digest("hex");
 }
 
-exports.handler = async (event) => {
+exports.default = async function handler(request) {
   try {
-    const store = getStore("community-poll");
+    if (request.method === "OPTIONS") return json({}, 200);
 
-    if (event.httpMethod === "GET") {
-      const race = event.queryStringParameters && event.queryStringParameters.race;
-      if (!VALID[race]) return reply(400, { error: "Invalid race" });
-      const tally = (await store.get(`tally-${race}`, { type: "json" })) || {};
-      const total = Object.values(tally).reduce((a,b)=>a+Number(b||0),0);
-      return reply(200, { tally, total });
+    const store = getStore(STORE_NAME);
+    const url = new URL(request.url);
+
+    if (request.method === "GET") {
+      const race = url.searchParams.get("race");
+      if (!VALID[race]) return json({ error: "Invalid race" }, 400);
+
+      const tally = (await store.get(`poll-tally-${race}`, { type: "json" })) || {};
+      const total = Object.values(tally).reduce((a, b) => a + Number(b || 0), 0);
+      return json({ tally, total });
     }
 
-    if (event.httpMethod !== "POST") return reply(405, { error: "Method not allowed" });
+    if (request.method !== "POST") {
+      return json({ error: "Method not allowed" }, 405);
+    }
 
     let body;
-    try { body = JSON.parse(event.body || "{}"); }
-    catch { return reply(400, { error: "Invalid request" }); }
+    try {
+      body = await request.json();
+    } catch {
+      return json({ error: "Invalid request" }, 400);
+    }
 
     const { race, candidate } = body;
-    if (!VALID[race] || !VALID[race].has(candidate)) return reply(400, { error: "Invalid vote" });
+    if (!VALID[race] || !VALID[race].has(candidate)) {
+      return json({ error: "Invalid vote" }, 400);
+    }
 
-    const fingerprint = clientFingerprint(event, race);
-    const voterKey = `voter-${race}-${fingerprint}`;
+    const voterKey = `poll-voter-${race}-${fingerprint(request, race)}`;
+    if (await store.get(voterKey)) {
+      return json({ error: "Already voted" }, 409);
+    }
 
-    const existing = await store.get(voterKey);
-    if (existing) return reply(409, { error: "Already voted" });
-
-    // Reserve this anonymous fingerprint before incrementing the tally.
     await store.set(voterKey, "1");
 
-    const tallyKey = `tally-${race}`;
+    const tallyKey = `poll-tally-${race}`;
     const tally = (await store.get(tallyKey, { type: "json" })) || {};
     tally[candidate] = Number(tally[candidate] || 0) + 1;
     await store.setJSON(tallyKey, tally);
 
-    const total = Object.values(tally).reduce((a,b)=>a+Number(b||0),0);
-    return reply(200, { ok: true, tally, total });
-  } catch (err) {
-    console.error(err);
-    return reply(500, { error: "Server error" });
+    const total = Object.values(tally).reduce((a, b) => a + Number(b || 0), 0);
+    return json({ ok: true, tally, total });
+  } catch (error) {
+    console.error("COMMUNITY POLL ERROR:", error);
+    return json({ error: "Server error" }, 500);
   }
 };
