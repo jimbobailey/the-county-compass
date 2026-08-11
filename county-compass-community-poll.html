@@ -1,0 +1,85 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>County Compass Community Poll</title><style>
+:root{--navy:#061a3d;--navy2:#0a2d67;--red:#c8102e;--red2:#ef233c;--white:#fff;--gold:#f2c14e;--ink:#152033;--soft:#f3f6fb}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#eef2f8}
+.hero{position:relative;overflow:hidden;text-align:center;color:#fff;padding:46px 18px 70px;background:linear-gradient(135deg,#041431 0%,#092d68 58%,#061a3d 100%);border-bottom:8px solid var(--red)}
+.hero:before,.hero:after{content:"★ ★ ★ ★ ★";position:absolute;font-size:34px;letter-spacing:14px;color:rgba(255,255,255,.09);transform:rotate(-18deg)}
+.hero:before{left:-30px;top:35px}.hero:after{right:-50px;bottom:30px}
+.flagline{height:9px;width:190px;margin:0 auto 20px;background:linear-gradient(90deg,var(--red) 0 33%,#fff 33% 66%,#2459a6 66%);border-radius:99px}
+.hero h1{font-size:clamp(35px,6vw,62px);line-height:1.02;margin:0;text-shadow:0 4px 0 rgba(0,0,0,.18);letter-spacing:1px}.hero .voice{font-size:22px;margin:16px 0 6px}.hero .date{opacity:.88;font-size:14px}
+.wrap{max-width:1050px;margin:-38px auto 60px;padding:0 18px}.panel{background:#fff;border-radius:20px;box-shadow:0 12px 34px rgba(10,25,60,.16);margin-bottom:26px;padding:27px}
+.privacy{text-align:center;border-top:7px solid var(--red)}.privacy .lock{font-size:32px}.privacy h2,.poll h2,.suggest h2{color:var(--navy);margin:6px 0 8px}.privacy strong{color:var(--red)}
+.poll{border-top:7px solid var(--navy)}.race-tag{display:inline-block;background:var(--navy);color:#fff;border-radius:999px;padding:7px 13px;font-weight:bold;font-size:12px;letter-spacing:.6px}.sub{color:#647087;margin:5px 0 18px}
+.party{margin:20px 0 8px;color:var(--red);font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #edf0f5;padding-bottom:6px}
+.option{display:flex;align-items:center;gap:12px;border:2px solid #dce3ed;padding:13px 15px;border-radius:12px;margin:8px 0;cursor:pointer;transition:.15s}.option:hover{transform:translateX(3px);border-color:#25549a;background:#f7faff}.option input{width:20px;height:20px;accent-color:var(--red)}
+button{border:0;border-radius:12px;padding:16px 18px;font-size:16px;font-weight:900;cursor:pointer}.vote{width:100%;color:#fff;margin-top:18px;background:linear-gradient(90deg,#a90824,var(--red2));box-shadow:0 6px 15px rgba(200,16,46,.25)}
+.results{margin-top:24px;border-top:1px solid #dde3ec;padding-top:18px}.results h3{color:var(--navy);margin:0 0 15px}.result{margin:11px 0}.rline{display:flex;justify-content:space-between;gap:10px;font-size:14px}.bar{height:12px;background:#e7ebf2;border-radius:99px;overflow:hidden;margin-top:5px}.fill{height:100%;background:linear-gradient(90deg,#153f7d,var(--red));transition:.35s}.total{text-align:right;font-weight:800;margin-top:15px}
+.success{display:none;text-align:center;color:#08783e;font-weight:900;margin-top:14px}.thanks{text-align:center;border:4px solid var(--red);background:linear-gradient(135deg,#fff 0%,#f5f8ff 50%,#fff3f5 100%)}.thanks .stars{font-size:26px;color:var(--gold);letter-spacing:7px}.thanks h2{color:var(--navy);font-size:clamp(30px,5vw,45px);margin:9px 0}.thanks p{font-size:19px}
+.suggest{border-top:7px solid #2459a6;text-align:center}.suggest textarea{width:100%;min-height:130px;border:2px solid #ccd6e5;border-radius:13px;padding:15px;font:inherit;resize:vertical}.suggest .send{background:var(--navy);color:#fff;margin-top:12px;min-width:240px}.small{font-size:13px;color:#69758a}.notice{text-align:center;font-size:12px;color:#687184;padding:8px 20px 30px}
+@media(max-width:600px){.panel{padding:20px}.hero{padding-top:35px}.option:hover{transform:none}}
+.cc-sitebar{background:#141414;border-bottom:3px solid #ff8c00;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.cc-brand{color:#fff;font-size:20px;font-weight:800;text-decoration:none}.cc-brand span{color:#ffaa33}
+.cc-nav{display:flex;gap:15px;flex-wrap:wrap}.cc-nav a{color:#eee;text-decoration:none;font-weight:700;font-size:14px}.cc-nav a:hover{color:#ffaa33}
+.return-home{display:inline-block;margin-top:20px;background:linear-gradient(90deg,#ff8c00,#ffaa33);color:#111;text-decoration:none;font-weight:900;padding:14px 24px;border-radius:12px}
+.cc-footer{background:#141414;border-top:2px solid #ff8c00;text-align:center;padding:28px 18px 36px;margin-top:35px}.cc-footer a{color:#eee;text-decoration:none;margin:0 8px;line-height:2}.cc-footer a:hover{color:#ffaa33}
+</style></head><body>
+<div class="cc-sitebar">
+  <a class="cc-brand" href="index.html">THE <span>COUNTY COMPASS</span></a>
+  <nav class="cc-nav">
+    <a href="index.html">Home</a>
+    <a href="businesses.html">Businesses</a>
+    <a href="deals.html">Deals</a>
+    <a href="events.html">Events</a>
+    <a href="hiring.html">Hiring</a>
+    <a href="submit-listing.html">Submit Listing</a>
+    <a href="advertise.html">Advertise</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</div>
+<header class="hero"><div class="flagline"></div><h1>COUNTY COMPASS<br>COMMUNITY POLL</h1><div class="voice">🇺🇸 Make Your Voice Heard 🇺🇸</div><div class="date">Unofficial Community Poll • August 2026</div></header>
+<main class="wrap">
+<section class="panel privacy"><div class="lock">🔒</div><h2>Your Vote Is Private</h2><p>The County Compass does <strong>not</strong> ask for or store your name, email address, phone number, or other personal information with your vote.</p><p><strong>Only the vote you cast is recorded and added to the public tally.</strong></p></section>
+
+<section class="panel" style="border-top:7px solid #f2c14e;text-align:center">
+<h2 style="color:#061a3d;margin-top:0">Candidate Information Disclaimer</h2>
+<p><strong>The candidate information displayed on this page was compiled with the assistance of ChatGPT, an artificial intelligence service.</strong></p>
+<p>While every effort has been made to present accurate and current information, The County Compass cannot independently verify that this list is 100% complete or accurate. Candidate filings, qualifications, withdrawals, and ballot status may change.</p>
+<p><strong>Visitors should verify official candidate and election information with the appropriate Florida election authorities before relying on this poll as a complete list of candidates.</strong></p>
+</section>
+
+<section class="panel poll"><span class="race-tag">2026 FLORIDA ELECTION</span><h2>Florida Governor</h2><div class="sub">Who do you support? Select one candidate.</div><form data-race="governor">
+<div class="party">Republican</div>
+<label class="option"><input type="radio" name="governor" value="Charles Burkett">Charles Burkett</label><label class="option"><input type="radio" name="governor" value="Jay Collins">Jay Collins</label><label class="option"><input type="radio" name="governor" value="Shea Cruel">Shea Cruel</label><label class="option"><input type="radio" name="governor" value="Jenny Patricia Curtman">Jenny Patricia Curtman</label><label class="option"><input type="radio" name="governor" value="Byron Donalds">Byron Donalds</label><label class="option"><input type="radio" name="governor" value="James Fishback">James Fishback</label><label class="option"><input type="radio" name="governor" value="Jim Holcomb">Jim Holcomb</label><label class="option"><input type="radio" name="governor" value="Daniel J. Imperato">Daniel J. Imperato</label><label class="option"><input type="radio" name="governor" value="John Joseph Mercadante">John Joseph Mercadante</label><label class="option"><input type="radio" name="governor" value="Paul Renner">Paul Renner</label><label class="option"><input type="radio" name="governor" value="Rachel Rodriguez">Rachel Rodriguez</label><label class="option"><input type="radio" name="governor" value="James Walker Shaw">James Walker Shaw</label><label class="option"><input type="radio" name="governor" value="Caneste Succe">Caneste Succe</label><label class="option"><input type="radio" name="governor" value="Bobby Williams">Bobby Williams</label>
+<div class="party">Democratic</div><label class="option"><input type="radio" name="governor" value="Jerry Demings">Jerry Demings</label><label class="option"><input type="radio" name="governor" value="David Jolly">David Jolly</label><label class="option"><input type="radio" name="governor" value="Dayna Marie Foster">Dayna Marie Foster</label>
+<div class="party">Other</div><label class="option"><input type="radio" name="governor" value="Moliere Dimanche">Moliere Dimanche — Independent</label><label class="option"><input type="radio" name="governor" value="Jason Pizzo">Jason Pizzo — Independent</label><label class="option"><input type="radio" name="governor" value="Scott Jewett">Scott Jewett — Libertarian</label>
+<button class="vote">CAST MY VOTE FOR GOVERNOR</button><div class="success">✓ Vote recorded. Thank you for participating!</div></form><div class="results" data-results="governor"></div></section>
+
+<section class="panel poll"><span class="race-tag">FLORIDA DISTRICT 2</span><h2>U.S. House — Florida Congressional District 2</h2><div class="sub">Who do you support? Select one candidate.</div><form data-race="cd2">
+<div class="party">Republican</div><label class="option"><input type="radio" name="cd2" value="Keith Gross">Keith Gross</label><label class="option"><input type="radio" name="cd2" value="Austin Rogers">Austin Rogers</label><label class="option"><input type="radio" name="cd2" value="Audie Rowell">Audie Rowell</label><label class="option"><input type="radio" name="cd2" value="Jim Norton">Jim Norton</label><label class="option"><input type="radio" name="cd2" value="Evan Power">Evan Power</label><label class="option"><input type="radio" name="cd2" value="Luke Murphy">Luke Murphy</label><label class="option"><input type="radio" name="cd2" value="Nick Lewis">Nick Lewis</label>
+<div class="party">Democratic</div><label class="option"><input type="radio" name="cd2" value="Yen Bailey">Yen Bailey</label><label class="option"><input type="radio" name="cd2" value="Brice Barnes">Brice Barnes</label><label class="option"><input type="radio" name="cd2" value="Amanda Green">Amanda Green</label><label class="option"><input type="radio" name="cd2" value="Nic Zateslo">Nic Zateslo</label>
+<button class="vote">CAST MY VOTE FOR DISTRICT 2</button><div class="success">✓ Vote recorded. Thank you for participating!</div></form><div class="results" data-results="cd2"></div></section>
+
+<section class="panel thanks"><div class="stars">★ ★ ★ ★ ★</div><h2>THANK YOU FOR PARTICIPATING!</h2><p>Your participation helps give our community a voice.</p><p><strong>Thank you for being part of The County Compass community.</strong></p></section>
+
+<section class="panel suggest"><h2>What Would You Like to See Next?</h2><p>Have an idea for another community poll, local feature, or topic you'd like The County Compass to cover? Tell us below.</p><textarea id="suggestion" maxlength="1000" placeholder="Share your suggestion here..."></textarea><br><button class="send" id="sendSuggestion">SUBMIT SUGGESTION</button><div class="success" id="suggestSuccess">✓ Thank you! Your suggestion has been submitted.</div><p class="small">Suggestions are anonymous. Please do not include personal information.</p></section>
+<div style="text-align:center"><a class="return-home" href="index.html">← RETURN TO THE COUNTY COMPASS</a></div>
+<div class="notice">This poll is independently conducted by The County Compass. It is not affiliated with or administered by any government agency, election office, political party, candidate, or campaign. Results represent only responses submitted through this poll and are not official election results or a scientific survey.</div>
+</main>
+<footer class="cc-footer">
+  <div style="color:#ffaa33;font-weight:800;margin-bottom:8px">Explore The County Compass</div>
+  <a href="index.html">Home</a>
+  <a href="businesses.html">Business Directory</a>
+  <a href="deals.html">Deals</a>
+  <a href="events.html">Events</a>
+  <a href="hiring.html">Hiring</a>
+  <a href="submit-listing.html">Submit Listing</a>
+  <a href="contact.html">Contact</a>
+</footer>
+<script>
+const races={governor:[...document.querySelectorAll('input[name=governor]')].map(x=>x.value),cd2:[...document.querySelectorAll('input[name=cd2]')].map(x=>x.value)};
+function load(r){try{return JSON.parse(localStorage.getItem('cc_poll_'+r))||{}}catch(e){return{}}}function save(r,d){localStorage.setItem('cc_poll_'+r,JSON.stringify(d))}
+function render(r){const d=load(r),box=document.querySelector('[data-results="'+r+'"]'),total=Object.values(d).reduce((a,b)=>a+b,0);box.innerHTML='<h3>Current Community Tally</h3>';races[r].forEach(n=>{const v=d[n]||0,p=total?Math.round(v/total*100):0;box.insertAdjacentHTML('beforeend',`<div class="result"><div class="rline"><span>${n}</span><strong>${v} (${p}%)</strong></div><div class="bar"><div class="fill" style="width:${p}%"></div></div></div>`)});box.insertAdjacentHTML('beforeend',`<div class="total">${total} total vote${total===1?'':'s'}</div>`)}
+document.querySelectorAll('form[data-race]').forEach(f=>f.addEventListener('submit',e=>{e.preventDefault();const r=f.dataset.race,p=f.querySelector('input:checked');if(!p){alert('Please select a candidate first.');return}const d=load(r);d[p.value]=(d[p.value]||0)+1;save(r,d);render(r);f.querySelector('.success').style.display='block';f.querySelectorAll('input').forEach(i=>i.disabled=true);f.querySelector('button').disabled=true}));
+document.getElementById('sendSuggestion').onclick=()=>{const t=document.getElementById('suggestion');if(!t.value.trim()){alert('Please enter a suggestion first.');return}const a=JSON.parse(localStorage.getItem('cc_suggestions')||'[]');a.push(t.value.trim());localStorage.setItem('cc_suggestions',JSON.stringify(a));t.value='';document.getElementById('suggestSuccess').style.display='block'};
+render('governor');render('cd2');
+</script></body></html>
