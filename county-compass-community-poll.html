@@ -38,7 +38,7 @@ button{border:0;border-radius:12px;padding:16px 18px;font-size:16px;font-weight:
 </div>
 <header class="hero"><div class="flagline"></div><h1>COUNTY COMPASS<br>COMMUNITY POLL</h1><div class="voice">🇺🇸 Make Your Voice Heard 🇺🇸</div><div class="date">Unofficial Community Poll • August 2026</div></header>
 <main class="wrap">
-<section class="panel privacy"><div class="lock">🔒</div><h2>Your Vote Is Private</h2><p>The County Compass does <strong>not</strong> ask for or store your name, email address, phone number, or other personal information with your vote.</p><p><strong>Only the vote you cast is recorded and added to the public tally.</strong></p></section>
+<section class="panel privacy"><div class="lock">🔒</div><h2>Your Vote Is Private</h2><p>The County Compass does <strong>not</strong> ask for your name, email address, phone number, or an account to vote.</p><p><strong>Your vote is recorded anonymously.</strong> Limited technical information is processed automatically and converted into a one-way anonymous identifier solely to help prevent duplicate voting. The raw technical information is not stored with your vote.</p></section>
 
 <section class="panel" style="border-top:7px solid #f2c14e;text-align:center">
 <h2 style="color:#061a3d;margin-top:0">Candidate Information Disclaimer</h2>
@@ -76,10 +76,65 @@ button{border:0;border-radius:12px;padding:16px 18px;font-size:16px;font-weight:
   <a href="contact.html">Contact</a>
 </footer>
 <script>
-const races={governor:[...document.querySelectorAll('input[name=governor]')].map(x=>x.value),cd2:[...document.querySelectorAll('input[name=cd2]')].map(x=>x.value)};
-function load(r){try{return JSON.parse(localStorage.getItem('cc_poll_'+r))||{}}catch(e){return{}}}function save(r,d){localStorage.setItem('cc_poll_'+r,JSON.stringify(d))}
-function render(r){const d=load(r),box=document.querySelector('[data-results="'+r+'"]'),total=Object.values(d).reduce((a,b)=>a+b,0);box.innerHTML='<h3>Current Community Tally</h3>';races[r].forEach(n=>{const v=d[n]||0,p=total?Math.round(v/total*100):0;box.insertAdjacentHTML('beforeend',`<div class="result"><div class="rline"><span>${n}</span><strong>${v} (${p}%)</strong></div><div class="bar"><div class="fill" style="width:${p}%"></div></div></div>`)});box.insertAdjacentHTML('beforeend',`<div class="total">${total} total vote${total===1?'':'s'}</div>`)}
-document.querySelectorAll('form[data-race]').forEach(f=>f.addEventListener('submit',e=>{e.preventDefault();const r=f.dataset.race,p=f.querySelector('input:checked');if(!p){alert('Please select a candidate first.');return}const d=load(r);d[p.value]=(d[p.value]||0)+1;save(r,d);render(r);f.querySelector('.success').style.display='block';f.querySelectorAll('input').forEach(i=>i.disabled=true);f.querySelector('button').disabled=true}));
-document.getElementById('sendSuggestion').onclick=()=>{const t=document.getElementById('suggestion');if(!t.value.trim()){alert('Please enter a suggestion first.');return}const a=JSON.parse(localStorage.getItem('cc_suggestions')||'[]');a.push(t.value.trim());localStorage.setItem('cc_suggestions',JSON.stringify(a));t.value='';document.getElementById('suggestSuccess').style.display='block'};
+const races={
+  governor:[...document.querySelectorAll('input[name=governor]')].map(x=>x.value),
+  cd2:[...document.querySelectorAll('input[name=cd2]')].map(x=>x.value)
+};
+
+async function render(r){
+  const box=document.querySelector('[data-results="'+r+'"]');
+  try{
+    const res=await fetch('/.netlify/functions/community-poll?race='+encodeURIComponent(r),{cache:'no-store'});
+    const data=await res.json();
+    const d=data.tally||{}, total=data.total||0;
+    box.innerHTML='<h3>Current Community Tally</h3>';
+    races[r].forEach(n=>{
+      const v=d[n]||0,p=total?Math.round(v/total*100):0;
+      box.insertAdjacentHTML('beforeend',`<div class="result"><div class="rline"><span>${n}</span><strong>${v} (${p}%)</strong></div><div class="bar"><div class="fill" style="width:${p}%"></div></div></div>`);
+    });
+    box.insertAdjacentHTML('beforeend',`<div class="total">${total} total vote${total===1?'':'s'}</div>`);
+  }catch(e){
+    box.innerHTML='<h3>Current Community Tally</h3><div class="small">Tally temporarily unavailable.</div>';
+  }
+}
+
+document.querySelectorAll('form[data-race]').forEach(f=>f.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const r=f.dataset.race,p=f.querySelector('input:checked'),button=f.querySelector('button');
+  if(!p){alert('Please select a candidate first.');return}
+  button.disabled=true;
+  try{
+    const res=await fetch('/.netlify/functions/community-poll',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({race:r,candidate:p.value})
+    });
+    const data=await res.json();
+    if(res.status===409){
+      alert('A vote from this browser/device has already been recorded for this race.');
+      f.querySelectorAll('input').forEach(i=>i.disabled=true);
+      await render(r);
+      return;
+    }
+    if(!res.ok) throw new Error(data.error||'Vote failed');
+    f.querySelector('.success').style.display='block';
+    f.querySelectorAll('input').forEach(i=>i.disabled=true);
+    await render(r);
+  }catch(err){
+    alert('Your vote could not be recorded. Please try again.');
+    button.disabled=false;
+  }
+}));
+
+document.getElementById('sendSuggestion').onclick=()=>{
+  const t=document.getElementById('suggestion');
+  if(!t.value.trim()){alert('Please enter a suggestion first.');return}
+  const a=JSON.parse(localStorage.getItem('cc_suggestions')||'[]');
+  a.push(t.value.trim());
+  localStorage.setItem('cc_suggestions',JSON.stringify(a));
+  t.value='';
+  document.getElementById('suggestSuccess').style.display='block'
+};
+
 render('governor');render('cd2');
 </script></body></html>
