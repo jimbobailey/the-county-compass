@@ -780,7 +780,7 @@
           .replace(/[^a-z0-9]+/g, "-")
           .replace(/^-+|-+$/g, "");
 
-      return imageType + "-" + baseName + "." + extension;
+      return baseName + "." + extension;
     }
 
     function handleImageUpload(event, pathInputId, previewId, folderPath, imageType) {
