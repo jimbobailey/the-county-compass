@@ -219,6 +219,7 @@ function getCategoryImage(category) {
     "Lodging & Travel": "images/categories/professional-services.jpg",
     "Massage & Spa Services": "images/categories/health-beauty.jpg",
     "Medical & Dental": "images/categories/health-beauty.jpg",
+    "Mental Health Services": "images/categories/professional-services.jpg",
     "Moving & Hauling": "images/categories/home-services.jpg",
     "Photography & Media": "images/categories/professional-services.jpg",
     "Pools & Outdoor Living": "images/categories/home-services.jpg",

@@ -25,6 +25,7 @@ const categoryImages = {
   "Locksmithing": "images/categories/professional-services.jpg",
   "Massage & Spa Services": "images/categories/health-beauty.jpg",
   "Medical & Dental": "images/categories/health-beauty.jpg",
+  "Mental Health Services": "images/categories/professional-services.jpg",
   "Professional Services": "images/categories/professional-services.jpg",
   "Real Estate": "images/categories/real-estate.jpg",
   "RV Sales & Service": "images/categories/automotive.jpg",
