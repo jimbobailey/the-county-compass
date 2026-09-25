@@ -1170,7 +1170,7 @@ a[style*="#ff8c00"]:hover {
 }
 
 /* Orange inline text links */
-a[style*="color:#ffaa33"] {
+a[style*="#ffaa33"] {
   color: var(--link) !important;
 }
 
