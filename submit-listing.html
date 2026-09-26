@@ -325,6 +325,173 @@
 
 
   </style>
+  <!-- Black / chrome / slate look to match the rest of the site (colors only) -->
+  <style>
+    body {
+      background: #0a0a0b;
+      color: #f5f5f7;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header {
+      background: #0a0a0b;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+      padding: 28px 16px;
+    }
+
+    header h1,
+    h2,
+    h3 {
+      background: linear-gradient(180deg, #ffffff 0%, #e4e6e9 45%, #9ea1a8 70%, #d9dbdf 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: #e4e6e9;
+    }
+
+    header h1 {
+      font-size: 38px;
+      font-weight: 700;
+    }
+
+    header p {
+      color: #a8abb2;
+    }
+
+    .box {
+      background: linear-gradient(180deg, #23272d 0%, #1a1d21 100%);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 22px;
+      padding: 26px;
+    }
+
+    .info-box {
+      background: #121417;
+      border-left: 3px solid #c9ccd2;
+      border-radius: 12px;
+      color: #d6d8dc;
+    }
+
+    .price-card {
+      background: #121417;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      color: #f5f5f7;
+    }
+
+    .price-card strong,
+    .pricing-title {
+      color: #e4e6e9;
+    }
+
+    .small-note {
+      color: #a8abb2;
+    }
+
+    label {
+      color: #e4e6e9;
+      font-weight: 600;
+    }
+
+    input,
+    select,
+    textarea {
+      background: #121417;
+      border: 1px solid #3a3e45;
+      border-radius: 12px;
+      color: #f5f5f7;
+      font-family: inherit;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #c9ccd2;
+      box-shadow: 0 0 0 4px rgba(201, 204, 210, 0.18);
+    }
+
+    button {
+      background: linear-gradient(180deg, #fafafa 0%, #d6d8dc 42%, #9a9da4 58%, #e2e4e7 100%);
+      color: #111214;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 980px;
+      font-family: inherit;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    button:hover {
+      background: linear-gradient(180deg, #ffffff 0%, #e6e8eb 42%, #b0b3b9 58%, #f0f1f3 100%);
+    }
+
+    .pricing-summary {
+      background: #121417;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+    }
+
+    /* "Free right now" banner: still stands out, in chrome and slate */
+    .free-now-banner {
+      background: linear-gradient(180deg, #2b3037 0%, #1a1d21 100%);
+      border: 2px solid #c9ccd2;
+      border-radius: 28px;
+      color: #f5f5f7;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.8), 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(201, 204, 210, 0.15);
+      animation: none;
+    }
+
+    .free-now-banner::before {
+      background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0) 60%, transparent 100%);
+    }
+
+    .free-now-alert {
+      background: linear-gradient(180deg, #fafafa 0%, #d6d8dc 42%, #9a9da4 58%, #e2e4e7 100%);
+      color: #111214;
+      border: 0;
+    }
+
+    .free-now-big {
+      background: linear-gradient(180deg, #ffffff 0%, #e4e6e9 45%, #9ea1a8 70%, #d9dbdf 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: #e4e6e9;
+      text-shadow: none;
+    }
+
+    .free-now-small {
+      color: #d6d8dc;
+      font-weight: 600;
+    }
+
+    .free-now-bottom {
+      background: #0a0a0b;
+      color: #a8abb2;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-weight: 500;
+    }
+
+    a {
+      color: #c9ccd2;
+    }
+
+    .site-seo-footer {
+      background: #111316 !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.09) !important;
+    }
+
+    .site-seo-footer p:first-child {
+      color: #f5f5f7 !important;
+    }
+
+    .site-seo-footer a {
+      color: #a8abb2 !important;
+      font-weight: 400 !important;
+      text-decoration: none;
+    }
+  </style>
 </head>
 
 <body>

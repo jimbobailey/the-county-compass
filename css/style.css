@@ -356,10 +356,20 @@ textarea:focus-visible {
 }
 
 .featured-heading-img {
-  width: 480px;
-  max-width: 70%;
-  height: auto;
-  display: block;
+  display: none; /* old blue/orange picture — replaced by the chrome heading below */
+}
+
+.featured-heading-wrap::before {
+  content: "Featured Businesses";
+  font-size: clamp(34px, 5vw, 56px);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.07;
+  text-align: center;
+  background: var(--chrome-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 #featuredBusinesses {
