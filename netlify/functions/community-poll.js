@@ -47,7 +47,7 @@ exports.default = async function handler(request) {
   try {
     if (request.method === "OPTIONS") return json({}, 200);
 
-    const store = getStore(STORE_NAME);
+    const store = getStore({ name: STORE_NAME, consistency: "strong" });
     const url = new URL(request.url);
 
     if (request.method === "GET") {

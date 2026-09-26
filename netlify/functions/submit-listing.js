@@ -53,7 +53,7 @@ exports.default = async function handler(request) {
   try {
     const body = await request.json();
 
-    const store = getStore(STORE_NAME);
+    const store = getStore({ name: STORE_NAME, consistency: "strong" });
     const submissionId = "submission-" + Date.now();
     const decodedImage = decodeSubmittedImage(body.graphicUpload);
     let uploadedImageUrl = String(body.imageLink || "").trim();

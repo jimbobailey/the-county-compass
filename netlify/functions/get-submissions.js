@@ -28,7 +28,7 @@ exports.default = async function handler(request) {
   }
 
   try {
-    const store = getStore(STORE_NAME);
+    const store = getStore({ name: STORE_NAME, consistency: "strong" });
     const submissions =
       await store.get(SUBMISSIONS_KEY, { type: "json" }) || [];
 

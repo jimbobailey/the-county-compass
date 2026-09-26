@@ -67,15 +67,26 @@ document.addEventListener("DOMContentLoaded", function () {
         const sourceDimensions = bitmap.width + "x" + bitmap.height;
         bitmap.close();
 
-        const blob = await new Promise(function (resolve, reject) {
-            canvas.toBlob(function (result) {
-                if (result) {
-                    resolve(result);
-                } else {
-                    reject(new Error("The image could not be prepared."));
-                }
-            }, "image/webp", 0.84);
-        });
+        function canvasToBlob(type, quality) {
+            return new Promise(function (resolve, reject) {
+                canvas.toBlob(function (result) {
+                    if (result) {
+                        resolve(result);
+                    } else {
+                        reject(new Error("The image could not be prepared."));
+                    }
+                }, type, quality);
+            });
+        }
+
+        let blob = await canvasToBlob("image/webp", 0.84);
+
+        // Some browsers (mostly older iPhones/iPads) can't make WEBP and
+        // quietly hand back a huge PNG instead. Use a normal JPG in that case
+        // so the picture stays well under the 2 MB limit.
+        if (blob.type !== "image/webp") {
+            blob = await canvasToBlob("image/jpeg", 0.85);
+        }
 
         const dataUrl = await new Promise(function (resolve, reject) {
             const reader = new FileReader();
@@ -94,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         return {
             name: String(file.name || "listing-image").replace(/[^a-zA-Z0-9._-]/g, "-"),
-            type: "image/webp",
+            type: blob.type,
             dataUrl: dataUrl,
             buildMarker: IMAGE_BUILD_MARKER,
             sourceDimensions: sourceDimensions,

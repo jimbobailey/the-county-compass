@@ -32,7 +32,7 @@ exports.default = async function handler(request) {
   }
 
   const store =
-    getStore(STORE_NAME);
+    getStore({ name: STORE_NAME, consistency: "strong" });
 
   if (request.method === "GET") {
 

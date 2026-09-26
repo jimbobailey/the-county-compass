@@ -30,7 +30,7 @@ exports.default = async function handler(request) {
     });
   }
 
-  const store = getStore(STORE_NAME);
+  const store = getStore({ name: STORE_NAME, consistency: "strong" });
 
   if (request.method === "GET") {
     const savedData = await store.get(DATA_KEY, { type: "json" });
