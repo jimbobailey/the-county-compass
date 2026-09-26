@@ -114,9 +114,10 @@ function renderHiringPosts() {
 
   if (activePosts.length === 0) {
     hiringList.innerHTML = `
-      <p class="empty-message">
-        No hiring opportunities available right now.
-      </p>
+<div class="empty-message">
+        <p>No job openings posted right now. Hiring?</p>
+        <a class="empty-cta" href="submit-listing.html">Post a Job Free</a>
+      </div>
     `;
     return;
   }

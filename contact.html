@@ -69,8 +69,13 @@
         name="contact-request"
         method="POST"
         data-netlify="true"
+        netlify-honeypot="bot-field"
         class="admin-card"
       >
+
+        <p class="form-trap" aria-hidden="true">
+          <label>Leave this empty: <input name="bot-field" tabindex="-1" autocomplete="off"></label>
+        </p>
 
         <input
           type="hidden"

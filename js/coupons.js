@@ -93,9 +93,10 @@ function renderCoupons(couponsToShow) {
 
   if (couponsToShow.length === 0) {
     couponGrid.innerHTML = `
-      <p class="empty-message">
-        No coupons found.
-      </p>
+      <div class="empty-message">
+        <p>No deals posted right now. Have a special or coupon?</p>
+        <a class="empty-cta" href="submit-listing.html">Post a Deal Free</a>
+      </div>
     `;
     return;
   }

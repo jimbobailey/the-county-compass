@@ -153,6 +153,19 @@ function applyCategoryFromUrl() {
     categoryFilter.value =
       categoryFromUrl;
   }
+
+  // Search typed on the homepage (businesses.html?search=...)
+  const searchFromUrl =
+    urlParams.get("search");
+
+  if (
+    searchFromUrl &&
+    businessSearchInput &&
+    !businessSearchInput.value
+  ) {
+    businessSearchInput.value =
+      searchFromUrl;
+  }
 }
 
 function getCategoryImage(category) {
@@ -249,9 +262,10 @@ function renderBusinesses(businessesToShow) {
 
   if (businessesToShow.length === 0) {
     businessList.innerHTML = `
-      <p class="empty-message">
-        No businesses found.
-      </p>
+<div class="empty-message">
+        <p>No businesses match that search yet. Know one that should be here?</p>
+        <a class="empty-cta" href="submit-listing.html">Add a Business Free</a>
+      </div>
     `;
 
     return;

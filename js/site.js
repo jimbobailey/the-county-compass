@@ -133,9 +133,10 @@ function renderFeaturedBusinesses() {
 
   if (featuredBusinesses.length === 0) {
     featuredContainer.innerHTML = `
-      <p class="empty-message">
-        No featured businesses available yet.
-      </p>
+<div class="empty-message">
+        <p>Your business could be featured here.</p>
+        <a class="empty-cta" href="submit-listing.html">Get Featured</a>
+      </div>
     `;
     return;
   }

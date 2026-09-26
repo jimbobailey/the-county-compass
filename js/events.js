@@ -116,9 +116,10 @@ function renderEvents(eventsToShow) {
   if (eventsToShow.length === 0) {
 
     eventsList.innerHTML = `
-      <p class="empty-message">
-        No upcoming events found.
-      </p>
+<div class="empty-message">
+        <p>No upcoming events yet. Got something happening in Jackson County?</p>
+        <a class="empty-cta" href="submit-listing.html">Add Your Event</a>
+      </div>
     `;
 
     return;
