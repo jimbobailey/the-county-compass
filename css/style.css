@@ -95,7 +95,7 @@ textarea:focus-visible {
   top: 0;
   z-index: 50;
   min-height: 76px;
-  padding: 10px max(22px, calc((100% - 1180px) / 2));
+  padding: 10px max(22px, calc((100% - 1280px) / 2));
   background: rgba(10, 10, 11, 0.72);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
@@ -131,7 +131,7 @@ textarea:focus-visible {
 
 .main-nav {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
@@ -139,9 +139,9 @@ textarea:focus-visible {
   color: #111214;
   text-decoration: none;
   background: linear-gradient(180deg, #fafafa 0%, #d6d8dc 42%, #9a9da4 58%, #e2e4e7 100%);
-  padding: 10px 20px;
+  padding: 9px 16px;
   border-radius: var(--radius-pill);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   letter-spacing: -0.01em;
   border: 1px solid rgba(255, 255, 255, 0.35);
@@ -1270,6 +1270,20 @@ a[style*="color:#ffaa33"] {
 
   .home-link-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Mid-size screens: when the buttons can't fit beside the name,
+   center the name and put the buttons in a centered row below it */
+@media (min-width: 769px) and (max-width: 1200px) {
+  .site-header {
+    justify-content: center;
+    row-gap: 10px;
+  }
+
+  .main-nav {
+    width: 100%;
+    justify-content: center;
   }
 }
 
