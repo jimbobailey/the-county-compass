@@ -174,7 +174,10 @@ function makeGoodUrl(link) {
   return "https://" + link;
 }
 
-function getExpirationText(expiration) {
+function getExpirationText(expiration, item) {
+  if (item && (item.neverExpires === "Yes" || item.status === "Never Expires")) {
+    return "Permanent";
+  }
   if (!expiration) return "";
 
   const today = new Date();
@@ -247,7 +250,8 @@ async function addBusinessPreview() {
   const website = makeGoodUrl(getValue("businessWebsite"));
   const image = getValue("businessImage");
   const paid = getValue("businessPaid");
-  const expiration = getValue("businessExpiration");
+  const neverExpires = getValue("businessDuration") === "forever" ? "Yes" : "No";
+  const expiration = neverExpires === "Yes" ? "" : getValue("businessExpiration");
   const featured = getValue("businessFeatured");
   const featuredLocation = getValue("businessFeaturedLocation");
   const description = getValue("businessDescription");
@@ -285,6 +289,7 @@ async function addBusinessPreview() {
           image,
           paid,
           expiration,
+          neverExpires,
           featured,
           featuredLocation,
           status,
@@ -313,6 +318,7 @@ async function addBusinessPreview() {
       image,
       paid,
       expiration,
+      neverExpires,
       featured,
       featuredLocation,
       status,
@@ -341,7 +347,7 @@ function renderBusinessPreviews() {
         : getCategoryImage(business.category);
 
     const fallbackImage = getCategoryImage(business.category);
-    const expirationText = getExpirationText(business.expiration);
+    const expirationText = getExpirationText(business.expiration, business);
 
     const emailLine =
       business.email && String(business.email).trim() !== ""
@@ -397,6 +403,7 @@ function editBusiness(id) {
   setValue("businessImage", business.image);
   setValue("businessPaid", business.paid);
   setValue("businessExpiration", business.expiration || "");
+  setValue("businessDuration", business.neverExpires === "Yes" ? "forever" : "");
   setValue("businessFeatured", business.featured);
   setValue("businessFeaturedLocation", business.featuredLocation || "homepage");
   setValue("businessStatus", business.status || "Active");
@@ -432,6 +439,7 @@ function clearBusinessForm() {
   setValue("businessImage", "");
   setValue("businessPaid", "No");
   setValue("businessExpiration", "");
+  setValue("businessDuration", "");
   setValue("businessFeatured", "No");
   setValue("businessFeaturedLocation", "homepage");
   setValue("businessStatus", "Active");
@@ -748,7 +756,8 @@ async function addAdPreview() {
   const image = getValue("adImage").replace(/\\/g, "/");
   const link = makeGoodUrl(getValue("adLink"));
   const active = getValue("adActive");
-  const expiration = getValue("adExpiration");
+  const neverExpires = getValue("adNeverExpires") === "No" ? "No" : "Yes";
+  const expiration = neverExpires === "Yes" ? "" : getValue("adExpiration");
 
   if (!title || !location || !shape || !image) {
     alert("Please complete all ad fields.");
@@ -766,7 +775,8 @@ async function addAdPreview() {
           image,
           link,
           active,
-          expiration
+          expiration,
+          neverExpires
         };
       }
 
@@ -784,7 +794,8 @@ async function addAdPreview() {
       image,
       link,
       active,
-      expiration
+      expiration,
+      neverExpires
     });
 
     alert("Advertisement added.");
@@ -804,7 +815,7 @@ function renderAdPreviews() {
 
   ads.forEach(function(ad) {
     const shape = ad.shape ? ad.shape.toLowerCase() : "square";
-    const expirationText = getExpirationText(ad.expiration);
+    const expirationText = getExpirationText(ad.expiration, ad);
 
     area.innerHTML += `
       <article class="ad-preview-card ad-${shape}">
@@ -840,6 +851,7 @@ function editAd(id) {
   setValue("adLink", ad.link);
   setValue("adActive", ad.active);
   setValue("adExpiration", ad.expiration || "");
+  setValue("adNeverExpires", ad.neverExpires === "No" && ad.expiration ? "No" : "Yes");
 
   setPreviewImage("adImagePreview", ad.image);
 
@@ -866,6 +878,7 @@ function clearAdForm() {
   setValue("adLink", "");
   setValue("adActive", "Yes");
   setValue("adExpiration", "");
+  setValue("adNeverExpires", "Yes");
   resetPreviewImage("adImagePreview");
 }
 
@@ -904,7 +917,7 @@ function filterBusinesses() {
         : getCategoryImage(business.category);
 
     const fallbackImage = getCategoryImage(business.category);
-    const expirationText = getExpirationText(business.expiration);
+    const expirationText = getExpirationText(business.expiration, business);
 
     const emailLine =
       business.email && String(business.email).trim() !== ""

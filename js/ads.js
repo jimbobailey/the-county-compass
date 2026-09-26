@@ -42,6 +42,9 @@ function makeGoodUrl(link) {
   return "https://" + link;
 }
 
+// Listings and ads are FREE for now: nothing expires. Set to false when paid plans start.
+const CC_FREE_MODE = true;
+
 function getActiveAds(locationName) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -55,6 +58,10 @@ function getActiveAds(locationName) {
 
     if (ad.active !== "Yes") {
       return false;
+    }
+
+    if (CC_FREE_MODE) {
+      return true;
     }
 
     if (

@@ -221,6 +221,7 @@
 
 <select id="businessDuration">
   <option value="">Select Duration</option>
+  <option value="forever">Permanent (never expires)</option>
   <option value="30">Monthly</option>
   <option value="90">Quarterly</option>
   <option value="365">Yearly</option>
@@ -660,6 +661,11 @@
           <select id="adActive">
             <option value="Yes">Active: Yes</option>
             <option value="No">Active: No</option>
+          </select>
+
+          <select id="adNeverExpires">
+            <option value="Yes">Ends: Permanent (never expires)</option>
+            <option value="No">Ends: On the date below</option>
           </select>
 
           <label class="image-upload-label">
