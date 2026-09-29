@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
         canvas.width = OUTPUT_IMAGE_WIDTH;
         canvas.height = OUTPUT_IMAGE_HEIGHT;
 
-        // Event flyers keep their own shape (most are 8.5 x 11 paper size)
+        // Event, deal and job flyers keep their own shape (most are 8.5 x 11 paper size)
         // instead of being cropped to a square. Fit inside 1275 x 1650.
         if (keepShape) {
             const fit = Math.min(1275 / bitmap.width, 1650 / bitmap.height, 1);
@@ -526,7 +526,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 data.graphicUpload = await prepareSubmissionImage(
                     selectedImage,
-                    data.submissionType === "event"
+                    ["event", "coupon", "hiring"].includes(data.submissionType)
                 );
 
                 if (data.graphicUpload) {

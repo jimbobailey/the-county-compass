@@ -120,7 +120,7 @@ function renderCoupons(couponsToShow) {
         );
 
       couponGrid.innerHTML += `
-        <article class="business-card compact-business-card">
+        <article class="business-card compact-business-card flyer-card">
 
           ${
             couponLink
@@ -142,13 +142,21 @@ function renderCoupons(couponsToShow) {
                 </a>
               `
               : `
-                <img
-                  src="${getCouponImage(coupon)}"
-                  alt="${coupon.title || "Coupon"}"
-                  class="business-card-image compact-business-image"
-                  loading="lazy"
-                  onerror="this.onerror=null; this.src='images/categories/coupons.jpg';"
+                <a
+                  href="${getCouponImage(coupon)}"
+                  target="_blank"
+                  rel="noopener"
+                  class="card-image-link flyer-open"
+                  aria-label="Open full-size coupon"
                 >
+                  <img
+                    src="${getCouponImage(coupon)}"
+                    alt="${coupon.title || "Coupon"}"
+                    class="business-card-image compact-business-image"
+                    loading="lazy"
+                    onerror="this.onerror=null; this.src='images/categories/coupons.jpg';"
+                  >
+                </a>
               `
           }
 
@@ -165,6 +173,16 @@ function renderCoupons(couponsToShow) {
           <p class="business-description compact-description">
             ${coupon.details || ""}
           </p>
+
+          ${couponLink ? `
+          <a
+            class="event-link"
+            href="${couponLink}"
+            target="_blank"
+            rel="noopener"
+          >
+            Get This Deal ↗
+          </a>` : ""}
 
         </article>
       `;

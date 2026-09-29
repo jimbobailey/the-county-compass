@@ -156,7 +156,7 @@ function renderEvents(eventsToShow) {
 
       eventsList.innerHTML += `
 
-        <article class="business-card compact-business-card event-card">
+        <article class="business-card compact-business-card event-card flyer-card">
 
           <a
             class="event-flyer"

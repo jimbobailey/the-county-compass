@@ -159,7 +159,7 @@ function renderHiringPosts() {
         : "";
 
     hiringList.innerHTML += `
-      <article class="business-card compact-business-card">
+      <article class="business-card compact-business-card flyer-card">
 
         ${
           postLink
@@ -181,13 +181,21 @@ function renderHiringPosts() {
               </a>
             `
             : `
-              <img
-                src="${imagePath}"
-                alt="${post.title || "Hiring opportunity"}"
-                class="business-card-image compact-business-image"
-                loading="lazy"
-                onerror="this.onerror=null; this.src='images/categories/hiring.jpg';"
+              <a
+                href="${imagePath}"
+                target="_blank"
+                rel="noopener"
+                class="card-image-link flyer-open"
+                aria-label="Open full-size job post"
               >
+                <img
+                  src="${imagePath}"
+                  alt="${post.title || "Hiring opportunity"}"
+                  class="business-card-image compact-business-image"
+                  loading="lazy"
+                  onerror="this.onerror=null; this.src='images/categories/hiring.jpg';"
+                >
+              </a>
             `
         }
 

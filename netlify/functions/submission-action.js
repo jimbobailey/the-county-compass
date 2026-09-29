@@ -210,6 +210,11 @@ details:
         image:
           submissionData.imageUrl || "",
 
+        website:
+          submissionData.dealLink ||
+          submissionData.website ||
+          "",
+
         expiration: "",
 
         active: "Yes"
