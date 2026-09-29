@@ -67,6 +67,9 @@ async function loadBusinessesFromServer() {
   );
 }
 
+// Listings are FREE for now: nothing expires. Set to false when paid plans start.
+var CC_FREE_MODE_BIZ = true;
+
 function getActiveBusinesses(businesses) {
   const today =
     new Date();
@@ -80,7 +83,8 @@ function getActiveBusinesses(businesses) {
 
     if (
       business.neverExpires === "Yes" ||
-      business.status === "Never Expires"
+      business.status === "Never Expires" ||
+      CC_FREE_MODE_BIZ
     ) {
       return true;
     }

@@ -82,7 +82,7 @@ function getActiveBusinesses(businesses) {
   today.setHours(0, 0, 0, 0);
 
   return businesses.filter(function(business) {
-    if (business.paid !== "Yes") {
+    if (business.paid !== "Yes" || business.neverExpires === "Yes") {
       return true;
     }
 
