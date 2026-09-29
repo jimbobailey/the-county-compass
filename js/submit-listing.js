@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const OUTPUT_IMAGE_HEIGHT = 1254;
     const IMAGE_BUILD_MARKER = "square-source-crop-v4-20260717";
 
-    async function prepareSubmissionImage(file) {
+    async function prepareSubmissionImage(file, keepShape) {
         if (!file || file.size === 0) {
             return null;
         }
@@ -33,6 +33,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const canvas = document.createElement("canvas");
         canvas.width = OUTPUT_IMAGE_WIDTH;
         canvas.height = OUTPUT_IMAGE_HEIGHT;
+
+        // Event flyers keep their own shape (most are 8.5 x 11 paper size)
+        // instead of being cropped to a square. Fit inside 1275 x 1650.
+        if (keepShape) {
+            const fit = Math.min(1275 / bitmap.width, 1650 / bitmap.height, 1);
+            canvas.width = Math.max(1, Math.round(bitmap.width * fit));
+            canvas.height = Math.max(1, Math.round(bitmap.height * fit));
+        }
 
         const context = canvas.getContext("2d");
         const sourceAspect = bitmap.width / bitmap.height;
@@ -99,8 +107,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const outputDimensions = verificationBitmap.width + "x" + verificationBitmap.height;
         verificationBitmap.close();
 
-        if (outputDimensions !== OUTPUT_IMAGE_WIDTH + "x" + OUTPUT_IMAGE_HEIGHT) {
-            throw new Error("Prepared image dimensions are " + outputDimensions + ", not 1254x1254.");
+        if (outputDimensions !== canvas.width + "x" + canvas.height) {
+            throw new Error("Prepared image dimensions are " + outputDimensions + ", not " + canvas.width + "x" + canvas.height + ".");
         }
 
         return {
@@ -516,7 +524,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     ? imageInput.files[0]
                     : null;
 
-                data.graphicUpload = await prepareSubmissionImage(selectedImage);
+                data.graphicUpload = await prepareSubmissionImage(
+                    selectedImage,
+                    data.submissionType === "event"
+                );
 
                 if (data.graphicUpload) {
                     data.resizeBuildMarker = data.graphicUpload.buildMarker;

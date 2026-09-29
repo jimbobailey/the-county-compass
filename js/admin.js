@@ -610,6 +610,7 @@ async function addEventPreview() {
   const date = getValue("eventDate");
   const time = getValue("eventTime");
   const image = getValue("eventImage");
+  const link = getValue("eventLink");
   const description = getValue("eventDescription");
   const status = getValue("eventStatus") || "Active";
 
@@ -629,6 +630,7 @@ async function addEventPreview() {
           date,
           time,
           image,
+          link,
           status,
           description
         };
@@ -648,6 +650,7 @@ async function addEventPreview() {
       date,
       time,
       image,
+      link,
       status,
       description
     });
@@ -715,6 +718,7 @@ function editEvent(id) {
   setValue("eventDate", event.date);
   setValue("eventTime", event.time);
   setValue("eventImage", event.image);
+  setValue("eventLink", event.link || "");
   setValue("eventStatus", event.status || "Active");
   setValue("eventDescription", event.description);
 
@@ -742,6 +746,7 @@ function clearEventForm() {
   setValue("eventDate", "");
   setValue("eventTime", "");
   setValue("eventImage", "");
+  setValue("eventLink", "");
   setValue("eventStatus", "Active");
   setValue("eventDescription", "");
   resetPreviewImage("eventImagePreview");

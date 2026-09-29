@@ -254,6 +254,9 @@ details:
         image:
           submissionData.imageUrl || "",
 
+        link:
+          submissionData.website || "",
+
         description:
           submissionData.description || ""
       };

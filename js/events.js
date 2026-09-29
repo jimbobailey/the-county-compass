@@ -71,6 +71,24 @@ function getActiveEvents() {
   });
 }
 
+function makeGoodUrl(link) {
+
+  if (!link || String(link).trim() === "") {
+    return "";
+  }
+
+  link = String(link).trim();
+
+  if (
+    link.startsWith("http://") ||
+    link.startsWith("https://")
+  ) {
+    return link;
+  }
+
+  return "https://" + link;
+}
+
 function formatEventDate(dateValue) {
 
   if (!dateValue) {
@@ -138,15 +156,23 @@ function renderEvents(eventsToShow) {
 
       eventsList.innerHTML += `
 
-        <article class="business-card compact-business-card">
+        <article class="business-card compact-business-card event-card">
 
-          <img
-            src="${getEventImage(event)}"
-            alt="${event.title}"
-            class="business-card-image compact-business-image"
-            loading="lazy"
-            onerror="this.onerror=null; this.src='images/categories/events.jpg';"
+          <a
+            class="event-flyer"
+            href="${getEventImage(event)}"
+            target="_blank"
+            rel="noopener"
+            title="Open full-size flyer"
           >
+            <img
+              src="${getEventImage(event)}"
+              alt="${event.title}"
+              class="event-flyer-image"
+              loading="lazy"
+              onerror="this.onerror=null; this.src='images/categories/events.jpg';"
+            >
+          </a>
 
           <h2>
             ${event.title}
@@ -171,6 +197,16 @@ function renderEvents(eventsToShow) {
           <p class="business-description compact-description">
             ${event.description}
           </p>
+
+          ${makeGoodUrl(event.link) ? `
+          <a
+            class="event-link"
+            href="${makeGoodUrl(event.link)}"
+            target="_blank"
+            rel="noopener"
+          >
+            Event Details ↗
+          </a>` : ""}
 
         </article>
       `;
