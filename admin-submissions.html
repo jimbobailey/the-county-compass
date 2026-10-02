@@ -95,7 +95,8 @@ function makeImageField(value){
   `;
 }
 
-async function markSubmissionHandled(submissionId, action, approvedAs, submissionData){
+async function markSubmissionHandled(submissionId, action, approvedAs, submissionData, options){
+  options = options || {};
   const confirmText =
     action === "deleted"
       ? "Delete this submission from the pending page?"
@@ -114,7 +115,9 @@ async function markSubmissionHandled(submissionId, action, approvedAs, submissio
       submissionId,
       action,
       approvedAs: approvedAs || "",
-      submissionData
+      submissionData,
+      featureBusiness: options.featureBusiness,
+      freeAd: options.freeAd
     })
   });
 
@@ -123,6 +126,14 @@ async function markSubmissionHandled(submissionId, action, approvedAs, submissio
   if(!result.success){
     alert(result.error || "Action failed.");
     return;
+  }
+
+  if(result.record && approvedAs === "business"){
+    const pageNames = {homepage:"Homepage", businesses:"Businesses page", deals:"Deals page", events:"Events page", hiring:"Hiring page"};
+    let msg = "Approved.";
+    if(result.record.featuredLocation){ msg += "\nFeatured on: " + (pageNames[result.record.featuredLocation] || result.record.featuredLocation); }
+    if(result.record.freeAdLocation){ msg += "\nFree ad on: " + (pageNames[result.record.freeAdLocation] || result.record.freeAdLocation); }
+    alert(msg);
   }
 
   const card = document.getElementById("submission-card-" + submissionId);
@@ -227,6 +238,22 @@ async function loadSubmissions(){
         </div>
       `;
 
+      const optionsRow = document.createElement("div");
+      optionsRow.className = "approve-options";
+      optionsRow.style.cssText = "margin-top:15px;display:flex;gap:22px;flex-wrap:wrap;";
+      optionsRow.innerHTML = `
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <input type="checkbox" class="opt-feature" checked style="width:auto;">
+          Feature this business (goes on the page that needs it most)
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <input type="checkbox" class="opt-free-ad" checked style="width:auto;">
+          Also give a free ad (goes on the page that needs it most)
+        </label>
+        <span style="width:100%;opacity:.7;font-size:13px;">These two options only apply when you click "Approve as Business".</span>
+      `;
+      card.appendChild(optionsRow);
+
       const actionRow = document.createElement("div");
       actionRow.className = "action-row";
 
@@ -241,7 +268,10 @@ async function loadSubmissions(){
         button.className = "approve-btn";
         button.textContent = "Approve as " + item[0];
         button.onclick = function(){
-          markSubmissionHandled(sub.id, "approved", item[1], payload);
+          markSubmissionHandled(sub.id, "approved", item[1], payload, {
+            featureBusiness: optionsRow.querySelector(".opt-feature").checked,
+            freeAd: optionsRow.querySelector(".opt-free-ad").checked
+          });
         };
         actionRow.appendChild(button);
       });

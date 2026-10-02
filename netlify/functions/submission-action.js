@@ -9,6 +9,28 @@ const EVENT_KEY = "events";
 const HIRING_KEY = "hiring";
 const AD_KEY = "ads";
 
+// Pages that show featured businesses / ads. Each item goes to ONE page,
+// whichever currently has the fewest, so every page shows a different set.
+const FEATURED_PAGES = ["homepage", "deals", "events", "hiring"];
+const AD_PAGES = ["homepage", "businesses", "deals", "events", "hiring"];
+
+function pickLeastUsedPage(items, pages, fieldName, includeItem) {
+  const counts = {};
+  pages.forEach(function(page) { counts[page] = 0; });
+
+  items.forEach(function(item) {
+    if (includeItem && !includeItem(item)) return;
+    const page = String(item[fieldName] || "").trim().toLowerCase();
+    if (counts[page] !== undefined) counts[page] += 1;
+  });
+
+  let best = pages[0];
+  pages.forEach(function(page) {
+    if (counts[page] < counts[best]) best = page;
+  });
+  return best;
+}
+
 exports.default = async function handler(request) {
   const headers = {
     "Content-Type": "application/json",
@@ -67,7 +89,9 @@ exports.default = async function handler(request) {
       submissionId,
       action,
       approvedAs,
-      submissionData
+      submissionData,
+      featureBusiness,
+      freeAd
     } = body;
 
     if (!submissionId || !action) {
@@ -166,10 +190,15 @@ exports.default = async function handler(request) {
 
         paid: "No",
 
-        featured: "No",
+        featured: featureBusiness === false ? "No" : "Yes",
 
         featuredLocation:
-          "homepage"
+          pickLeastUsedPage(
+            businesses,
+            FEATURED_PAGES,
+            "featuredLocation",
+            function(item) { return item.featured === "Yes"; }
+          )
       };
 
       businesses.push(
@@ -180,6 +209,51 @@ exports.default = async function handler(request) {
         BUSINESS_KEY,
         businesses
       );
+
+      // FREE AD ON APPROVAL (checkbox on the submissions page)
+      if (freeAd === true) {
+        const freeAdEntry = {
+          id: Date.now() + 1,
+
+          title:
+            submissionData.businessName || "",
+
+          image:
+            submissionData.adImageUrl || submissionData.imageUrl || "",
+
+          link:
+            submissionData.website || "",
+
+          active:
+            "Yes",
+
+          shape:
+            "square",
+
+          location:
+            pickLeastUsedPage(
+              ads,
+              AD_PAGES,
+              "location",
+              function(item) { return String(item.active || "") === "Yes"; }
+            ),
+
+          expiration:
+            ""
+        };
+
+        ads.push(freeAdEntry);
+
+        await store.setJSON(
+          AD_KEY,
+          ads
+        );
+
+        record.freeAdLocation = freeAdEntry.location;
+      }
+
+      record.featuredLocation =
+        businessEntry.featured === "Yes" ? businessEntry.featuredLocation : "";
     }
 
     // APPROVE COUPON

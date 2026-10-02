@@ -32,6 +32,7 @@ async function loadAdminData() {
   renderHiringPreviews();
   renderAdPreviews();
   renderNeedsAttentionDashboard();
+  renderSpreadSummary();
 }
 
 async function loadBusinessesFromServer() {
@@ -127,6 +128,84 @@ async function saveToServer(url, data, label) {
     console.error(label + " sync failed:", error);
     alert(label + " could not be saved to the server.");
   }
+}
+
+/* SPREAD FEATURED BUSINESSES + ADS ACROSS PAGES */
+
+const SPREAD_FEATURED_PAGES = ["homepage", "deals", "events", "hiring"];
+const SPREAD_AD_PAGES = ["homepage", "businesses", "deals", "events", "hiring"];
+
+function spreadSummaryText() {
+  const featuredCounts = {};
+  SPREAD_FEATURED_PAGES.concat(["all"]).forEach(function(p) { featuredCounts[p] = 0; });
+  businesses.forEach(function(b) {
+    if (b.featured === "Yes") {
+      const p = String(b.featuredLocation || "homepage").toLowerCase();
+      featuredCounts[p] = (featuredCounts[p] || 0) + 1;
+    }
+  });
+
+  const adCounts = {};
+  SPREAD_AD_PAGES.concat(["all"]).forEach(function(p) { adCounts[p] = 0; });
+  ads.forEach(function(a) {
+    if (String(a.active || "") === "Yes") {
+      const p = String(a.location || "").toLowerCase();
+      adCounts[p] = (adCounts[p] || 0) + 1;
+    }
+  });
+
+  const line = function(counts) {
+    return Object.keys(counts).map(function(p) {
+      return (p === "all" ? "All pages" : p.charAt(0).toUpperCase() + p.slice(1)) + ": " + counts[p];
+    }).join(" &nbsp;|&nbsp; ");
+  };
+
+  return "<strong>Featured:</strong> " + line(featuredCounts) +
+    "<br><strong>Ads:</strong> " + line(adCounts);
+}
+
+function renderSpreadSummary() {
+  const box = document.getElementById("spreadSummary");
+  if (box) box.innerHTML = spreadSummaryText();
+}
+
+async function spreadEvenly() {
+  const ok = confirm(
+    "Spread featured businesses and ads evenly across the pages?\n\n" +
+    "Each one will show on ONE page instead of all pages.\n" +
+    "Businesses marked Paid stay where they are.\n" +
+    "You can still set any single one back to All Pages later."
+  );
+  if (!ok) return;
+
+  let i = 0;
+  businesses
+    .slice()
+    .sort(function(a, b) { return Number(a.id) - Number(b.id); })
+    .forEach(function(business) {
+      if (business.featured !== "Yes" || business.paid === "Yes") return;
+      business.featuredLocation = SPREAD_FEATURED_PAGES[i % SPREAD_FEATURED_PAGES.length];
+      i++;
+    });
+
+  let j = 0;
+  ads
+    .slice()
+    .sort(function(a, b) { return Number(a.id) - Number(b.id); })
+    .forEach(function(ad) {
+      if (String(ad.active || "") !== "Yes") return;
+      ad.location = SPREAD_AD_PAGES[j % SPREAD_AD_PAGES.length];
+      j++;
+    });
+
+  await saveBusinesses();
+  await saveAds();
+
+  renderBusinessPreviews();
+  renderAdPreviews();
+  renderSpreadSummary();
+
+  alert("Done. " + i + " featured businesses and " + j + " ads were spread across the pages.");
 }
 
 function generateId() {
