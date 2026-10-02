@@ -172,8 +172,8 @@ function renderSpreadSummary() {
 async function spreadEvenly() {
   const ok = confirm(
     "Spread featured businesses and ads evenly across the pages?\n\n" +
-    "Each one will show on ONE page instead of all pages.\n" +
-    "Businesses marked Paid stay where they are.\n" +
+    "Every business becomes featured, and each one (and each ad)\n" +
+    "will show on ONE page instead of all pages.\n" +
     "You can still set any single one back to All Pages later."
   );
   if (!ok) return;
@@ -183,7 +183,7 @@ async function spreadEvenly() {
     .slice()
     .sort(function(a, b) { return Number(a.id) - Number(b.id); })
     .forEach(function(business) {
-      if (business.featured !== "Yes" || business.paid === "Yes") return;
+      business.featured = "Yes";
       business.featuredLocation = SPREAD_FEATURED_PAGES[i % SPREAD_FEATURED_PAGES.length];
       i++;
     });

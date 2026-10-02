@@ -1776,3 +1776,27 @@ div.empty-message p {
     max-width: 100% !important;
   }
 }
+
+/* ---------------------------------------------------------------------- */
+/* CENTER the sponsor + featured rows when they don't fill the screen.     */
+/* (auto margins keep the row scrollable from the first item when it's    */
+/* too long to fit, unlike plain centering which would cut off the start)  */
+/* ---------------------------------------------------------------------- */
+
+#homepageAds > :first-child,
+#businessesAds > :first-child,
+#couponsAds > :first-child,
+#eventsAds > :first-child,
+#hiringAds > :first-child,
+#featuredBusinesses > :first-child {
+  margin-left: auto;
+}
+
+#homepageAds > :last-child,
+#businessesAds > :last-child,
+#couponsAds > :last-child,
+#eventsAds > :last-child,
+#hiringAds > :last-child,
+#featuredBusinesses > :last-child {
+  margin-right: auto;
+}
