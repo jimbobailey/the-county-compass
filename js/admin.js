@@ -230,6 +230,7 @@ function getCategoryImage(category) {
     "Real Estate": "images/categories/real-estate.jpg",
     "RV Sales & Service": "images/categories/rv.jpg",
     "Shopping": "images/categories/shopping.jpg",
+    "Signs, Printing & Wraps": "images/categories/professional-services.jpg",
     "Towing & Recovery": "images/categories/automotive.jpg",
     "Vacation Rentals & Lodging": "images/categories/vacation-rentals.jpg",
     "Weddings & Parties": "images/categories/catering-event-services.jpg",

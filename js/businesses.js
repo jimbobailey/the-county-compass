@@ -31,6 +31,7 @@ const categoryImages = {
   "Professional Services": "images/categories/professional-services.jpg",
   "Real Estate": "images/categories/real-estate.jpg",
   "Shopping": "images/categories/shopping.jpg",
+  "Signs, Printing & Wraps": "images/categories/professional-services.jpg",
   "Other": "images/categories/professional-services.jpg"
 };
 

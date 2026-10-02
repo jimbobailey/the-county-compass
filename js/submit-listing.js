@@ -158,6 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <option>Real Estate & Title Services</option>
         <option>Salon / Barber / Nail Services</option>
         <option>Shopping</option>
+        <option>Signs, Printing & Wraps</option>
         <option>Tattoo & Piercing</option>
         <option>Towing & Recovery</option>
         <option>Weddings & Parties</option>

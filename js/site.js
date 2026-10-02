@@ -30,6 +30,7 @@ const categoryImages = {
   "Real Estate": "images/categories/real-estate.jpg",
   "RV Sales & Service": "images/categories/automotive.jpg",
   "Shopping": "images/categories/shopping.jpg",
+  "Signs, Printing & Wraps": "images/categories/professional-services.jpg",
   "Vacation Rentals & Lodging": "images/categories/vacation-rentals.jpg",
   "Other": "images/categories/professional-services.jpg"
 };
