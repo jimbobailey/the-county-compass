@@ -51,6 +51,7 @@
 
 html {
   background: var(--bg);
+  overflow-x: clip; /* stops tiny sideways scroll on computers */
 }
 
 body {
